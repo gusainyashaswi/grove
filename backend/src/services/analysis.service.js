@@ -1,8 +1,5 @@
 async function analyzeRepositoryService(url) {
-    return {
-        success: true,
-        repository: url
-    };
+    throw new Error("GitHub API Failed");;
 }
 
 module.exports = {
