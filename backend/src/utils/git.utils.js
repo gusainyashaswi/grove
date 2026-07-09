@@ -1,13 +1,22 @@
 const { exec } = require("child_process");
 const util = require("util");
+const fs = require("fs");
+const path = require("path");
 
 const execAsync = util.promisify(exec);
 
 async function cloneRepository(owner, repository) {
-    const command = `git clone https://github.com/${owner}/${repository}.git temp/repositories/${owner}-${repository}`;
+    const repositoryPath = path.join("temp", "repositories", `${owner}-${repository}`);
+    console.log(repositoryPath);
+    if(fs.existsSync(repositoryPath)){
+        return repositoryPath;
+    }
 
-    const { stdout } = await execAsync(command);
-    console.log(stdout);
+    const command = `git clone https://github.com/${owner}/${repository}.git ${repositoryPath}`;
+    console.log(command);
+    await execAsync(command);
+    console.log("8. Git Command Finished");
+    return repositoryPath;
 }
 
 module.exports = {
