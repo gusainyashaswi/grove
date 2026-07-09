@@ -1,22 +1,53 @@
-const { exec } = require("child_process");
-const util = require("util");
+const { spawn } = require("child_process");
 const fs = require("fs");
 const path = require("path");
 
-const execAsync = util.promisify(exec);
-
 async function cloneRepository(owner, repository) {
-    const repositoryPath = path.join("temp", "repositories", `${owner}-${repository}`);
-    console.log(repositoryPath);
-    if(fs.existsSync(repositoryPath)){
+    const repositoryPath = path.join(
+        "temp",
+        "repositories",
+        `${owner}-${repository}`
+    );
+
+    if (fs.existsSync(repositoryPath)) {
+
         return repositoryPath;
     }
 
-    const command = `git clone https://github.com/${owner}/${repository}.git ${repositoryPath}`;
-    console.log(command);
-    await execAsync(command);
-    console.log("8. Git Command Finished");
-    return repositoryPath;
+    return new Promise((resolve, reject) => {
+
+        const git = spawn("git", [
+            "clone",
+            `https://github.com/${owner}/${repository}.git`,
+            repositoryPath
+        ]);
+
+        git.stdout.on("data", (data) => {
+            console.log(data.toString());
+        });
+
+        git.stderr.on("data", (data) => {
+            console.log(data.toString());
+        });
+
+        git.on("error", (err) => {
+            console.log("SPAWN ERROR:", err);
+            reject(err);
+        });
+
+        git.on("close", (code) => {
+
+            console.log("4. Git closed with code:", code);
+
+            if (code === 0) {
+                resolve(repositoryPath);
+            } else {
+                reject(new Error(`Git exited with code ${code}`));
+            }
+
+        });
+
+    });
 }
 
 module.exports = {

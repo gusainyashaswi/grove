@@ -1,6 +1,8 @@
 const { extractRepositoryInfo } = require("../utils/github.utils");
 const AppError = require("../errors/AppError")
 const {cloneRepository} = require("../utils/git.utils")
+const { getRepositoryFiles } = require("../utils/file.utils");
+
 
 
 
@@ -17,9 +19,6 @@ async function verifyRepositoryExists(owner, repository) {
 async function analyzeRepositoryService(url) {
     const repositoryInfo = extractRepositoryInfo(url);
     const response = await verifyRepositoryExists(repositoryInfo.owner,repositoryInfo.repository);
-    if (!response.ok) {
-        throw new AppError("Repository not found", 404);
-    }
     const data = await response.json();
     const repository = {
         name: data.name,
@@ -30,12 +29,15 @@ async function analyzeRepositoryService(url) {
         cloneUrl: data.clone_url
     }
     const repositoryPath = await cloneRepository(repository.owner,repository.name);
+
+    const files = getRepositoryFiles(repositoryPath);
+    console.log(files.length);
+
     return {
         success: true,
-        repository
+        repository,
     };
 }
-
 
 
 module.exports = {
