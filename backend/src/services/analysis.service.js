@@ -1,5 +1,8 @@
 const { extractRepositoryInfo } = require("../utils/github.utils");
 const AppError = require("../errors/AppError")
+const {cloneRepository} = require("../utils/git.utils")
+
+const execAsync = util.promisify(exec);
 
 async function verifyRepositoryExists(owner, repository) {
     const response = await fetch(`https://api.github.com/repos/${owner}/${repository}`);
@@ -26,11 +29,15 @@ async function analyzeRepositoryService(url) {
         cloneUrl: data.clone_url
     }
 
+    await cloneRepository(repository.owner,repository.name);
+
     return {
         success: true,
         repository
     };
 }
+
+
 
 module.exports = {
     analyzeRepositoryService
