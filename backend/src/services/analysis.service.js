@@ -1,8 +1,8 @@
 const { extractRepositoryInfo } = require("../utils/github.utils");
 const AppError = require("../errors/AppError")
 const {cloneRepository} = require("../utils/git.utils")
-const { getRepositoryFiles } = require("../utils/file.utils");
-
+const {readFileContent} = require("../utils/file.utils")
+const {getRepositoryFiles,readRepositoryFiles} = require("../utils/file.utils");
 
 
 
@@ -31,7 +31,16 @@ async function analyzeRepositoryService(url) {
     const repositoryPath = await cloneRepository(repository.owner,repository.name);
 
     const files = getRepositoryFiles(repositoryPath);
-    console.log(files.length);
+
+    const repositoryFiles = readRepositoryFiles(files);
+
+    console.log(repositoryFiles[0]);
+
+    // const firstFile = files[0];
+    // const content = readFileContent(firstFile);
+    // console.log(firstFile);
+    // console.log(content);
+    
 
     return {
         success: true,
