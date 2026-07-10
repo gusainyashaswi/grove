@@ -10,10 +10,7 @@ const CODE_EXTENSIONS = [
     ".cjs"
     ];
 
-function getRepositoryFiles(directoryPath) {
-    const items = fs.readdirSync(directoryPath);
-    let files = [];
-    const IGNORED_DIRECTORIES = [
+const IGNORED_DIRECTORIES = [
     ".git",
     "node_modules",
     "dist",
@@ -21,6 +18,10 @@ function getRepositoryFiles(directoryPath) {
     "coverage",
     ".next"
     ]
+
+function getRepositoryFiles(directoryPath) {
+    const items = fs.readdirSync(directoryPath);
+    let files = [];
 
     for (const item of items) {
 
@@ -45,6 +46,10 @@ function getRepositoryFiles(directoryPath) {
     return files;
 }
 
+function readFileContent(filePath) {
+    return fs.readFileSync(filePath, "utf8");
+}
+
 function readRepositoryFiles(files) {
     const repositoryFiles = [];
     for (const file of files) {
@@ -60,12 +65,25 @@ function readRepositoryFiles(files) {
 function resolveImport(currentFile, importPath) {
 
     const directory = path.dirname(currentFile);
-    return path.resolve(directory,importPath);
+    const resolvedPath = path.resolve(directory,importPath);
+
+    if (fs.existsSync(resolvedPath + ".js")){
+        return resolvedPath + ".js";
+    }
+
+    const indexFile = path.join(resolvedPath,"index.js");
+
+    if (fs.existsSync(indexFile)){
+        return indexFile;
+    }
+
+    return null;
 }
 
 module.exports = {
     getRepositoryFiles,
     readRepositoryFiles,
-    resolveImport
+    resolveImport,
+    readFileContent
 
 }

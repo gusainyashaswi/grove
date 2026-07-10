@@ -2,8 +2,7 @@ const { extractRepositoryInfo } = require("../utils/github.utils");
 const AppError = require("../errors/AppError")
 const {cloneRepository} = require("../utils/git.utils")
 const {getRepositoryFiles,readRepositoryFiles} = require("../utils/file.utils");
-const {parseJavaScript} = require("../utils/parser.utils")
-const { extractImports, isInternalImport } =require("../utils/ast.utils");
+const {analyzeRepository} = require("../utils/repositoryAnalyzer.utils");
 
 
 
@@ -36,12 +35,10 @@ async function analyzeRepositoryService(url) {
 
     const repositoryFiles = readRepositoryFiles(files);
 
-    const firstFileAST =parseJavaScript(repositoryFiles[0].content);
+    const analyzedFiles = analyzeRepository(repositoryFiles);
+
+    console.log(analyzedFiles.length);
     
-    const imports =extractImports(firstFileAST);
-
-    const internalImports =imports.filter(isInternalImport);
-
     return {
         success: true,
         repository,
