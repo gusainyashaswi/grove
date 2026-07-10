@@ -57,8 +57,15 @@ function readRepositoryFiles(files) {
     return repositoryFiles;
 }
 
+function resolveImport(currentFile, importPath) {
+
+    const directory = path.dirname(currentFile);
+    return path.resolve(directory,importPath);
+}
+
 module.exports = {
     getRepositoryFiles,
     readRepositoryFiles,
+    resolveImport
 
 }

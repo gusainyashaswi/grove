@@ -3,6 +3,8 @@ const AppError = require("../errors/AppError")
 const {cloneRepository} = require("../utils/git.utils")
 const {getRepositoryFiles,readRepositoryFiles} = require("../utils/file.utils");
 const {parseJavaScript} = require("../utils/parser.utils")
+const { extractImports, isInternalImport } =require("../utils/ast.utils");
+
 
 
 
@@ -36,6 +38,9 @@ async function analyzeRepositoryService(url) {
 
     const firstFileAST =parseJavaScript(repositoryFiles[0].content);
     
+    const imports =extractImports(firstFileAST);
+
+    const internalImports =imports.filter(isInternalImport);
 
     return {
         success: true,
