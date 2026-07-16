@@ -3,6 +3,7 @@ const AppError = require("../errors/AppError")
 const {cloneRepository} = require("../utils/git.utils")
 const {getRepositoryFiles,readRepositoryFiles} = require("../utils/file.utils");
 const {analyzeRepository} = require("../utils/repositoryAnalyzer.utils");
+const {buildDependencyGraph} = require("../utils/graph.utils");
 
 
 
@@ -36,6 +37,10 @@ async function analyzeRepositoryService(url) {
     const repositoryFiles = readRepositoryFiles(files);
 
     const analyzedFiles = analyzeRepository(repositoryFiles);
+
+    const graph = buildDependencyGraph(analyzedFiles);
+
+    console.log(graph);
 
     console.log(analyzedFiles.length);
     
