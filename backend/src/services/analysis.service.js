@@ -24,16 +24,15 @@ async function analyzeRepositoryService(url) {
 
     const analyzedFiles = analyzeRepository(repositoryFiles);
 
+    const repositoryIndex = buildRepositoryIndex(analyzedFiles);
+
     const graph = buildDependencyGraph(analyzedFiles);
 
     console.log(graph);
 
     console.log(analyzedFiles.length);
     
-    return {
-        success: true,
-        repository,
-    };
+    return repositoryIndex;
 }
 
 
