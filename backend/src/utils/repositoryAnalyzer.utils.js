@@ -23,10 +23,10 @@ function analyzeRepository(repositoryFiles) {
                 continue;
             }
 
-            dependencies.push(resolveImport)
+            dependencies.push(resolvedPath)
         }
 
-        analyzedFiles.push({path: file.path, ast, imports, dependencies});
+        analyzedFiles.push({path: file.path, imports, dependencies});
     }
     return analyzedFiles;
 }

@@ -1,22 +1,8 @@
 const { extractRepositoryInfo } = require("../utils/github.utils");
-const AppError = require("../errors/AppError")
 const {cloneRepository} = require("../utils/git.utils")
 const {getRepositoryFiles,readRepositoryFiles} = require("../utils/file.utils");
 const {analyzeRepository} = require("../utils/repositoryAnalyzer.utils");
 const {buildDependencyGraph} = require("../utils/graph.utils");
-
-
-
-
-async function verifyRepositoryExists(owner, repository) {
-    const response = await fetch(`https://api.github.com/repos/${owner}/${repository}`);
-
-    if (!response.ok) {
-        throw new AppError("Repository not found",404);
-    }
-
-    return response;
-}
 
 async function analyzeRepositoryService(url) {
     const repositoryInfo = extractRepositoryInfo(url);

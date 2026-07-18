@@ -21,7 +21,7 @@ const IGNORED_DIRECTORIES = [
 
 function getRepositoryFiles(directoryPath) {
     const items = fs.readdirSync(directoryPath);
-    let files = [];
+    let filePaths = [];
 
     for (const item of items) {
 
@@ -35,22 +35,22 @@ function getRepositoryFiles(directoryPath) {
         );
         const stats = fs.statSync(fullPath);
         if (stats.isFile()) {
-            files.push(fullPath);
+            filePaths.push(fullPath);
         }
         else if (stats.isDirectory()) {
             const nestedFiles =
                 getRepositoryFiles(fullPath);
-            files.push(...nestedFiles);
+            filePaths.push(...nestedFiles);
         }
     }
-    return files;
+    return filePaths;
 }
 
 function readFileContent(filePath) {
     return fs.readFileSync(filePath, "utf8");
 }
 
-function readRepositoryFiles(files) {
+function readRepositoryFiles(filePaths) {
     const repositoryFiles = [];
     for (const file of files) {
         const content = readFileContent(file);
