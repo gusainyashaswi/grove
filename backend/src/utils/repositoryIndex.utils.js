@@ -1,6 +1,7 @@
 function buildRepositoryIndex(analyzedFiles) {
 
     const fileMap = {}
+    const edges = [];
 
     for (const file of analyzedFiles) {
         fileMap[file.path] = file;

@@ -26,8 +26,12 @@ function analyzeRepository(repositoryFiles) {
             dependencies.push(resolvedPath)
         }
 
-        analyzedFiles.push({path: file.path, imports, dependencies});
-    }
+        analyzedFiles.push({
+            path: file.path, 
+            type: classifyFile(path),
+            imports, 
+            dependencies});
+            }
     return analyzedFiles;
 }
 
