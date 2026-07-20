@@ -3,10 +3,11 @@ import { useState } from "react";
 import Container from "./layout/Container";
 import Input from "./ui/Input";
 import Button from "./ui/Button";
+import RepositoryPreview from "./repository/RepositoryPreview";
 
 function Hero() {
 
-    const [repositoryUrl, setRepositoryUrl] = useState("");
+    <Hero repositoryUrl={repositoryUrl} setRepositoryUrl={setRepositoryUrl} onAnalyze={analyzeRepository}/>
 
     return (
 
@@ -14,7 +15,7 @@ function Hero() {
 
             <Container>
 
-                <div className="max-w-2xl">
+                <div className="grid items-center gap-16 lg:grid-cols-2">
 
                     <span
                         className="
@@ -73,7 +74,11 @@ function Hero() {
 
                     </div>
 
+                    <RepositoryPreview />
+
                 </div>
+
+                
 
             </Container>
 
