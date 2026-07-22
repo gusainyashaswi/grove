@@ -1,13 +1,13 @@
-import { useRepository } from "../context/RepositoryContext";
+import RepositoryHeader from "../components/repository/RepositoryHeader";
+import StatsBar from "../components/repository/StatsBar";
+import MainContent from "../components/repository/MainContent";
 
 function Repository() {
-    const { repository } = useRepository();
-
-    console.log(repository);
-
     return (
         <div>
-            Repository
+            <RepositoryHeader />
+            <StatsBar />
+            <MainContent />
         </div>
     );
 }

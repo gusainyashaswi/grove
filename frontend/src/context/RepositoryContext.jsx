@@ -4,10 +4,11 @@ const RepositoryContext = createContext();
 
 export function RepositoryProvider({ children }) {
     const [repository, setRepository] = useState(null);
+    const [selectedFile, setSelectedFile] = useState(null);
 
     return (
         <RepositoryContext.Provider
-            value={{ repository, setRepository }}
+            value={{ repository, setRepository, selectedFile, setSelectedFile }}
         >
             {children}
         </RepositoryContext.Provider>
