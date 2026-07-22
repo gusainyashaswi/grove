@@ -5,12 +5,17 @@ function buildDependencyGraph(analyzedFiles) {
     };
 
     for (const file of analyzedFiles) {
-        graph.nodes.push(file.path);
+        graph.nodes.push({
+            id: file.path,
+            label: file.path.split("/").pop(),
+            type: "file",
+        });
 
         for (const dependency of file.dependencies) {
             graph.edges.push({
-                from: file.path,
-                to: dependency
+                id: `${file.path}-${dependency}`,
+                source: file.path,
+                target: dependency,
             });
         }
     }
