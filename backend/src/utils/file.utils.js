@@ -8,7 +8,7 @@ const CODE_EXTENSIONS = [
     ".tsx",
     ".mjs",
     ".cjs"
-    ];
+];
 
 const IGNORED_DIRECTORIES = [
     ".git",
@@ -17,29 +17,26 @@ const IGNORED_DIRECTORIES = [
     "build",
     "coverage",
     ".next"
-    ]
+];
 
 function getRepositoryFiles(directoryPath) {
     const items = fs.readdirSync(directoryPath);
     let filePaths = [];
 
     for (const item of items) {
-
         if (IGNORED_DIRECTORIES.includes(item)) {
             continue;
         }
 
-        const fullPath = path.join(
-            directoryPath,
-            item
-        );
+        const fullPath = path.join(directoryPath, item);
         const stats = fs.statSync(fullPath);
         if (stats.isFile()) {
-            filePaths.push(fullPath);
-        }
-        else if (stats.isDirectory()) {
-            const nestedFiles =
-                getRepositoryFiles(fullPath);
+            const ext = path.extname(fullPath).toLowerCase();
+            if (CODE_EXTENSIONS.includes(ext)) {
+                filePaths.push(fullPath);
+            }
+        } else if (stats.isDirectory()) {
+            const nestedFiles = getRepositoryFiles(fullPath);
             filePaths.push(...nestedFiles);
         }
     }
@@ -52,7 +49,7 @@ function readFileContent(filePath) {
 
 function readRepositoryFiles(filePaths) {
     const repositoryFiles = [];
-    for (const file of files) {
+    for (const file of filePaths) {
         const content = readFileContent(file);
         repositoryFiles.push({
             path: file,
@@ -63,18 +60,25 @@ function readRepositoryFiles(filePaths) {
 }
 
 function resolveImport(currentFile, importPath) {
-
     const directory = path.dirname(currentFile);
-    const resolvedPath = path.resolve(directory,importPath);
+    const resolvedPath = path.resolve(directory, importPath);
 
-    if (fs.existsSync(resolvedPath + ".js")){
-        return resolvedPath + ".js";
+    if (fs.existsSync(resolvedPath) && fs.statSync(resolvedPath).isFile()) {
+        return resolvedPath;
     }
 
-    const indexFile = path.join(resolvedPath,"index.js");
+    for (const ext of CODE_EXTENSIONS) {
+        const pathWithExt = resolvedPath + ext;
+        if (fs.existsSync(pathWithExt) && fs.statSync(pathWithExt).isFile()) {
+            return pathWithExt;
+        }
+    }
 
-    if (fs.existsSync(indexFile)){
-        return indexFile;
+    for (const ext of CODE_EXTENSIONS) {
+        const indexFile = path.join(resolvedPath, "index" + ext);
+        if (fs.existsSync(indexFile) && fs.statSync(indexFile).isFile()) {
+            return indexFile;
+        }
     }
 
     return null;
@@ -84,6 +88,6 @@ module.exports = {
     getRepositoryFiles,
     readRepositoryFiles,
     resolveImport,
-    readFileContent
-
-}
+    readFileContent,
+    CODE_EXTENSIONS
+};

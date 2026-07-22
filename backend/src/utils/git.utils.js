@@ -3,22 +3,23 @@ const fs = require("fs");
 const path = require("path");
 
 async function cloneRepository(owner, repository) {
-    const repositoryPath = path.join(
+    const cleanRepo = repository ? repository.replace(/\.git$/, "") : "";
+    const repositoryPath = path.resolve(
         "temp",
         "repositories",
-        `${owner}-${repository}`
+        `${owner}-${cleanRepo}`
     );
 
     if (fs.existsSync(repositoryPath)) {
-
         return repositoryPath;
     }
 
-    return new Promise((resolve, reject) => {
+    fs.mkdirSync(path.dirname(repositoryPath), { recursive: true });
 
+    return new Promise((resolve, reject) => {
         const git = spawn("git", [
             "clone",
-            `https://github.com/${owner}/${repository}.git`,
+            `https://github.com/${owner}/${cleanRepo}.git`,
             repositoryPath
         ]);
 
@@ -36,17 +37,14 @@ async function cloneRepository(owner, repository) {
         });
 
         git.on("close", (code) => {
-
-            console.log("4. Git closed with code:", code);
+            console.log("Git closed with code:", code);
 
             if (code === 0) {
                 resolve(repositoryPath);
             } else {
                 reject(new Error(`Git exited with code ${code}`));
             }
-
         });
-
     });
 }
 

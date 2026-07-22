@@ -1,31 +1,34 @@
-const traverse = require("@babel/traverse").default;
+const babelTraverse = require("@babel/traverse");
+const traverse = babelTraverse.default || babelTraverse;
 
 function isInternalImport(importPath) {
+    if (typeof importPath !== "string") return false;
     return importPath.startsWith("./") ||
-           importPath.startsWith("../");
+           importPath.startsWith("../") ||
+           importPath.startsWith("@/");
 }
 
 function extractImports(ast) {
-
     const imports = [];
 
-    traverse(ast, {
+    if (!ast) return imports;
 
+    traverse(ast, {
         ImportDeclaration(path) {
-            imports.push(
-                path.node.source.value
-            );
+            if (path.node && path.node.source && typeof path.node.source.value === "string") {
+                imports.push(path.node.source.value);
+            }
         },
 
         CallExpression(path) {
-            
-            if (path.node.callee.name !== "require"){
+            if (path.node.callee.name !== "require") {
                 return;
             }
 
-            imports.push(
-                path.node.arguments[0].value
-            );
+            const arg = path.node.arguments && path.node.arguments[0];
+            if (arg && typeof arg.value === "string") {
+                imports.push(arg.value);
+            }
         }
     });
 
@@ -35,4 +38,4 @@ function extractImports(ast) {
 module.exports = {
     extractImports,
     isInternalImport,
-}
+};

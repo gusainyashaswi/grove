@@ -1,13 +1,18 @@
 const parser = require("@babel/parser");
 
 function parseJavaScript(code) {
-
     return parser.parse(code, {
-        sourceType: "unambiguous"
+        sourceType: "unambiguous",
+        plugins: [
+            "jsx",
+            "typescript",
+            "classProperties",
+            "dynamicImport",
+            "exportDefaultFrom"
+        ]
     });
-
 }
 
-module.exports={
+module.exports = {
     parseJavaScript
-}
+};

@@ -1,5 +1,4 @@
 function validateRepositoryUrl(url) {
-
     if (!url) {
         return "Repository URL is required.";
     }
@@ -16,13 +15,13 @@ function validateRepositoryUrl(url) {
         return "Invalid URL.";
     }
 
-    if (parsedUrl.hostname !== "github.com") {
+    if (parsedUrl.hostname !== "github.com" && parsedUrl.hostname !== "www.github.com") {
         return "Only GitHub repositories are supported.";
     }
 
     const parts = parsedUrl.pathname.split("/").filter(Boolean);
 
-    if (parts.length !== 2) {
+    if (parts.length < 2) {
         return "Invalid GitHub repository.";
     }
 
