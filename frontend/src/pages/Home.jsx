@@ -3,10 +3,13 @@ import Hero from "../components/Hero";
 import { useState } from "react";
 import { analyzeRepository } from "../services/repository.service";
 import { useNavigate } from "react-router-dom";
+import { useRepository } from "../context/RepositoryContext";
 
 
 
 function Home() {
+
+    const { setRepository } = useRepository();
 
     const navigate = useNavigate();
 
@@ -26,10 +29,9 @@ function Home() {
 
         try {
             const repositoryData = await analyzeRepository(repositoryUrl);
-
-            console.log(repositoryData);
-
+            setRepository(repositoryData);
             navigate("/repository");
+            
         } catch (error) {
             console.error(error);
 

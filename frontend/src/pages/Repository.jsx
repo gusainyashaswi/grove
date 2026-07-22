@@ -1,9 +1,15 @@
-import React from 'react'
+import { useRepository } from "../context/RepositoryContext";
 
 function Repository() {
-  return (
-    <div>Repository</div>
-  )
+    const { repository } = useRepository();
+
+    console.log(repository);
+
+    return (
+        <div>
+            Repository
+        </div>
+    );
 }
 
-export default Repository
+export default Repository;
