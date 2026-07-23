@@ -32,12 +32,39 @@ function analyzeRepository(repositoryFiles) {
         }
 
         analyzedFiles.push({
-            path: file.path, 
+            path: file.path,
+            name: file.path.split("/").pop(),
+            folder: file.path.substring(0, file.path.lastIndexOf("/")),
+            extension: file.path.substring(file.path.lastIndexOf(".")),
+            lineCount: file.content.split("\n").length,
             type: classifyFile(file.path),
-            imports, 
-            dependencies
+            imports,
+            dependencies,
         });
     }
+
+    const fileMap = new Map();
+
+    for (const file of analyzedFiles) {
+
+    fileMap.set(file.path, file);
+
+}
+
+for (const file of analyzedFiles) {
+    file.dependents = [];
+}
+
+for (const file of analyzedFiles) {
+    for (const dependency of file.dependencies) {
+        const dependencyFile = fileMap.get(dependency);
+
+        if (dependencyFile) {
+            dependencyFile.dependents.push(file.path);
+        }
+    }
+}
+
 
     return analyzedFiles;
 }
