@@ -24,12 +24,8 @@ function DependencyGraph() {
 const edges = repository.dependencyGraph.edges;
 
     return(
-        <div style={{ width: "100%", height: "600px" }}>
-            <ReactFlow
-                nodes={nodes}
-                edges={edges}
-                fitView
-            />
+        <div className="border rounded-lg overflow-hidden" style={{ height: "75vh" }}>
+            <ReactFlow nodes={nodes} edges={edges} fitView/>
         </div>
     )
 }
