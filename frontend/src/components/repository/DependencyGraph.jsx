@@ -1,5 +1,6 @@
 import { ReactFlow } from "@xyflow/react";
 import "@xyflow/react/dist/style.css";
+import { layoutGraph } from "../../utils/layoutGraph";
 
 import { useRepository } from "../../context/RepositoryContext";
 
@@ -37,6 +38,7 @@ function DependencyGraph() {
 
 
 const edges = repository.dependencyGraph.edges;
+const layoutedNodes = layoutGraph(nodes, edges);
 
 function handleNodeClick(event, node) {
     const file = repository.files.find(
@@ -50,7 +52,7 @@ function handleNodeClick(event, node) {
 
     return(
         <div className="border rounded-lg overflow-hidden" style={{ height: "75vh" }}>
-            <ReactFlow nodes={nodes} edges={edges} fitView onNodeClick={handleNodeClick}/>
+            <ReactFlow nodes={layoutedNodes} edges={edges} fitView onNodeClick={handleNodeClick}/>
         </div>
     )
 }
