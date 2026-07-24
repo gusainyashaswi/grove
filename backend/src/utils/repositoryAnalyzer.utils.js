@@ -38,6 +38,7 @@ function analyzeRepository(repositoryFiles) {
             extension: file.path.substring(file.path.lastIndexOf(".")),
             lineCount: file.content.split("\n").length,
             type: classifyFile(file.path),
+            content:file.content,
             imports,
             dependencies,
         });
@@ -46,24 +47,22 @@ function analyzeRepository(repositoryFiles) {
     const fileMap = new Map();
 
     for (const file of analyzedFiles) {
-
     fileMap.set(file.path, file);
+    }
 
-}
+    for (const file of analyzedFiles) {
+        file.dependents = [];
+    }
 
-for (const file of analyzedFiles) {
-    file.dependents = [];
-}
+    for (const file of analyzedFiles) {
+        for (const dependency of file.dependencies) {
+            const dependencyFile = fileMap.get(dependency);
 
-for (const file of analyzedFiles) {
-    for (const dependency of file.dependencies) {
-        const dependencyFile = fileMap.get(dependency);
-
-        if (dependencyFile) {
-            dependencyFile.dependents.push(file.path);
+            if (dependencyFile) {
+                dependencyFile.dependents.push(file.path);
+            }
         }
     }
-}
 
 
     return analyzedFiles;
