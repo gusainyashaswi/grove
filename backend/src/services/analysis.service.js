@@ -4,11 +4,16 @@ const { getRepositoryFiles, readRepositoryFiles } = require("../utils/file.utils
 const { analyzeRepository } = require("../utils/repositoryAnalyzer.utils");
 const { buildDependencyGraph } = require("../utils/graph.utils");
 const { buildRepositoryIndex } = require("../utils/repositoryIndex.utils");
+const { analyzeRepositoryStructure } = require("../utils/repositoryStructure.utils");
 
 async function analyzeRepositoryService(url) {
+
     const repositoryInfo = extractRepositoryInfo(url);
+
     const response = await verifyRepositoryExists(repositoryInfo.owner, repositoryInfo.repository);
+
     const data = await response.json();
+
     const repository = {
         name: data.name,
         owner: data.owner.login,
@@ -17,6 +22,7 @@ async function analyzeRepositoryService(url) {
         language: data.language,
         cloneUrl: data.clone_url
     };
+
     const repositoryPath = await cloneRepository(repository.owner, repository.name);
 
     const files = getRepositoryFiles(repositoryPath);
@@ -27,7 +33,9 @@ async function analyzeRepositoryService(url) {
 
     const graph = buildDependencyGraph(analyzedFiles);
 
-    const repositoryIndex = buildRepositoryIndex(analyzedFiles, graph);
+    const structure = analyzeRepositoryStructure(analyzedFiles);
+
+    const repositoryIndex = buildRepositoryIndex(analyzedFiles, graph, structure);
 
     return repositoryIndex;
 }
