@@ -1,24 +1,21 @@
 import { useRepository } from "../../context/RepositoryContext";
+import { buildFileTree } from "../../utils/buildFileTree";
+import FileTree from "./FileTree";
 
 function FileExplorer() {
     const {
         repository,
         selectedFile,
-        setSelectedFile,
     } = useRepository();
+
+    const tree = buildFileTree(repository.files);
 
     return (
         <div>
             <h2>Files</h2>
 
-            {repository.files.map((file) => (
-                <button
-                    key={file.path}
-                    onClick={() => setSelectedFile(file)}
-                >
-                    {file.path}
-                </button>            
-            ))}
+            <FileTree tree={tree} />
+
 
             {selectedFile && (
         <p>
