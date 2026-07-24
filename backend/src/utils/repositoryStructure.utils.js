@@ -16,23 +16,58 @@ function analyzeRepositoryStructure(analyzedFiles) {
         "firebase",
     ];
 
-    const structure = {};
+    const folders = {};
 
     for (const file of analyzedFiles) {
-        const folders = file.folder.split(/[\\/]/);
+        const pathFolders = file.folder.split(/[\\/]/);
 
-        for (const folder of folders) {
+        for (const folder of pathFolders) {
             const lower = folder.toLowerCase();
 
             if (!trackedFolders.includes(lower)) continue;
 
-            const name = lower.charAt(0).toUpperCase() + lower.slice(1);
+            const name =
+                lower.charAt(0).toUpperCase() +
+                lower.slice(1);
 
-            structure[name] = (structure[name] || 0) + 1;
+            folders[name] = (folders[name] || 0) + 1;
         }
     }
 
-    return structure;
+    let framework = "Unknown";
+
+    const fileNames = analyzedFiles.map(file =>
+        file.name.toLowerCase()
+    );
+
+    if (
+        fileNames.includes("app.jsx") ||
+        fileNames.includes("main.jsx") ||
+        fileNames.includes("app.tsx") ||
+        fileNames.includes("main.tsx")
+    ) {
+        framework = "React";
+    }
+
+    const hasExpress =
+        fileNames.includes("server.js") ||
+        fileNames.includes("app.js") ||
+        fileNames.includes("index.js") &&
+        folders.Controllers &&
+        folders.Services;
+
+    if (hasExpress) {
+        framework =
+            framework === "React"
+                ? "React + Express"
+                : "Express";
+    }
+
+    return {
+        framework,
+        folders,
+    };
+    
 }
 
 module.exports = {

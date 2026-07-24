@@ -7,18 +7,18 @@ function RepositoryStructure() {
         return null;
     }
 
-    console.log(repository);
-
-console.log(repository.structure);
-
     return (
         <div className="border rounded-lg p-4 mb-4">
             <h2 className="text-lg font-semibold mb-3">
                 Repository Structure
             </h2>
 
+            <h3>
+                Framework: {repository.structure.framework}
+            </h3>
+
             <ul className="space-y-2">
-                {Object.entries(repository.structure).map(([folder, count]) => (
+                {Object.entries(repository.structure.folders).map(([folder, count]) => (
                     <li
                         key={folder}
                         className="flex justify-between"
