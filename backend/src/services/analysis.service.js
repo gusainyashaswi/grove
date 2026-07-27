@@ -6,6 +6,8 @@ const { buildDependencyGraph } = require("../utils/graph.utils");
 const { buildRepositoryIndex } = require("../utils/repositoryIndex.utils");
 const { analyzeRepositoryStructure } = require("../utils/repositoryStructure.utils");
 const { analyzeRepositoryHealth } = require("../utils/repositoryHealth.utils")
+const { detectEntryPoint } = require("../utils/entryPoint.utils");
+const { analyzeRepositoryStatistics } = require("../utils/repositoryStatistics.utils")
 
 async function analyzeRepositoryService(url) {
 
@@ -38,7 +40,12 @@ async function analyzeRepositoryService(url) {
 
     const health = analyzeRepositoryHealth(analyzedFiles);
 
-    const repositoryIndex = buildRepositoryIndex(analyzedFiles, graph, structure, health);
+    const entryPoint = detectEntryPoint(analyzedFiles);
+
+    const statistics = analyzeRepositoryStatistics(analyzedFiles);
+
+    const repositoryIndex = buildRepositoryIndex(analyzedFiles, graph, structure, health, entryPoint, statistics);
+
 
 
     return repositoryIndex;

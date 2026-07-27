@@ -3,6 +3,7 @@ import DetailsPanel from "./DetailsPanel";
 import DependencyGraph from "./DependencyGraph";
 import CodePreview from "./CodePreview";
 import RepositoryStructure from "./RepositoryStructure";
+import RepositoryStatistics from "../repository/RepositoryStatistics";
 
 function MainContent() {
     return (
@@ -14,6 +15,8 @@ function MainContent() {
 
     <div className="flex-1 flex flex-col gap-4">
     <RepositoryStructure />
+
+    <RepositoryStatistics />
 
     <div className="flex-1">
         <DependencyGraph />

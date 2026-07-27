@@ -17,6 +17,20 @@ function RepositoryStructure() {
                 Framework: {repository.structure.framework}
             </h3>
 
+            <div>
+                <h3>Entry Point</h3>
+
+                {repository.entryPoint ? (
+                    <>
+                        <p>{repository.entryPoint.name}</p>
+
+                        <small>{repository.entryPoint.path}</small>
+                    </>
+                ) : (
+                    <p>Not Found</p>
+                )}
+            </div>
+
             <ul className="space-y-2">
                 {Object.entries(repository.structure.folders).map(([folder, count]) => (
                     <li
@@ -28,6 +42,9 @@ function RepositoryStructure() {
                     </li>
                 ))}
             </ul>
+
+                
+
         </div>
     );
 }

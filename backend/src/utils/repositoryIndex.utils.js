@@ -1,4 +1,4 @@
-function buildRepositoryIndex(analyzedFiles, dependencyGraph, structure, health) {
+function buildRepositoryIndex(analyzedFiles, dependencyGraph, structure, health, entryPoint, statistics) {
     const fileMap = {};
 
     for (const file of analyzedFiles) {
@@ -14,6 +14,12 @@ function buildRepositoryIndex(analyzedFiles, dependencyGraph, structure, health)
         },
         structure: structure || {},
         health,
+        entryPoint: {
+            name: "main.jsx",
+            path: "src/main.jsx"
+
+        },
+        statistics,
     };
 }
 
