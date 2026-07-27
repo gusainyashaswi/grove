@@ -50,9 +50,9 @@ function analyzeRepositoryStructure(analyzedFiles) {
     }
 
     const hasExpress =
-        fileNames.includes("server.js") ||
+        (fileNames.includes("server.js") ||
         fileNames.includes("app.js") ||
-        fileNames.includes("index.js") &&
+        fileNames.includes("index.js")) &&
         folders.Controllers &&
         folders.Services;
 

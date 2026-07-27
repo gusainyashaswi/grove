@@ -1,4 +1,4 @@
-function buildRepositoryIndex(analyzedFiles, dependencyGraph, structure) {
+function buildRepositoryIndex(analyzedFiles, dependencyGraph, structure, health) {
     const fileMap = {};
 
     for (const file of analyzedFiles) {
@@ -12,7 +12,8 @@ function buildRepositoryIndex(analyzedFiles, dependencyGraph, structure) {
             nodes: [],
             edges: []
         },
-        structure: structure || {}
+        structure: structure || {},
+        health,
     };
 }
 

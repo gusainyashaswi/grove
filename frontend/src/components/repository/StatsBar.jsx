@@ -4,6 +4,10 @@ import StatCard from "./StatCard";
 function StatsBar() {
     const { repository } = useRepository();
 
+    if (!repository || !repository.files || !repository.dependencyGraph) {
+        return null;
+    }
+
     const fileCount = repository.files.length;
     const nodeCount = repository.dependencyGraph.nodes.length;
     const edgeCount = repository.dependencyGraph.edges.length;

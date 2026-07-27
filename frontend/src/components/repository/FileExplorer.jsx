@@ -12,6 +12,10 @@ function FileExplorer() {
         selectedFile,
     } = useRepository();
 
+    if (!repository || !repository.files) {
+        return null;
+    }
+
     const filteredFiles = repository.files.filter((file) =>
     file.name.toLowerCase().includes(search.toLowerCase()));
 

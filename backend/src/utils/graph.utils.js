@@ -11,12 +11,17 @@ function buildDependencyGraph(analyzedFiles) {
             type: "file",
         });
 
+        const edgeSet = new Set();
         for (const dependency of file.dependencies) {
-            graph.edges.push({
-                id: `${file.path}-${dependency}`,
-                source: file.path,
-                target: dependency,
-            });
+            const edgeId = `${file.path}-${dependency}`;
+            if (!edgeSet.has(edgeId)) {
+                edgeSet.add(edgeId);
+                graph.edges.push({
+                    id: edgeId,
+                    source: file.path,
+                    target: dependency,
+                });
+            }
         }
     }
 

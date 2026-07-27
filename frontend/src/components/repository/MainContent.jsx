@@ -1,7 +1,6 @@
 import FileExplorer from "./FileExplorer";
 import DetailsPanel from "./DetailsPanel";
 import DependencyGraph from "./DependencyGraph";
-import AIExplanationPanel from "./AIExplanationPanel";
 import CodePreview from "./CodePreview";
 import RepositoryStructure from "./RepositoryStructure";
 

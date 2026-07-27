@@ -30,17 +30,17 @@ function Hero({repositoryUrl, setRepositoryUrl, onAnalyze, loading, error,}) {
                         and file relationships.
                     </p>
 
-                    <div className="mt-10 flex gap-4">
-                        <Input value={repositoryUrl} onChange={(e) =>setRepositoryUrl(e.target.value)} placeholder="https://github.com/facebook/react"/>
+                    <div>
+                        <div className="mt-10 flex gap-4">
+                            <Input value={repositoryUrl} onChange={(e) =>setRepositoryUrl(e.target.value)} placeholder="https://github.com/facebook/react"/>
 
+                            <Button onClick={onAnalyze} disabled={loading}>
+                                {loading ? "Analyzing..." : "Analyze Repository"}
+                            </Button>
+                        </div>
                         {error && (<p className="mt-2 text-sm text-red-500">
                             {error}
-                            </p>)}
-
-                        <Button onClick={onAnalyze} disabled={loading}>
-                            {loading ? "Analyzing..." : "Analyze Repository"}
-                        </Button>
-
+                        </p>)}
                     </div>
 
                     <RepositoryPreview />

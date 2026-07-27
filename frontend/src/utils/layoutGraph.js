@@ -1,10 +1,10 @@
 import dagre from "@dagrejs/dagre";
 
-const graph = new dagre.graphlib.Graph();
-
-graph.setDefaultEdgeLabel(() => ({}));
-
 export function layoutGraph(nodes, edges) {
+    const graph = new dagre.graphlib.Graph();
+
+    graph.setDefaultEdgeLabel(() => ({}));
+
     graph.setGraph({
         rankdir: "LR",
     });

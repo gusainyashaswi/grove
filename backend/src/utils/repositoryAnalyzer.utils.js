@@ -28,7 +28,9 @@ function analyzeRepository(repositoryFiles) {
                 continue;
             }
 
-            dependencies.push(resolvedPath);
+            if (!dependencies.includes(resolvedPath)) {
+                dependencies.push(resolvedPath);
+            }
         }
 
         analyzedFiles.push({

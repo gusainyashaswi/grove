@@ -4,7 +4,9 @@ function Button({
 
     onClick,
 
-    type = "button"
+    type = "button",
+
+    disabled = false
 
 }) {
 
@@ -15,6 +17,8 @@ function Button({
             type={type}
 
             onClick={onClick}
+
+            disabled={disabled}
 
             className="
                 rounded-xl

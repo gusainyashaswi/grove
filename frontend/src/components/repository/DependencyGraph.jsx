@@ -7,6 +7,10 @@ import { useRepository } from "../../context/RepositoryContext";
 function DependencyGraph() {
     const { repository, selectedFile, setSelectedFile } = useRepository();
 
+    if (!repository || !repository.dependencyGraph) {
+        return null;
+    }
+
     const nodes = repository.dependencyGraph.nodes.map((node, index) => {
     const isSelected = selectedFile && selectedFile.path === node.id;
 
