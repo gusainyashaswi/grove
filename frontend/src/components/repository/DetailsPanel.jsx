@@ -1,7 +1,14 @@
 import { useRepository } from "../../context/RepositoryContext";
+import { explainFile } from "../../api/api";
+import { useState } from "react";
+
 
 function DetailsPanel() {
-    const { selectedFile } = useRepository();
+
+    const { repository, selectedFile } = useRepository();
+
+    const [loading, setLoading] = useState(false);
+    const [explanation, setExplanation] = useState("");
 
     if (!selectedFile) {
         return (
@@ -11,6 +18,44 @@ function DetailsPanel() {
             </div>
         );
     }
+
+    const handleExplain = async () => {
+        console.log("Button clicked");
+        try {
+
+            setLoading(true);
+            console.log("Repository:", repository);
+
+        console.log("Selected File:", selectedFile);
+        console.log("Calling API...");
+
+            const result = await explainFile(repository,selectedFile);
+
+            console.log("API Response:", result);
+
+            setExplanation(result.explanation);
+
+            console.log("Explanation set");
+
+        } catch (error) {
+
+            console.error("Error:", error);
+
+            if (error.response) {
+
+            console.log("Status:", error.response.status);
+
+            console.log("Response:", error.response.data);
+
+        }
+
+        } finally {
+
+            setLoading(false);
+
+        }
+
+    };
 
     return (
         <div className="space-y-3">
@@ -102,6 +147,27 @@ function DetailsPanel() {
         <p>Not used by any internal file</p>
     )}
     </div>
+
+    <button onClick={handleExplain} disabled={loading}>
+        {loading ? "Generating..." : "Explain with AI"}
+    </button>
+    {loading && (
+            <p className="text-blue-600">Generating explanation...</p>
+        )}
+
+        {explanation && (
+            <div className="mt-4">
+                <h3 className="font-semibold">AI Explanation</h3>
+
+                <div className="whitespace-pre-wrap mt-2">
+                    {explanation}
+                </div>
+            </div>
+        )}
+
+    
+
+    
 
 </div>
     );
