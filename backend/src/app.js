@@ -7,11 +7,16 @@ const aiRoutes = require("./routes/ai.routes");
 
 const app = express();
 
-app.use(cors());
+const corsOptions = process.env.CLIENT_URL
+    ? { origin: [process.env.CLIENT_URL, "http://localhost:5173", "http://localhost:3000"] }
+    : {};
+
+app.use(cors(corsOptions));
 app.use(express.json());
 app.use("/api", healthRoutes);
 app.use("/api", analysisRoutes);
 app.use("/api/ai", aiRoutes);
 
 app.use(errorHandler);
+
 module.exports = app;

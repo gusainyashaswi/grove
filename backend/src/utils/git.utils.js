@@ -5,6 +5,7 @@ const path = require("path");
 async function cloneRepository(owner, repository) {
     const cleanRepo = repository ? repository.replace(/\.git$/, "") : "";
     const repositoryPath = path.resolve(
+        process.cwd(),
         "temp",
         "repositories",
         `${owner}-${cleanRepo}`
@@ -33,6 +34,9 @@ async function cloneRepository(owner, repository) {
 
         git.on("error", (err) => {
             console.log("SPAWN ERROR:", err);
+            if (fs.existsSync(repositoryPath)) {
+                fs.rmSync(repositoryPath, { recursive: true, force: true });
+            }
             reject(err);
         });
 
@@ -42,6 +46,9 @@ async function cloneRepository(owner, repository) {
             if (code === 0) {
                 resolve(repositoryPath);
             } else {
+                if (fs.existsSync(repositoryPath)) {
+                    fs.rmSync(repositoryPath, { recursive: true, force: true });
+                }
                 reject(new Error(`Git exited with code ${code}`));
             }
         });
