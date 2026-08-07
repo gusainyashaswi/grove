@@ -4,12 +4,18 @@ const { resolveImport } = require("./file.utils");
 const { classifyFile } = require("./fileClassifier.utils");
 
 function analyzeRepository(repositoryFiles) {
+    if (!Array.isArray(repositoryFiles)) {
+        return [];
+    }
+
     const analyzedFiles = [];
 
     for (const file of repositoryFiles) {
+        if (!file || !file.path) continue;
+
         let imports = [];
         try {
-            const ast = parseJavaScript(file.content);
+            const ast = parseJavaScript(file.content || "");
             imports = extractImports(ast);
         } catch (error) {
             console.warn(`Failed to parse AST for file: ${file.path}`, error.message);
@@ -33,14 +39,21 @@ function analyzeRepository(repositoryFiles) {
             }
         }
 
+        const lastSlash = file.path.lastIndexOf("/");
+        const folder = lastSlash !== -1 ? file.path.substring(0, lastSlash) : "";
+        const name = lastSlash !== -1 ? file.path.substring(lastSlash + 1) : file.path;
+        const lastDot = name.lastIndexOf(".");
+        const extension = lastDot !== -1 ? name.substring(lastDot) : "";
+        const lineCount = typeof file.content === "string" ? file.content.split("\n").length : 0;
+
         analyzedFiles.push({
             path: file.path,
-            name: file.path.split("/").pop(),
-            folder: file.path.substring(0, file.path.lastIndexOf("/")),
-            extension: file.path.substring(file.path.lastIndexOf(".")),
-            lineCount: file.content.split("\n").length,
+            name,
+            folder,
+            extension,
+            lineCount,
             type: classifyFile(file.path),
-            content:file.content,
+            content: file.content || "",
             imports,
             dependencies,
         });
@@ -49,7 +62,7 @@ function analyzeRepository(repositoryFiles) {
     const fileMap = new Map();
 
     for (const file of analyzedFiles) {
-    fileMap.set(file.path, file);
+        fileMap.set(file.path, file);
     }
 
     for (const file of analyzedFiles) {
@@ -65,7 +78,6 @@ function analyzeRepository(repositoryFiles) {
             }
         }
     }
-
 
     return analyzedFiles;
 }

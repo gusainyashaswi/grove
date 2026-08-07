@@ -1,15 +1,30 @@
 const AppError = require("../errors/AppError");
 
 function extractRepositoryInfo(url) {
-    const parsedUrl = new URL(url);
-    const parts = parsedUrl.pathname
-        .split("/")
-        .filter(Boolean);
-        
-    return {
-        owner: parts[0],
-        repository: parts[1] ? parts[1].replace(/\.git$/, "") : ""
-    };
+    if (!url || typeof url !== "string") {
+        throw new AppError("Invalid repository URL", 400);
+    }
+
+    try {
+        const parsedUrl = new URL(url);
+        const parts = parsedUrl.pathname
+            .split("/")
+            .filter(Boolean);
+
+        if (!parts[0] || !parts[1]) {
+            throw new AppError("Invalid repository URL format", 400);
+        }
+
+        return {
+            owner: parts[0],
+            repository: parts[1] ? parts[1].replace(/\.git$/, "") : ""
+        };
+    } catch (err) {
+        if (err instanceof AppError) {
+            throw err;
+        }
+        throw new AppError("Invalid repository URL", 400);
+    }
 }
 
 async function verifyRepositoryExists(owner, repository) {

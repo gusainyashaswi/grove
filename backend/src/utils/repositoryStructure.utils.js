@@ -1,4 +1,10 @@
 function analyzeRepositoryStructure(analyzedFiles) {
+    if (!Array.isArray(analyzedFiles)) {
+        return {
+            framework: "Unknown",
+            folders: {},
+        };
+    }
 
     const trackedFolders = [
         "components",
@@ -19,6 +25,8 @@ function analyzeRepositoryStructure(analyzedFiles) {
     const folders = {};
 
     for (const file of analyzedFiles) {
+        if (!file || !file.folder) continue;
+
         const pathFolders = file.folder.split(/[\\/]/);
 
         for (const folder of pathFolders) {
@@ -36,9 +44,9 @@ function analyzeRepositoryStructure(analyzedFiles) {
 
     let framework = "Unknown";
 
-    const fileNames = analyzedFiles.map(file =>
-        file.name.toLowerCase()
-    );
+    const fileNames = analyzedFiles
+        .filter(file => file && file.name)
+        .map(file => file.name.toLowerCase());
 
     if (
         fileNames.includes("app.jsx") ||
@@ -52,9 +60,10 @@ function analyzeRepositoryStructure(analyzedFiles) {
     const hasExpress =
         (fileNames.includes("server.js") ||
         fileNames.includes("app.js") ||
-        fileNames.includes("index.js")) &&
-        folders.Controllers &&
-        folders.Services;
+        fileNames.includes("index.js") ||
+        fileNames.includes("server.ts") ||
+        fileNames.includes("app.ts")) ||
+        (folders.Controllers && (folders.Services || folders.Routes));
 
     if (hasExpress) {
         framework =
@@ -67,7 +76,6 @@ function analyzeRepositoryStructure(analyzedFiles) {
         framework,
         folders,
     };
-    
 }
 
 module.exports = {

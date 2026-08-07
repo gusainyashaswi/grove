@@ -1,8 +1,19 @@
 function analyzeRepositoryStatistics(analyzedFiles) {
+    if (!Array.isArray(analyzedFiles)) {
+        return {
+            totalFiles: 0,
+            totalFolders: 0,
+            totalLines: 0,
+            averageLinesPerFile: 0,
+            largestFile: null,
+            averageDependencies: 0,
+            maximumDependencies: 0,
+        };
+    }
 
     const totalFiles = analyzedFiles.length;
     const totalLines = analyzedFiles.reduce(
-        (sum, file) => sum + file.lineCount,
+        (sum, file) => sum + (file.lineCount || 0),
         0
     );
 
@@ -10,20 +21,20 @@ function analyzeRepositoryStatistics(analyzedFiles) {
         totalFiles === 0
             ? 0
             : Math.round(totalLines / totalFiles);
-    
+
     const largestFile =
         analyzedFiles.length === 0
             ? null
             : analyzedFiles.reduce(
                 (largest, file) =>
-                    file.lineCount > largest.lineCount
+                    (file.lineCount || 0) > (largest.lineCount || 0)
                         ? file
                         : largest,
                 analyzedFiles[0]
             );
 
     const totalDependencies = analyzedFiles.reduce(
-        (sum, file) => sum + file.dependencies.length,
+        (sum, file) => sum + (file.dependencies?.length || 0),
         0
     );
 
@@ -33,25 +44,22 @@ function analyzeRepositoryStatistics(analyzedFiles) {
             : Number(
                 (totalDependencies / totalFiles).toFixed(1)
             );
-    
+
     const maximumDependencies = analyzedFiles.reduce(
         (max, file) =>
-            Math.max(max, file.dependencies.length),
+            Math.max(max, file.dependencies?.length || 0),
         0
     );
 
     const folders = new Set();
 
-        analyzedFiles.forEach(file => {
-            if (file.folder) {
-                folders.add(file.folder);
-            }
-        });
+    analyzedFiles.forEach(file => {
+        if (file && file.folder) {
+            folders.add(file.folder);
+        }
+    });
 
-        const totalFolders = folders.size;
-
-    
-
+    const totalFolders = folders.size;
 
     return {
         totalFiles,
@@ -62,13 +70,12 @@ function analyzeRepositoryStatistics(analyzedFiles) {
             ? {
                 name: largestFile.name,
                 path: largestFile.path,
-                lines: largestFile.lineCount,
+                lines: largestFile.lineCount || 0,
             }
             : null,
         averageDependencies,
         maximumDependencies,
     };
-        
 }
 
 module.exports = {

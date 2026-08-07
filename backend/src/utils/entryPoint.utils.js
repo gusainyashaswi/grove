@@ -1,4 +1,8 @@
 function detectEntryPoint(analyzedFiles) {
+    if (!Array.isArray(analyzedFiles)) {
+        return null;
+    }
+
     const priorities = [
         "main.tsx",
         "main.jsx",
@@ -21,7 +25,7 @@ function detectEntryPoint(analyzedFiles) {
 
     for (const fileName of priorities) {
         const file = analyzedFiles.find(
-            file => file.name.toLowerCase() === fileName
+            file => file && file.name && file.name.toLowerCase() === fileName
         );
 
         if (file) {
