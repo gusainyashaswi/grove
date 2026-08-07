@@ -30,3 +30,14 @@ export async function summarizeRepository(repository) {
 
     return response.data;
 }
+
+export async function askRepositoryQuestion(repository, question) {
+    const response = await axios.post(`${API_URL}/repository-question`, {
+        repository: {
+            knowledge: repository?.knowledge,
+        },
+        question,
+    });
+
+    return response.data;
+}

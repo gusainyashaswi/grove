@@ -4,31 +4,29 @@ import DependencyGraph from "./DependencyGraph";
 import CodePreview from "./CodePreview";
 import RepositoryStructure from "./RepositoryStructure";
 import RepositoryStatistics from "../repository/RepositoryStatistics";
+import RepositoryQuestion from "./RepositoryQuestion";
 
 function MainContent() {
     return (
         <div className="flex gap-4">
+            <div className="w-64">
+                <FileExplorer />
+            </div>
 
-    <div className="w-64">
-        <FileExplorer />
-    </div>
+            <div className="flex-1 flex flex-col gap-4">
+                <RepositoryStructure />
+                <RepositoryStatistics />
+                <RepositoryQuestion />
+                <div className="flex-1">
+                    <DependencyGraph />
+                </div>
+            </div>
 
-    <div className="flex-1 flex flex-col gap-4">
-    <RepositoryStructure />
-
-    <RepositoryStatistics />
-
-    <div className="flex-1">
-        <DependencyGraph />
-    </div>
-</div>
-
-    <div className="w-80 flex flex-col gap-4">
-        <DetailsPanel />
-        <CodePreview />
-    </div>
-
-</div>
+            <div className="w-80 flex flex-col gap-4">
+                <DetailsPanel />
+                <CodePreview />
+            </div>
+        </div>
     );
 }
 
