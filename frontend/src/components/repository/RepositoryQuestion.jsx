@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { useRepository } from "../../context/RepositoryContext";
 import { askRepositoryQuestion } from "../../api/api";
 
@@ -8,6 +8,12 @@ function RepositoryQuestion() {
     const [loading, setLoading] = useState(false);
     const [answer, setAnswer] = useState("");
     const [error, setError] = useState("");
+
+    useEffect(() => {
+        setQuestion("");
+        setAnswer("");
+        setError("");
+    }, [repository]);
 
     if (!repository) {
         return null;
