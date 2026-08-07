@@ -3,31 +3,31 @@ function buildExplainFilePrompt(repository, file) {
 You are a senior software engineer helping another developer understand an unfamiliar codebase.
 
 Repository Framework:
-${repository.structure.framework}
+${repository?.structure?.framework || "Unknown"}
 
 Repository Entry Point:
-${repository.entryPoint?.path || "Unknown"}
+${repository?.entryPoint?.path || "Unknown"}
 
 Selected File
 
 Name:
-${file.name}
+${file?.name || "Unknown"}
 
 Path:
-${file.path}
+${file?.path || "Unknown"}
 
 Type:
-${file.type}
+${file?.type || "Unknown"}
 
 Imports:
-${file.dependencies.join(", ") || "None"}
+${Array.isArray(file?.dependencies) && file.dependencies.length > 0 ? file.dependencies.join(", ") : "None"}
 
 Used By:
-${file.dependents.join(", ") || "None"}
+${Array.isArray(file?.dependents) && file.dependents.length > 0 ? file.dependents.join(", ") : "None"}
 
 Code:
 
-${file.content}
+${file?.content || ""}
 
 Explain this file using the following sections:
 
