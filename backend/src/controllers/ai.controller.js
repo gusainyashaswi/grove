@@ -1,4 +1,4 @@
-const {explainFile,summarizeRepository} = require("../services/ai.service");
+const { explainFile, summarizeRepository, answerRepositoryQuestion } = require("../services/ai.service");
 
 async function explainFileController(req, res) {
     try {
@@ -54,7 +54,42 @@ async function summarizeRepositoryController(req, res) {
     }
 }
 
+async function answerRepositoryQuestionController(req, res) {
+    try {
+        const { repository, question } = req.body;
+
+        if (!repository) {
+            return res.status(400).json({
+                success: false,
+                message: "Repository is required.",
+            });
+        }
+
+        if (!question || typeof question !== "string" || !question.trim()) {
+            return res.status(400).json({
+                success: false,
+                message: "Question is required.",
+            });
+        }
+
+        const answer = await answerRepositoryQuestion(repository, question.trim());
+
+        res.json({
+            success: true,
+            answer,
+        });
+    } catch (error) {
+        console.error(error);
+
+        res.status(500).json({
+            success: false,
+            message: error.message,
+        });
+    }
+}
+
 module.exports = {
     explainFile: explainFileController,
     summarizeRepository: summarizeRepositoryController,
+    answerRepositoryQuestion: answerRepositoryQuestionController,
 };
