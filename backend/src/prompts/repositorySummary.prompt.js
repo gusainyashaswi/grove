@@ -1,44 +1,54 @@
-function buildRepositorySummaryPrompt(repository) {
+function buildRepositorySummaryPrompt(knowledge) {
     return `
 You are a senior software engineer helping another developer understand an unfamiliar codebase.
 
-Repository Information
+Analyse the following Repository Knowledge object:
 
-Framework:
-${repository.structure.framework}
+Framework / Technology:
+${knowledge?.framework || "Unknown"}
 
 Entry Point:
-${repository.entryPoint?.path || "Unknown"}
+${knowledge?.entryPoint?.path ? `${knowledge.entryPoint.name} (${knowledge.entryPoint.path})` : "Not detected"}
 
-Statistics
+Folder Distribution:
+${JSON.stringify(knowledge?.folders || {}, null, 2)}
 
-Total Files:
-${repository.statistics.totalFiles}
+Important Files:
+${JSON.stringify(knowledge?.importantFiles || [], null, 2)}
 
-Total Folders:
-${repository.statistics.totalFolders}
+File Metadata (compact):
+${JSON.stringify(knowledge?.files || [], null, 2)}
 
-Total Lines:
-${repository.statistics.totalLines}
+Dependency Graph:
+${JSON.stringify(knowledge?.dependencyGraph || { nodes: [], edges: [] }, null, 2)}
 
-Repository Structure:
-${JSON.stringify(repository.structure.folders, null, 2)}
+Repository Statistics:
+${JSON.stringify(knowledge?.statistics || {}, null, 2)}
 
 Repository Health:
-${JSON.stringify(repository.health, null, 2)}
+${JSON.stringify(knowledge?.health || {}, null, 2)}
 
-Based on this information, provide a repository overview using the following format:
+Based strictly on the Repository Knowledge provided above, write a concise, grounded overview for a developer exploring this codebase for the first time.
 
-1. Purpose
-2. Architecture
-3. Technologies
-4. Folder Organization
-5. Main Features
-6. Recommended Starting Point
-7. Summary
+Cover the following sections:
+1. Project Overview (What the project appears to be based strictly on available evidence)
+2. Detected Technologies & Frameworks
+3. Repository Organization & Important Folders
+4. Important Files (and why they are significant)
+5. Application Entry Point
+6. Key Dependency Relationships
+7. Repository Statistics & Health Insights
+8. Recommended Starting Point for Exploration
+9. Overall Summary
 
-Do not invent features that are not supported by the provided information.
-Use simple language.
+CRITICAL GROUNDING & ACCURACY RULES:
+- Rely strictly on facts provided in the Repository Knowledge object.
+- Do not invent application features, domain purpose, or business logic without clear evidence in the data.
+- Do not make generic assumptions like "This follows a standard layout" or "Expect typical components".
+- Do not invent folder meanings, technologies, or architectural patterns not supported by the data.
+- Clearly distinguish facts (e.g. detected files, counts) from reasonable inferences.
+- If information for a section is insufficient or not available, explicitly state: "Cannot be determined from the available repository information."
+- Keep the language clear, direct, concise, and helpful.
 `;
 }
 

@@ -1,6 +1,7 @@
 const { GoogleGenAI } = require("@google/genai");
-const {buildRepositorySummaryPrompt} = require("../prompts/repositorySummary.prompt");
+const { buildRepositorySummaryPrompt } = require("../prompts/repositorySummary.prompt");
 const { buildExplainFilePrompt } = require("../prompts/explainFile.prompt");
+const { buildRepositoryKnowledge } = require("../utils/repositoryKnowledge.utils");
 
 const ai = new GoogleGenAI({
     apiKey: process.env.GEMINI_API_KEY,
@@ -18,7 +19,9 @@ async function explainFile(repository, file) {
 }
 
 async function summarizeRepository(repository) {
-    const prompt = buildRepositorySummaryPrompt(repository);
+    const knowledge = repository?.knowledge || (repository?.files ? buildRepositoryKnowledge(repository) : repository);
+
+    const prompt = buildRepositorySummaryPrompt(knowledge);
 
     const response = await ai.models.generateContent({
         model: "gemini-3.5-flash",
