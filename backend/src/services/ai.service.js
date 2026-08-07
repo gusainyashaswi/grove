@@ -3,6 +3,7 @@ const { buildRepositorySummaryPrompt } = require("../prompts/repositorySummary.p
 const { buildExplainFilePrompt } = require("../prompts/explainFile.prompt");
 const { buildRepositoryQuestionPrompt } = require("../prompts/repositoryQuestion.prompt");
 const { buildRepositoryKnowledge } = require("../utils/repositoryKnowledge.utils");
+const { selectRelevantFiles } = require("../utils/relevantFileSelector.utils");
 
 const ai = new GoogleGenAI({
     apiKey: process.env.GEMINI_API_KEY,
@@ -35,7 +36,9 @@ async function summarizeRepository(repository) {
 async function answerRepositoryQuestion(repository, question) {
     const knowledge = repository?.knowledge || (repository?.files ? buildRepositoryKnowledge(repository) : repository);
 
-    const prompt = buildRepositoryQuestionPrompt(knowledge, question);
+    const selectedSourceFiles = selectRelevantFiles(knowledge, question);
+
+    const prompt = buildRepositoryQuestionPrompt(knowledge, question, selectedSourceFiles);
 
     const response = await ai.models.generateContent({
         model: "gemini-3.5-flash",
