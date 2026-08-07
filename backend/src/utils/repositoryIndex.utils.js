@@ -1,3 +1,5 @@
+const { buildRepositoryKnowledge } = require("./repositoryKnowledge.utils");
+
 function buildRepositoryIndex(analyzedFiles, dependencyGraph, structure, health, entryPoint, statistics) {
     const fileMap = {};
 
@@ -5,7 +7,7 @@ function buildRepositoryIndex(analyzedFiles, dependencyGraph, structure, health,
         fileMap[file.path] = file;
     }
 
-    return {
+    const repositoryIndex = {
         files: analyzedFiles,
         fileMap,
         dependencyGraph: dependencyGraph || {
@@ -14,13 +16,16 @@ function buildRepositoryIndex(analyzedFiles, dependencyGraph, structure, health,
         },
         structure: structure || {},
         health,
-        entryPoint: {
+        entryPoint: entryPoint || {
             name: "main.jsx",
             path: "src/main.jsx"
-
         },
         statistics,
     };
+
+    repositoryIndex.knowledge = buildRepositoryKnowledge(repositoryIndex);
+
+    return repositoryIndex;
 }
 
 module.exports = {
