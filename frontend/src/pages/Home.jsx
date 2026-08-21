@@ -1,56 +1,35 @@
-import Navbar from "../components/layout/Navbar";
-import Hero from "../components/Hero";
-import { useState } from "react";
+import Hero from "../features/landing/Hero";
 import { analyzeRepository } from "../services/repository.service";
 import { useNavigate } from "react-router-dom";
 import { useRepository } from "../context/RepositoryContext";
-
-
+import { useState } from "react";
 
 function Home() {
-
     const { setRepository } = useRepository();
-
     const navigate = useNavigate();
-
-    const [repositoryUrl, setRepositoryUrl] = useState("");
     const [loading, setLoading] = useState(false);
     const [error, setError] = useState("");
 
-    async function handleAnalyze() {
-
-        if (!repositoryUrl.trim()) {
-            setError("Please enter a GitHub repository URL.");
-            return;
-        }
-
+    async function handleAnalyze(url) {
         setLoading(true);
         setError("");
 
         try {
-            const repositoryData = await analyzeRepository(repositoryUrl);
+            const repositoryData = await analyzeRepository(url);
             setRepository(repositoryData);
             navigate("/repository");
-            
-        } catch (error) {
-            console.error(error);
-
+        } catch (err) {
+            console.error(err);
             setError(
-                error.response?.data?.message ||
-                "Failed to analyze repository."
+                err.response?.data?.message ||
+                "Failed to analyze repository. Please check the URL and try again."
             );
         } finally {
             setLoading(false);
         }
     }
 
-    return (
-        <>
-            <Navbar />
-            <Hero repositoryUrl={repositoryUrl} setRepositoryUrl={setRepositoryUrl} loading={loading} error={error}
-            onAnalyze={handleAnalyze}/>
-        </>
-    );
+    return <Hero onAnalyze={handleAnalyze} loading={loading} error={error} />;
 }
 
 export default Home;
