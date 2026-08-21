@@ -13,17 +13,14 @@ function RepositoryInput({ onAnalyze, loading }) {
     const [error, setError] = useState("");
 
     function handleSubmit(e) {
-        e.preventDefault();
+        if (e) e.preventDefault();
+        if (loading) return;
         if (!repositoryUrl.trim()) {
             setError("Please enter a GitHub repository URL.");
             return;
         }
         setError("");
-        onAnalyze(repositoryUrl);
-    }
-
-    function handleKeyDown(e) {
-        if (e.key === "Enter") handleSubmit(e);
+        onAnalyze(repositoryUrl.trim());
     }
 
     return (
@@ -53,7 +50,6 @@ function RepositoryInput({ onAnalyze, loading }) {
                             setRepositoryUrl(e.target.value);
                             if (error) setError("");
                         }}
-                        onKeyDown={handleKeyDown}
                         placeholder="https://github.com/owner/repository"
                         disabled={loading}
                         error={!!error}

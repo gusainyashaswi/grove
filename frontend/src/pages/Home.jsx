@@ -11,12 +11,29 @@ function Home() {
     const [error, setError] = useState("");
 
     async function handleAnalyze(url) {
+        if (loading) return;
         setLoading(true);
         setError("");
 
         try {
             const repositoryData = await analyzeRepository(url);
-            setRepository(repositoryData);
+            // Parse owner and repo name from URL if missing from backend response root
+            let parsedOwner = repositoryData.owner;
+            let parsedName = repositoryData.name;
+            try {
+                const parts = new URL(url).pathname.split("/").filter(Boolean);
+                if (parts[0]) parsedOwner = parsedOwner || parts[0];
+                if (parts[1]) parsedName = parsedName || parts[1].replace(/\.git$/, "");
+            } catch {
+                // fallback
+            }
+
+            setRepository({
+                ...repositoryData,
+                url,
+                owner: parsedOwner,
+                name: parsedName,
+            });
             navigate("/repository");
         } catch (err) {
             console.error(err);

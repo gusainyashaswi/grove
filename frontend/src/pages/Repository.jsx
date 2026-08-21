@@ -12,10 +12,15 @@ function Repository() {
     }
 
     return (
-        <div>
-            <RepositoryHeader />
-            <StatsBar />
-            <MainContent />
+        <div className="min-h-screen bg-gray-50">
+            <div
+                className="mx-auto w-full px-4 sm:px-6 lg:px-8 py-8 flex flex-col gap-6"
+                style={{ maxWidth: "var(--container-max-w)" }}
+            >
+                <RepositoryHeader />
+                <StatsBar />
+                <MainContent />
+            </div>
         </div>
     );
 }

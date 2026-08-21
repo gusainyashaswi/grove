@@ -1,19 +1,17 @@
 /**
- * AppNavbar — Grove structural top navigation bar
+ * AppNavbar — Grove production-quality application navigation bar
  *
- * 3-Column Layout:
- * - LEFT: Brand logo mark, product title, and version tag.
- * - CENTER: Available structural slot for future active view / breadcrumbs / navigation.
- * - RIGHT: Available structural slot for future action controls / settings / state indicators.
+ * Structure:
+ * - LEFT: SVG Brand Logo, "Grove" Wordmark, Version Badge.
+ * - CENTER: Functional React Router NavLinks (Home, Workspace).
+ * - RIGHT: Engine status badge & GitHub external project link.
  */
-import { Link, useLocation } from "react-router-dom";
-import { GitBranch, ShieldCheck } from "lucide-react";
+import { Link, NavLink } from "react-router-dom";
+import { Activity } from "lucide-react";
+import GroveLogo from "../common/GroveLogo";
 import Badge from "../common/Badge";
 
 function AppNavbar() {
-    const location = useLocation();
-    const isLanding = location.pathname === "/";
-
     return (
         <header
             className="sticky top-0 z-40 w-full"
@@ -26,28 +24,23 @@ function AppNavbar() {
             <nav
                 className="mx-auto flex h-full items-center justify-between px-4 sm:px-6"
                 style={{ maxWidth: "var(--container-max-w)" }}
-                aria-label="Application toolbar"
+                aria-label="Main navigation"
             >
-                {/* --- LEFT SECTION: BRAND --- */}
+                {/* --- LEFT: BRAND MARK & WORDMARK --- */}
                 <div className="flex items-center gap-3">
                     <Link
                         to="/"
-                        className="group flex items-center gap-2 rounded-[var(--radius-sm)] focus-visible:outline-none"
+                        className="group flex items-center gap-2.5 rounded-[var(--radius-sm)] focus-visible:outline-none"
                         aria-label="Grove Home"
                     >
                         <div
-                            className="flex size-7 items-center justify-center rounded-[var(--radius-sm)] transition-colors duration-[var(--duration-fast)]"
+                            className="flex size-7 items-center justify-center rounded-[var(--radius-md)] transition-colors duration-[var(--duration-fast)] group-hover:border-[var(--color-border-emphasis)]"
                             style={{
                                 backgroundColor: "var(--color-surface)",
                                 border: "1px solid var(--color-border)",
                             }}
                         >
-                            <GitBranch
-                                size={16}
-                                style={{ color: "var(--color-accent)" }}
-                                strokeWidth={2.2}
-                                aria-hidden="true"
-                            />
+                            <GroveLogo size={16} />
                         </div>
 
                         <span
@@ -63,45 +56,74 @@ function AppNavbar() {
                     </Badge>
                 </div>
 
-                {/* --- CENTER SECTION: CONTEXTUAL / NAV SLOT --- */}
-                <div className="hidden items-center gap-6 md:flex">
-                    {isLanding ? (
-                        <div className="flex items-center gap-6 text-[var(--text-xs)] font-medium text-[var(--color-text-secondary)]">
-                            <a
-                                href="#features"
-                                className="transition-colors hover:text-[var(--color-text-primary)]"
-                            >
-                                Features
-                            </a>
-                            <a
-                                href="#how-it-works"
-                                className="transition-colors hover:text-[var(--color-text-primary)]"
-                            >
-                                How It Works
-                            </a>
-                            <a
-                                href="#about"
-                                className="transition-colors hover:text-[var(--color-text-primary)]"
-                            >
-                                About
-                            </a>
-                        </div>
-                    ) : (
-                        <div className="flex items-center gap-2 text-[var(--text-xs)] font-mono text-[var(--color-text-muted)]">
-                            <span>workspace</span>
-                            <span>/</span>
-                            <span className="text-[var(--color-text-secondary)] font-medium">repository analysis</span>
-                        </div>
-                    )}
+                {/* --- CENTER: FUNCTIONAL ROUTER NAVIGATION --- */}
+                <div className="flex items-center gap-1.5 sm:gap-2">
+                    <NavLink
+                        to="/"
+                        end
+                        className={({ isActive }) =>
+                            `inline-flex items-center px-3 py-1.5 rounded-[var(--radius-md)] text-[var(--text-xs)] font-medium transition-colors duration-[var(--duration-fast)] focus-visible:outline-none ${
+                                isActive
+                                    ? "bg-[var(--color-accent-muted)] text-[var(--color-accent)] border border-[var(--color-accent-border)]"
+                                    : "text-[var(--color-text-secondary)] hover:text-[var(--color-text-primary)] hover:bg-[var(--color-hover)] border border-transparent"
+                            }`
+                        }
+                    >
+                        Home
+                    </NavLink>
+
+                    <NavLink
+                        to="/repository"
+                        className={({ isActive }) =>
+                            `inline-flex items-center px-3 py-1.5 rounded-[var(--radius-md)] text-[var(--text-xs)] font-medium transition-colors duration-[var(--duration-fast)] focus-visible:outline-none ${
+                                isActive
+                                    ? "bg-[var(--color-accent-muted)] text-[var(--color-accent)] border border-[var(--color-accent-border)]"
+                                    : "text-[var(--color-text-secondary)] hover:text-[var(--color-text-primary)] hover:bg-[var(--color-hover)] border border-transparent"
+                            }`
+                        }
+                    >
+                        Workspace
+                    </NavLink>
                 </div>
 
-                {/* --- RIGHT SECTION: ACTION SLOTS --- */}
-                <div className="flex items-center gap-3">
-                    <div className="flex items-center gap-2 rounded-[var(--radius-full)] px-2.5 py-1 text-[var(--text-xs)] font-mono text-[var(--color-text-muted)]" style={{ backgroundColor: "var(--color-surface)", border: "1px solid var(--color-border-subtle)" }}>
-                        <ShieldCheck size={13} className="text-[var(--color-success)]" aria-hidden="true" />
-                        <span className="hidden sm:inline">Engine</span>
-                        <span className="text-[var(--color-text-secondary)]">Ready</span>
+                {/* --- RIGHT: ACTIONS & STATUS --- */}
+                <div className="flex items-center gap-2.5">
+                    {/* Status Indicator */}
+                    <div
+                        className="hidden sm:flex items-center gap-1.5 rounded-[var(--radius-full)] px-2.5 py-1 text-[var(--text-xs)] font-mono text-[var(--color-text-muted)]"
+                        style={{
+                            backgroundColor: "var(--color-surface)",
+                            border: "1px solid var(--color-border-subtle)",
+                        }}
+                    >
+                        <Activity size={12} className="text-[var(--color-accent)]" aria-hidden="true" />
+                        <span className="text-[var(--color-text-secondary)]">Engine Ready</span>
                     </div>
+
+                    {/* External GitHub Link */}
+                    <a
+                        href="https://github.com"
+                        target="_blank"
+                        rel="noreferrer"
+                        className="inline-flex size-8 items-center justify-center rounded-[var(--radius-md)] text-[var(--color-text-secondary)] transition-colors duration-[var(--duration-fast)] hover:bg-[var(--color-hover)] hover:text-[var(--color-text-primary)] focus-visible:outline-none"
+                        aria-label="GitHub Repository"
+                        title="GitHub Repository"
+                    >
+                        <svg
+                            width="16"
+                            height="16"
+                            viewBox="0 0 24 24"
+                            fill="none"
+                            stroke="currentColor"
+                            strokeWidth="2"
+                            strokeLinecap="round"
+                            strokeLinejoin="round"
+                            aria-hidden="true"
+                        >
+                            <path d="M15 22v-4a4.8 4.8 0 0 0-1-3.5c3 0 6-2 6-5.5.08-1.25-.27-2.48-1-3.5.28-1.15.28-2.35 0-3.5 0 0-1 0-3 1.5-2.64-.5-5.36-.5-8 0C6 2 5 2 5 2c-.3 1.15-.3 2.35 0 3.5A5.403 5.403 0 0 0 4 9c0 3.5 3 5.5 6 5.5-.39.49-.68 1.05-.85 1.65-.17.6-.22 1.23-.15 1.85v4" />
+                            <path d="M9 18c-4.51 2-5-2-7-2" />
+                        </svg>
+                    </a>
                 </div>
             </nav>
         </header>
