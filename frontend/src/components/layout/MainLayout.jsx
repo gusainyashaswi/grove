@@ -1,7 +1,7 @@
 /**
- * MainLayout — Application shell
+ * MainLayout — Application shell component
  *
- * Provides the global Navbar and renders child routes
+ * Provides top navbar, main content viewport layout, and renders child pages
  * via React Router's <Outlet />.
  */
 import { Outlet } from "react-router-dom";
@@ -10,22 +10,17 @@ import AppNavbar from "./AppNavbar";
 function MainLayout() {
     return (
         <div
+            className="flex min-h-dvh w-full flex-col font-sans antialiased selection:bg-[var(--color-selected)] selection:text-[var(--color-accent)]"
             style={{
-                display: "flex",
-                flexDirection: "column",
-                minHeight: "100dvh",
                 backgroundColor: "var(--color-bg)",
+                color: "var(--color-text-primary)",
             }}
         >
+            {/* Structural Navigation Bar */}
             <AppNavbar />
 
-            <main
-                style={{
-                    flex: 1,
-                    display: "flex",
-                    flexDirection: "column",
-                }}
-            >
+            {/* Main Application Content Area */}
+            <main className="flex flex-1 flex-col w-full">
                 <Outlet />
             </main>
         </div>

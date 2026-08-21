@@ -1,20 +1,23 @@
 /**
- * PageContainer — responsive page content wrapper
+ * PageContainer — Standard layout wrapper for page content
  *
- * Provides consistent horizontal padding and max-width centering.
- * Use as the outermost wrapper inside each page component.
+ * Provides horizontal padding, responsive margins, and content max-width bounds.
  */
 
-function PageContainer({ children, className = "", maxWidth = "var(--container-2xl)" }) {
+function PageContainer({
+    children,
+    className = "",
+    maxWidth = "var(--container-max-w)",
+    fullWidth = false,
+}) {
     return (
         <div
-            style={{
-                width: "100%",
-                maxWidth,
-                margin: "0 auto",
-                padding: `var(--space-8) var(--space-6)`,
-            }}
-            className={className}
+            className={`w-full mx-auto px-4 sm:px-6 lg:px-8 py-6 ${className}`}
+            style={
+                fullWidth
+                    ? { maxWidth: "100%" }
+                    : { maxWidth }
+            }
         >
             {children}
         </div>
