@@ -10,29 +10,26 @@ const { detectEntryPoint } = require("../utils/entryPoint.utils");
 const { analyzeRepositoryStatistics } = require("../utils/repositoryStatistics.utils")
 
 async function analyzeRepositoryService(url) {
-
     const repositoryInfo = extractRepositoryInfo(url);
 
-    const response = await verifyRepositoryExists(repositoryInfo.owner, repositoryInfo.repository);
-
-    const data = await response.json();
+    const data = await verifyRepositoryExists(repositoryInfo.owner, repositoryInfo.repository);
 
     const repository = {
-        name: data.name,
-        owner: data.owner.login,
-        description: data.description,
-        defaultBranch: data.default_branch,
-        language: data.language,
-        cloneUrl: data.clone_url
+        name: data.name || repositoryInfo.repository,
+        owner: data.owner?.login || repositoryInfo.owner,
+        description: data.description || "",
+        defaultBranch: data.default_branch || "main",
+        language: data.language || "",
+        cloneUrl: data.clone_url || `https://github.com/${repositoryInfo.owner}/${repositoryInfo.repository}.git`
     };
 
     const repositoryPath = await cloneRepository(repository.owner, repository.name);
 
     const files = getRepositoryFiles(repositoryPath);
 
-    const repositoryFiles = readRepositoryFiles(files);
+    const repositoryFiles = readRepositoryFiles(files, repositoryPath);
 
-    const analyzedFiles = analyzeRepository(repositoryFiles);
+    const analyzedFiles = analyzeRepository(repositoryFiles, repositoryPath);
 
     const graph = buildDependencyGraph(analyzedFiles);
 
@@ -46,9 +43,14 @@ async function analyzeRepositoryService(url) {
 
     const repositoryIndex = buildRepositoryIndex(analyzedFiles, graph, structure, health, entryPoint, statistics);
 
-
-
-    return repositoryIndex;
+    return {
+        ...repositoryIndex,
+        name: repository.name,
+        owner: repository.owner,
+        description: repository.description,
+        defaultBranch: repository.defaultBranch,
+        language: repository.language
+    };
 }
 
 module.exports = {

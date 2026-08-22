@@ -20,14 +20,24 @@ function extractImports(ast) {
             }
         },
 
-        CallExpression(path) {
-            if (path.node.callee.name !== "require") {
-                return;
+        ExportNamedDeclaration(path) {
+            if (path.node && path.node.source && typeof path.node.source.value === "string") {
+                imports.push(path.node.source.value);
             }
+        },
 
-            const arg = path.node.arguments && path.node.arguments[0];
-            if (arg && typeof arg.value === "string") {
-                imports.push(arg.value);
+        ExportAllDeclaration(path) {
+            if (path.node && path.node.source && typeof path.node.source.value === "string") {
+                imports.push(path.node.source.value);
+            }
+        },
+
+        CallExpression(path) {
+            if (path.node.callee && path.node.callee.name === "require") {
+                const arg = path.node.arguments && path.node.arguments[0];
+                if (arg && typeof arg.value === "string") {
+                    imports.push(arg.value);
+                }
             }
         }
     });

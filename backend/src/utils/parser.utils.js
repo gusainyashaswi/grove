@@ -8,7 +8,11 @@ function parseJavaScript(code) {
             "typescript",
             "classProperties",
             "dynamicImport",
-            "exportDefaultFrom"
+            "exportDefaultFrom",
+            "exportNamespaceFrom",
+            "decorators-legacy",
+            "importMeta",
+            "topLevelAwait"
         ]
     });
 }

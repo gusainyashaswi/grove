@@ -1,131 +1,159 @@
+import { useState } from "react";
 import FileExplorer from "./FileExplorer";
 import DetailsPanel from "./DetailsPanel";
 import DependencyGraph from "./DependencyGraph";
 import CodePreview from "./CodePreview";
 import RepositoryStructure from "./RepositoryStructure";
-import RepositoryStatistics from "../repository/RepositoryStatistics";
+import RepositoryStatistics from "./RepositoryStatistics";
 import RepositorySummary from "./RepositorySummary";
 import RepositoryQuestion from "./RepositoryQuestion";
+import {
+    LayoutDashboard,
+    FileCode,
+    GitFork,
+    Sparkles,
+    MessageSquare,
+} from "lucide-react";
 
 /**
- * MainContent — 3-column workspace layout for the repository page.
- *
- * Desktop (lg+):   left sidebar | scrollable center | right details panel
- * Tablet  (md–lg): left sidebar hidden, center + right stacked
- * Mobile  (<md):   single column, all panels stacked vertically
+ * MainContent — Advanced multi-mode developer workspace.
  */
 function MainContent() {
+    const [viewMode, setViewMode] = useState("studio");
+
+    const TABS = [
+        { id: "studio", label: "Studio Hub", icon: LayoutDashboard, badge: "All" },
+        { id: "editor", label: "VS Code Explorer", icon: FileCode, badge: "IDE" },
+        { id: "graph", label: "Dependency Flow", icon: GitFork, badge: "Graph" },
+        { id: "ai", label: "AI Architecture", icon: Sparkles, badge: "Summary" },
+        { id: "chat", label: "Q&A Assistant", icon: MessageSquare, badge: "Chat" },
+    ];
+
     return (
-        <div className="flex gap-4 lg:gap-6 items-start">
+        <div className="flex flex-col gap-8 w-full">
+            {/* --- VIEW MODE TAB BAR --- */}
+            <div className="flex items-center overflow-x-auto">
+                <div className="flex items-center gap-2 p-2 rounded-2xl glass-panel border border-white/10 shadow-lg">
+                    {TABS.map((tab) => {
+                        const Icon = tab.icon;
+                        const isActive = viewMode === tab.id;
 
-            {/* ── LEFT: File Explorer sidebar ─────────────────────────── */}
-            <aside
-                className="hidden md:flex flex-col flex-shrink-0 w-52 lg:w-64 rounded-2xl overflow-hidden"
-                style={{
-                    background: "white",
-                    boxShadow:
-                        "5px 5px 12px rgba(0,0,0,0.055), -3px -3px 8px rgba(255,255,255,0.85)",
-                }}
-                aria-label="File explorer"
-            >
-                <div className="px-4 py-4 flex flex-col gap-3 h-full">
-                    <FileExplorer />
+                        return (
+                            <button
+                                key={tab.id}
+                                onClick={() => setViewMode(tab.id)}
+                                className={`
+                                    flex items-center gap-2.5 px-5 py-2.5 rounded-xl text-sm font-semibold
+                                    transition-all duration-200 cursor-pointer select-none whitespace-nowrap
+                                    ${isActive
+                                        ? "bg-[var(--color-accent)] text-slate-950 shadow-[0_0_20px_rgba(0,245,155,0.4)]"
+                                        : "text-slate-400 hover:text-white hover:bg-white/[0.06]"
+                                    }
+                                `}
+                            >
+                                <Icon size={16} />
+                                <span>{tab.label}</span>
+                                {tab.badge && (
+                                    <span
+                                        className={`text-[10px] font-mono px-2 py-0.5 rounded-full ${
+                                            isActive
+                                                ? "bg-slate-950/20 text-slate-950 font-bold"
+                                                : "bg-white/10 text-slate-500"
+                                        }`}
+                                    >
+                                        {tab.badge}
+                                    </span>
+                                )}
+                            </button>
+                        );
+                    })}
                 </div>
-            </aside>
+            </div>
 
-            {/* ── CENTER: Main analysis panels ────────────────────────── */}
-            <main className="flex-1 min-w-0 flex flex-col gap-4 lg:gap-5">
+            {/* --- VIEW MODE 1: STUDIO HUB --- */}
+            {viewMode === "studio" && (
+                <div className="flex flex-col lg:flex-row gap-8 items-start">
+                    {/* Left: File Explorer */}
+                    <aside
+                        className="w-full lg:w-80 xl:w-[340px] shrink-0 rounded-3xl glass-card border border-white/10 p-5 shadow-xl min-h-[580px]"
+                        aria-label="File explorer"
+                    >
+                        <FileExplorer />
+                    </aside>
 
-                {/* Repository Summary (AI) */}
-                <section
-                    className="rounded-2xl px-5 py-5"
-                    style={{
-                        background: "white",
-                        boxShadow:
-                            "5px 5px 12px rgba(0,0,0,0.055), -3px -3px 8px rgba(255,255,255,0.85)",
-                    }}
-                >
-                    <RepositorySummary />
-                </section>
+                    {/* Center & Right */}
+                    <main className="flex-1 min-w-0 flex flex-col gap-8 w-full">
+                        {/* Editor + Inspector */}
+                        <div className="grid grid-cols-1 xl:grid-cols-3 gap-8 items-start">
+                            <div className="xl:col-span-2 w-full">
+                                <CodePreview />
+                            </div>
+                            <div className="xl:col-span-1 w-full">
+                                <DetailsPanel />
+                            </div>
+                        </div>
 
-                {/* Repository Structure */}
-                <section
-                    className="rounded-2xl px-5 py-5"
-                    style={{
-                        background: "white",
-                        boxShadow:
-                            "5px 5px 12px rgba(0,0,0,0.055), -3px -3px 8px rgba(255,255,255,0.85)",
-                    }}
-                >
-                    <RepositoryStructure />
-                </section>
+                        <RepositorySummary />
+                        <DependencyGraph />
 
-                {/* Repository Statistics */}
-                <section
-                    className="rounded-2xl px-5 py-5"
-                    style={{
-                        background: "white",
-                        boxShadow:
-                            "5px 5px 12px rgba(0,0,0,0.055), -3px -3px 8px rgba(255,255,255,0.85)",
-                    }}
-                >
-                    <RepositoryStatistics />
-                </section>
+                        <div className="grid grid-cols-1 xl:grid-cols-2 gap-8 items-start">
+                            <RepositoryStructure />
+                            <RepositoryStatistics />
+                        </div>
 
-                {/* Repository Q&A (AI) */}
-                <section
-                    className="rounded-2xl px-5 py-5"
-                    style={{
-                        background: "white",
-                        boxShadow:
-                            "5px 5px 12px rgba(0,0,0,0.055), -3px -3px 8px rgba(255,255,255,0.85)",
-                    }}
-                >
-                    <RepositoryQuestion />
-                </section>
+                        <RepositoryQuestion />
+                    </main>
+                </div>
+            )}
 
-                {/* Dependency Graph */}
-                <section
-                    className="rounded-2xl overflow-hidden"
-                    style={{
-                        background: "white",
-                        boxShadow:
-                            "5px 5px 12px rgba(0,0,0,0.055), -3px -3px 8px rgba(255,255,255,0.85)",
-                    }}
-                >
+            {/* --- VIEW MODE 2: VS CODE EDITOR --- */}
+            {viewMode === "editor" && (
+                <div className="flex flex-col lg:flex-row gap-8 items-start">
+                    <aside className="w-full lg:w-80 xl:w-[340px] shrink-0 rounded-3xl glass-card border border-white/10 p-5 shadow-xl min-h-[640px]">
+                        <FileExplorer />
+                    </aside>
+
+                    <main className="flex-1 min-w-0 flex flex-col xl:flex-row gap-8 w-full">
+                        <div className="flex-1 min-w-0">
+                            <CodePreview />
+                        </div>
+                        <div className="w-full xl:w-96 shrink-0">
+                            <DetailsPanel />
+                        </div>
+                    </main>
+                </div>
+            )}
+
+            {/* --- VIEW MODE 3: DEPENDENCY FLOW --- */}
+            {viewMode === "graph" && (
+                <main className="w-full flex flex-col gap-8">
                     <DependencyGraph />
-                </section>
+                    <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
+                        <RepositoryStructure />
+                        <DetailsPanel />
+                    </div>
+                </main>
+            )}
 
-            </main>
+            {/* --- VIEW MODE 4: AI ARCHITECTURE --- */}
+            {viewMode === "ai" && (
+                <main className="w-full flex flex-col gap-8">
+                    <RepositorySummary />
+                    <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
+                        <RepositoryStructure />
+                        <RepositoryStatistics />
+                    </div>
+                    <RepositoryQuestion />
+                </main>
+            )}
 
-            {/* ── RIGHT: File details + code preview ──────────────────── */}
-            <aside
-                className="hidden lg:flex flex-col flex-shrink-0 w-72 xl:w-80 gap-4 lg:gap-5"
-                aria-label="File details"
-            >
-                <div
-                    className="rounded-2xl px-4 py-4"
-                    style={{
-                        background: "white",
-                        boxShadow:
-                            "5px 5px 12px rgba(0,0,0,0.055), -3px -3px 8px rgba(255,255,255,0.85)",
-                    }}
-                >
-                    <DetailsPanel />
-                </div>
-
-                <div
-                    className="rounded-2xl px-4 py-4"
-                    style={{
-                        background: "white",
-                        boxShadow:
-                            "5px 5px 12px rgba(0,0,0,0.055), -3px -3px 8px rgba(255,255,255,0.85)",
-                    }}
-                >
-                    <CodePreview />
-                </div>
-            </aside>
-
+            {/* --- VIEW MODE 5: Q&A CHAT --- */}
+            {viewMode === "chat" && (
+                <main className="w-full flex flex-col gap-8">
+                    <RepositoryQuestion />
+                    <RepositorySummary />
+                </main>
+            )}
         </div>
     );
 }

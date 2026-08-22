@@ -19,7 +19,7 @@ const IGNORED_DIRECTORIES = [
     ".next"
 ];
 
-function getRepositoryFiles(directoryPath) {
+function getRepositoryFiles(directoryPath, baseDir = directoryPath) {
     const items = fs.readdirSync(directoryPath);
     let filePaths = [];
 
@@ -33,10 +33,11 @@ function getRepositoryFiles(directoryPath) {
         if (stats.isFile()) {
             const ext = path.extname(fullPath).toLowerCase();
             if (CODE_EXTENSIONS.includes(ext)) {
-                filePaths.push(fullPath);
+                const relativePath = path.relative(baseDir, fullPath).replace(/\\/g, "/");
+                filePaths.push(relativePath);
             }
         } else if (stats.isDirectory()) {
-            const nestedFiles = getRepositoryFiles(fullPath);
+            const nestedFiles = getRepositoryFiles(fullPath, baseDir);
             filePaths.push(...nestedFiles);
         }
     }
@@ -47,38 +48,71 @@ function readFileContent(filePath) {
     return fs.readFileSync(filePath, "utf8");
 }
 
-function readRepositoryFiles(filePaths) {
+function readRepositoryFiles(filePaths, repositoryPath) {
     const repositoryFiles = [];
-    for (const file of filePaths) {
-        const content = readFileContent(file);
+    for (const relPath of filePaths) {
+        const fullPath = repositoryPath ? path.join(repositoryPath, relPath) : relPath;
+        const content = readFileContent(fullPath);
         repositoryFiles.push({
-            path: file,
+            path: relPath,
             content
         });
     }
     return repositoryFiles;
 }
 
-function resolveImport(currentFile, importPath) {
-    const directory = path.dirname(currentFile);
-    const resolvedPath = path.resolve(directory, importPath);
+function resolveImport(currentFile, importPath, repositoryPath) {
+    if (!repositoryPath) {
+        const directory = path.dirname(currentFile);
+        const resolvedPath = path.resolve(directory, importPath);
 
-    if (fs.existsSync(resolvedPath) && fs.statSync(resolvedPath).isFile()) {
-        return resolvedPath;
+        if (fs.existsSync(resolvedPath) && fs.statSync(resolvedPath).isFile()) {
+            return resolvedPath;
+        }
+        for (const ext of CODE_EXTENSIONS) {
+            const pathWithExt = resolvedPath + ext;
+            if (fs.existsSync(pathWithExt) && fs.statSync(pathWithExt).isFile()) {
+                return pathWithExt;
+            }
+        }
+        for (const ext of CODE_EXTENSIONS) {
+            const indexFile = path.join(resolvedPath, "index" + ext);
+            if (fs.existsSync(indexFile) && fs.statSync(indexFile).isFile()) {
+                return indexFile;
+            }
+        }
+        return null;
+    }
+
+    let targetPath = importPath;
+    if (importPath.startsWith("@/")) {
+        targetPath = importPath.slice(2);
+    }
+
+    const currentDir = path.dirname(currentFile);
+    const absCurrentDir = path.join(repositoryPath, currentDir);
+    const absResolved = (importPath.startsWith("@/") || !importPath.startsWith("."))
+        ? path.join(repositoryPath, targetPath)
+        : path.resolve(absCurrentDir, importPath);
+
+    function checkFile(absPath) {
+        if (fs.existsSync(absPath) && fs.statSync(absPath).isFile()) {
+            return path.relative(repositoryPath, absPath).replace(/\\/g, "/");
+        }
+        return null;
+    }
+
+    let found = checkFile(absResolved);
+    if (found) return found;
+
+    for (const ext of CODE_EXTENSIONS) {
+        found = checkFile(absResolved + ext);
+        if (found) return found;
     }
 
     for (const ext of CODE_EXTENSIONS) {
-        const pathWithExt = resolvedPath + ext;
-        if (fs.existsSync(pathWithExt) && fs.statSync(pathWithExt).isFile()) {
-            return pathWithExt;
-        }
-    }
-
-    for (const ext of CODE_EXTENSIONS) {
-        const indexFile = path.join(resolvedPath, "index" + ext);
-        if (fs.existsSync(indexFile) && fs.statSync(indexFile).isFile()) {
-            return indexFile;
-        }
+        found = checkFile(path.join(absResolved, "index" + ext));
+        if (found) return found;
     }
 
     return null;

@@ -29,17 +29,47 @@ function extractRepositoryInfo(url) {
 
 async function verifyRepositoryExists(owner, repository) {
     const cleanRepo = repository ? repository.replace(/\.git$/, "") : "";
-    const response = await fetch(`https://api.github.com/repos/${owner}/${cleanRepo}`, {
-        headers: {
-            "User-Agent": "Grove-App"
-        }
-    });
+    const headers = {
+        "User-Agent": "Grove-App"
+    };
 
-    if (!response.ok) {
-        throw new AppError("Repository not found", 404);
+    if (process.env.GITHUB_TOKEN) {
+        headers["Authorization"] = `Bearer ${process.env.GITHUB_TOKEN}`;
     }
 
-    return response;
+    try {
+        const response = await fetch(`https://api.github.com/repos/${owner}/${cleanRepo}`, { headers });
+
+        if (response.status === 404) {
+            throw new AppError("Repository not found", 404);
+        }
+
+        if (!response.ok) {
+            console.warn(`GitHub API returned status ${response.status} for ${owner}/${cleanRepo}. Falling back to git clone.`);
+            return {
+                name: cleanRepo,
+                owner: { login: owner },
+                description: "",
+                default_branch: "main",
+                language: ""
+            };
+        }
+
+        const data = await response.json();
+        return data;
+    } catch (err) {
+        if (err instanceof AppError) {
+            throw err;
+        }
+        console.warn(`Failed to contact GitHub API: ${err.message}. Falling back to git clone.`);
+        return {
+            name: cleanRepo,
+            owner: { login: owner },
+            description: "",
+            default_branch: "main",
+            language: ""
+        };
+    }
 }
 
 module.exports = {

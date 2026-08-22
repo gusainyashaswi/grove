@@ -2,6 +2,8 @@ const { spawn } = require("child_process");
 const fs = require("fs");
 const path = require("path");
 
+const AppError = require("../errors/AppError");
+
 async function cloneRepository(owner, repository) {
     const cleanRepo = repository ? repository.replace(/\.git$/, "") : "";
     const repositoryPath = path.resolve(
@@ -12,7 +14,12 @@ async function cloneRepository(owner, repository) {
     );
 
     if (fs.existsSync(repositoryPath)) {
-        return repositoryPath;
+        const gitFolder = path.join(repositoryPath, ".git");
+        if (fs.existsSync(gitFolder)) {
+            return repositoryPath;
+        }
+        // Folder exists but .git missing; remove corrupted directory
+        fs.rmSync(repositoryPath, { recursive: true, force: true });
     }
 
     fs.mkdirSync(path.dirname(repositoryPath), { recursive: true });
@@ -37,7 +44,7 @@ async function cloneRepository(owner, repository) {
             if (fs.existsSync(repositoryPath)) {
                 fs.rmSync(repositoryPath, { recursive: true, force: true });
             }
-            reject(err);
+            reject(new AppError("Failed to clone repository. Please check the URL and try again.", 400));
         });
 
         git.on("close", (code) => {
@@ -49,7 +56,7 @@ async function cloneRepository(owner, repository) {
                 if (fs.existsSync(repositoryPath)) {
                     fs.rmSync(repositoryPath, { recursive: true, force: true });
                 }
-                reject(new Error(`Git exited with code ${code}`));
+                reject(new AppError(`Failed to clone repository. Please check the repository URL and ensure it is public.`, 400));
             }
         });
     });

@@ -3,7 +3,7 @@ const { extractImports, isInternalImport } = require("./ast.utils");
 const { resolveImport } = require("./file.utils");
 const { classifyFile } = require("./fileClassifier.utils");
 
-function analyzeRepository(repositoryFiles) {
+function analyzeRepository(repositoryFiles, repositoryPath) {
     if (!Array.isArray(repositoryFiles)) {
         return [];
     }
@@ -28,7 +28,7 @@ function analyzeRepository(repositoryFiles) {
                 continue;
             }
 
-            const resolvedPath = resolveImport(file.path, importsPath);
+            const resolvedPath = resolveImport(file.path, importsPath, repositoryPath);
 
             if (!resolvedPath) {
                 continue;

@@ -37,10 +37,14 @@ function Home() {
             navigate("/repository");
         } catch (err) {
             console.error(err);
-            setError(
-                err.response?.data?.message ||
-                "Failed to analyze repository. Please check the URL and try again."
-            );
+            if (err.code === "ERR_NETWORK" || !err.response) {
+                setError("Cannot connect to backend server. Please ensure the backend is running on http://localhost:3000.");
+            } else {
+                setError(
+                    err.response?.data?.message ||
+                    "Failed to analyze repository. Please check the URL and try again."
+                );
+            }
         } finally {
             setLoading(false);
         }

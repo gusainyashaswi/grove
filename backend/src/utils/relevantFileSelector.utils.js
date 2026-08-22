@@ -60,7 +60,7 @@ function tokenize(question) {
         .filter(t => t.length > 2);
 }
 
-function selectRelevantFiles(knowledge, question) {
+function selectRelevantFiles(knowledge, question, repositoryPath) {
     if (isMetadataQuestion(question)) {
         return [];
     }
@@ -103,8 +103,17 @@ function selectRelevantFiles(knowledge, question) {
 
     const result = [];
     for (const filePath of allSelectedPaths) {
+        const fileMeta = files.find(f => f.path === filePath);
+        if (fileMeta && fileMeta.content) {
+            result.push({ path: filePath, content: fileMeta.content });
+            continue;
+        }
+
         try {
-            const content = readFileContent(filePath);
+            const targetPath = repositoryPath && !path.isAbsolute(filePath)
+                ? path.join(repositoryPath, filePath)
+                : filePath;
+            const content = readFileContent(targetPath);
             result.push({ path: filePath, content });
         } catch {
             // file not readable, skip

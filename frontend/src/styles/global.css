@@ -1,125 +1,97 @@
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&family=JetBrains+Mono:ital,wght@0,300;0,400;0,500;0,600;0,700;1,400&family=Outfit:wght@400;500;600;700;800;900&display=swap');
 @import "tailwindcss";
 
 /* ============================================================
-   GROVE — FINAL VISUAL DESIGN SYSTEM TOKENS
-   Dark-first technical developer product aesthetic.
+   GROVE — ADVANCED DEVELOPER STUDIO DESIGN SYSTEM
+
+   High-end dark UI aesthetic with neon accents & glassmorphic depth
    ============================================================ */
 
 :root {
-    /* --- 1. BACKGROUND TOKENS --- */
-    --color-bg:            #090d11;   /* Main application background */
-    --color-bg-secondary:  #0d1117;   /* Secondary background layer */
-    --color-surface:       #161b22;   /* Standard panel & card surface */
-    --color-elevated:      #21262d;   /* Raised components, popovers, dropdowns */
+    /* --- 1. CORE PALETTE (Obsidian / Space Dark) --- */
+    --color-bg:               #070a0f;   /* Deep canvas */
+    --color-bg-secondary:     #0c1017;   /* Secondary layer */
+    --color-surface:          #121824;   /* Panel & card surface */
+    --color-surface-hover:    #182030;   /* Surface hover state */
+    --color-elevated:         #1b2334;   /* Elevated popovers & modals */
+    --color-elevated-hover:   #232d42;
 
-    /* --- 2. BORDER TOKENS --- */
-    --color-border-subtle:   #1f242c; /* Soft internal dividers */
-    --color-border:          #30363d; /* Default structural border */
-    --color-border-emphasis: #484f58; /* Highlighted / active border */
+    /* --- 2. BORDER & SEPARATOR TOKENS --- */
+    --color-border-subtle:    rgba(255, 255, 255, 0.06);
+    --color-border:           rgba(255, 255, 255, 0.10);
+    --color-border-emphasis:  rgba(255, 255, 255, 0.20);
+    --color-border-glow:      rgba(0, 245, 155, 0.35);
 
     /* --- 3. TEXT TOKENS --- */
-    --color-text-primary:   #f0f6fc;  /* Primary high-contrast readable text */
-    --color-text-secondary: #8b949e;  /* Supporting labels & secondary info */
-    --color-text-muted:     #6e7681;  /* Muted metadata & placeholders */
-    --color-text-disabled:  #484f58;  /* Disabled state text */
-    --color-text-inverse:   #090d11;  /* Text on solid light backgrounds */
+    --color-text-primary:     #f8fafc;  /* Crisp white */
+    --color-text-secondary:   #94a3b8;  /* Technical slate */
+    --color-text-muted:       #64748b;  /* Muted metadata */
+    --color-text-dim:         #475569;  /* Dim helper text */
 
-    /* --- 4. ACCENT TOKENS (Teal/Emerald Dev-Tool Palette) --- */
-    --color-accent:         #3ddc97;  /* Primary brand accent */
-    --color-accent-hover:   #2ec885;  /* Accent hover state */
-    --color-accent-muted:   #1a3a2e;  /* Subtle accent background tint */
-    --color-accent-border:  #2ea06e;  /* Accent tinted border */
+    /* --- 4. VIVID NEON ACCENT TOKENS --- */
+    --color-accent:           #00f59b;  /* Electric Emerald */
+    --color-accent-hover:     #00dc8b;
+    --color-accent-glow:      rgba(0, 245, 155, 0.25);
+    --color-accent-muted:     rgba(0, 245, 155, 0.12);
+    --color-accent-border:    rgba(0, 245, 155, 0.3);
 
-    /* --- 5. STATUS TOKENS --- */
-    --color-success:        #3ddc97;
-    --color-success-muted:  #1a3a2e;
-    --color-warning:        #d29922;
-    --color-warning-muted:  #2e2208;
-    --color-error:          #f85149;
-    --color-error-muted:    #3b1a1a;
-    --color-info:           #58a6ff;
-    --color-info-muted:     #0d2340;
+    /* Secondary Tech Accents */
+    --color-cyan:             #38bdf8;
+    --color-cyan-glow:        rgba(56, 189, 248, 0.25);
+    --color-cyan-muted:       rgba(56, 189, 248, 0.12);
 
-    /* --- 6. INTERACTION TOKENS --- */
-    --color-focus:          #58a6ff;  /* Focus ring outline color */
-    --color-selected:       #1f372e;  /* Active / selected item background */
-    --color-hover:          #21262d;  /* General element hover background */
+    --color-purple:           #c084fc;
+    --color-purple-glow:      rgba(192, 132, 252, 0.25);
+    --color-purple-muted:     rgba(192, 132, 252, 0.12);
 
-    /* --- 7. CODE / TECHNICAL TOKENS --- */
-    --color-code-bg:        #0d1117;
-    --color-code-border:    #21262d;
-    --color-code-text:      #f0f6fc;
+    --color-amber:            #fbbf24;
+    --color-amber-muted:      rgba(251, 191, 36, 0.12);
 
-    /* --- 8. TYPOGRAPHY SCALE --- */
-    --font-sans: "Inter", system-ui, -apple-system, sans-serif;
-    --font-mono: "JetBrains Mono", "Fira Code", ui-monospace, "Menlo", monospace;
+    --color-rose:             #fb7185;
+    --color-rose-muted:       rgba(251, 113, 133, 0.12);
 
-    --text-xs:   0.6875rem; /* 11px — metadata, micro labels */
-    --text-sm:   0.8125rem; /* 13px — technical body, table text */
-    --text-base: 0.9375rem; /* 15px — primary body */
-    --text-md:   1.0000rem; /* 16px — section titles */
-    --text-lg:   1.1250rem; /* 18px — sub-headings */
-    --text-xl:   1.3750rem; /* 22px — page section headers */
-    --text-2xl:  1.7500rem; /* 28px — page titles */
-    --text-3xl:  2.2500rem; /* 36px — hero display titles */
-    --text-4xl:  3.0000rem; /* 48px — high impact display */
+    /* --- 5. CODE & EDITOR TOKENS --- */
+    --color-code-bg:          #090d14;
+    --color-code-gutter:      #121824;
+    --color-code-line-active: rgba(255, 255, 255, 0.04);
+    --color-code-selection:   rgba(56, 189, 248, 0.2);
 
-    --weight-regular:  400;
-    --weight-medium:   500;
-    --weight-semibold: 600;
-    --weight-bold:     700;
+    /* --- 6. TYPOGRAPHY SCALE --- */
+    --font-sans:     "Inter", -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+    --font-display:  "Outfit", "Inter", sans-serif;
+    --font-mono:     "JetBrains Mono", "Fira Code", monospace;
 
-    --leading-tight:   1.25;
-    --leading-snug:    1.375;
-    --leading-normal:  1.5;
-    --leading-relaxed: 1.65;
+    --text-2xs:  0.6875rem; /* 11px */
+    --text-xs:   0.7500rem; /* 12px */
+    --text-sm:   0.8438rem; /* 13.5px */
+    --text-base: 0.9375rem; /* 15px */
+    --text-md:   1.0625rem; /* 17px */
+    --text-lg:   1.2500rem; /* 20px */
+    --text-xl:   1.5000rem; /* 24px */
+    --text-2xl:  1.8750rem; /* 30px */
+    --text-3xl:  2.3750rem; /* 38px */
+    --text-4xl:  3.1250rem; /* 50px */
+    --text-5xl:  4.0000rem; /* 64px */
 
-    --tracking-tight:  -0.02em;
-    --tracking-normal: 0.00em;
-    --tracking-wide:   0.04em;
-    --tracking-wider:  0.08em;
+    /* --- 7. RADII & SHADOW SCALE --- */
+    --radius-sm:   0.375rem; /* 6px */
+    --radius-md:   0.625rem; /* 10px */
+    --radius-lg:   0.875rem; /* 14px */
+    --radius-xl:   1.250rem; /* 20px */
+    --radius-2xl:  1.750rem; /* 28px */
+    --radius-full: 9999px;
 
-    /* --- 9. SPACING SCALE --- */
-    --space-1:  0.25rem; /* 4px */
-    --space-2:  0.50rem; /* 8px */
-    --space-3:  0.75rem; /* 12px */
-    --space-4:  1.00rem; /* 16px */
-    --space-5:  1.25rem; /* 20px */
-    --space-6:  1.50rem; /* 24px */
-    --space-8:  2.00rem; /* 32px */
-    --space-10: 2.50rem; /* 40px */
-    --space-12: 3.00rem; /* 48px */
-    --space-16: 4.00rem; /* 64px */
-    --space-20: 5.00rem; /* 80px */
-    --space-24: 6.00rem; /* 96px */
+    --shadow-studio: 0 10px 30px -10px rgba(0, 0, 0, 0.5), 0 0 0 1px rgba(255, 255, 255, 0.08);
+    --shadow-glow:   0 0 25px -5px var(--color-accent-glow);
+    --shadow-card:   0 4px 20px -2px rgba(0, 0, 0, 0.4), inset 0 1px 0 rgba(255, 255, 255, 0.08);
 
-    /* --- 10. RADIUS SCALE --- */
-    --radius-xs:   0.125rem; /* 2px */
-    --radius-sm:   0.250rem; /* 4px */
-    --radius-md:   0.500rem; /* 8px */
-    --radius-lg:   0.750rem; /* 12px */
-    --radius-xl:   1.000rem; /* 16px */
-    --radius-full: 9999px;   /* Pill */
-
-    /* --- 11. SHADOW SCALE --- */
-    --shadow-sm:  0 1px 2px 0 rgb(0 0 0 / 0.4);
-    --shadow-md:  0 4px 6px -1px rgb(0 0 0 / 0.5), 0 2px 4px -2px rgb(0 0 0 / 0.5);
-    --shadow-lg:  0 10px 15px -3px rgb(0 0 0 / 0.6), 0 4px 6px -4px rgb(0 0 0 / 0.6);
-
-    /* --- 12. MOTION / TRANSITION DURATION --- */
-    --duration-instant: 75ms;
-    --duration-fast:    120ms;
-    --duration-normal:  200ms;
-    --duration-slow:    350ms;
-    --ease-default:     cubic-bezier(0.16, 1, 0.3, 1);
-
-    /* --- 13. LAYOUT BOUNDARIES --- */
-    --container-max-w: 1280px;
-    --navbar-height:    56px;
+    /* --- 8. LAYOUT --- */
+    --container-max-w: 1480px;
+    --navbar-height:   64px;
 }
 
 /* ============================================================
-   GLOBAL RESET & ACCESSIBILITY DEFAULTS
+   GLOBAL RESET & DEFAULTS
    ============================================================ */
 *,
 *::before,
@@ -134,65 +106,172 @@ html {
     scroll-behavior: smooth;
     color-scheme: dark;
     -webkit-text-size-adjust: 100%;
-    text-size-adjust: 100%;
 }
 
 body {
     font-family: var(--font-sans);
     font-size: var(--text-base);
-    font-weight: var(--weight-regular);
-    line-height: var(--leading-normal);
     color: var(--color-text-primary);
     background-color: var(--color-bg);
+    background-image: 
+        radial-gradient(ellipse 80% 50% at 50% -20%, rgba(0, 245, 155, 0.08), transparent 70%),
+        radial-gradient(circle at 85% 30%, rgba(56, 189, 248, 0.05), transparent 50%);
+    background-attachment: fixed;
     -webkit-font-smoothing: antialiased;
     -moz-osx-font-smoothing: grayscale;
     min-height: 100dvh;
     overflow-x: hidden;
 }
 
-/* Typography defaults */
 h1, h2, h3, h4, h5, h6 {
-    font-weight: var(--weight-semibold);
-    line-height: var(--leading-tight);
-    letter-spacing: var(--tracking-tight);
+    font-family: var(--font-display);
+    font-weight: 700;
+    letter-spacing: -0.025em;
     color: var(--color-text-primary);
 }
 
 code, kbd, pre, samp {
     font-family: var(--font-mono);
-    font-size: 0.9em;
 }
 
-a {
-    color: inherit;
-    text-decoration: none;
-}
-
-/* Selection styling */
 ::selection {
-    background-color: var(--color-selected);
-    color: var(--color-accent);
+    background-color: rgba(0, 245, 155, 0.25);
+    color: #00f59b;
 }
 
-/* Focus visible keyboard ring */
 :focus-visible {
-    outline: 2px solid var(--color-focus);
+    outline: 2px solid var(--color-accent);
     outline-offset: 2px;
     border-radius: var(--radius-sm);
 }
 
-:focus:not(:focus-visible) {
-    outline: none;
+/* Custom Sleek Scrollbar */
+::-webkit-scrollbar {
+    width: 6px;
+    height: 6px;
 }
 
-/* Scrollbar styling */
-* {
-    scrollbar-width: thin;
-    scrollbar-color: var(--color-border) transparent;
+::-webkit-scrollbar-track {
+    background: transparent;
 }
 
-@media (prefers-reduced-motion: reduce) {
-    html {
-        scroll-behavior: auto;
-    }
+::-webkit-scrollbar-thumb {
+    background: rgba(255, 255, 255, 0.15);
+    border-radius: 9999px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+    background: rgba(255, 255, 255, 0.28);
+}
+
+/* ============================================================
+   GLASSMORPHISM & STUDIO UTILITY CLASSES
+   ============================================================ */
+.glass-panel {
+    background: rgba(18, 24, 36, 0.75);
+    backdrop-filter: blur(16px);
+    -webkit-backdrop-filter: blur(16px);
+    border: 1px solid rgba(255, 255, 255, 0.08);
+    box-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.37);
+}
+
+.glass-card {
+    background: linear-gradient(135deg, rgba(22, 28, 42, 0.8) 0%, rgba(14, 18, 28, 0.9) 100%);
+    backdrop-filter: blur(12px);
+    -webkit-backdrop-filter: blur(12px);
+    border: 1px solid rgba(255, 255, 255, 0.08);
+    box-shadow: var(--shadow-card);
+}
+
+.glass-pill {
+    background: rgba(27, 35, 52, 0.7);
+    backdrop-filter: blur(10px);
+    -webkit-backdrop-filter: blur(10px);
+    border: 1px solid rgba(255, 255, 255, 0.12);
+}
+
+.glow-emerald {
+    box-shadow: 0 0 25px -5px rgba(0, 245, 155, 0.3);
+}
+
+.glow-cyan {
+    box-shadow: 0 0 25px -5px rgba(56, 189, 248, 0.3);
+}
+
+.glow-purple {
+    box-shadow: 0 0 25px -5px rgba(192, 132, 252, 0.3);
+}
+
+/* ============================================================
+   VS CODE PRISM SYNTAX HIGHLIGHTING THEME
+   ============================================================ */
+.token.comment,
+.token.prolog,
+.token.doctype,
+.token.cdata {
+    color: #6a737d;
+    font-style: italic;
+}
+
+.token.punctuation {
+    color: #e1e4e8;
+}
+
+.token.namespace {
+    opacity: 0.7;
+}
+
+.token.property,
+.token.tag,
+.token.boolean,
+.token.number,
+.token.constant,
+.token.symbol,
+.token.deleted {
+    color: #79b8ff;
+}
+
+.token.selector,
+.token.attr-name,
+.token.string,
+.token.char,
+.token.builtin,
+.token.inserted {
+    color: #9ecbff;
+}
+
+.token.operator,
+.token.entity,
+.token.url,
+.language-css .token.string,
+.style .token.string {
+    color: #f97583;
+}
+
+.token.atrule,
+.token.attr-value,
+.token.keyword {
+    color: #f97583;
+    font-weight: 500;
+}
+
+.token.function,
+.token.class-name {
+    color: #b392f0;
+    font-weight: 600;
+}
+
+.token.regex,
+.token.important,
+.token.variable {
+    color: #ffab70;
+}
+
+.token.important,
+.token.bold {
+    font-weight: bold;
+}
+
+.token.italic {
+    font-style: italic;
 }

@@ -12,9 +12,9 @@ function Repository() {
     }
 
     return (
-        <div className="min-h-screen bg-gray-50">
+        <div className="min-h-[calc(100vh-64px)] w-full py-10 px-6 sm:px-8 lg:px-12 flex flex-col items-center">
             <div
-                className="mx-auto w-full px-4 sm:px-6 lg:px-8 py-8 flex flex-col gap-6"
+                className="w-full flex flex-col gap-8"
                 style={{ maxWidth: "var(--container-max-w)" }}
             >
                 <RepositoryHeader />

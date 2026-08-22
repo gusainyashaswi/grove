@@ -15,12 +15,14 @@ function getAIClient() {
     });
 }
 
+const MODEL_NAME = process.env.GEMINI_MODEL || "gemini-2.5-flash";
+
 async function explainFile(repository, file) {
     const ai = getAIClient();
     const prompt = buildExplainFilePrompt(repository, file);
 
     const response = await ai.models.generateContent({
-        model: "gemini-3.5-flash",
+        model: MODEL_NAME,
         contents: prompt,
     });
 
@@ -34,7 +36,7 @@ async function summarizeRepository(repository) {
     const prompt = buildRepositorySummaryPrompt(knowledge);
 
     const response = await ai.models.generateContent({
-        model: "gemini-3.5-flash",
+        model: MODEL_NAME,
         contents: prompt,
     });
 
@@ -50,7 +52,7 @@ async function answerRepositoryQuestion(repository, question) {
     const prompt = buildRepositoryQuestionPrompt(knowledge, question, selectedSourceFiles);
 
     const response = await ai.models.generateContent({
-        model: "gemini-3.5-flash",
+        model: MODEL_NAME,
         contents: prompt,
     });
 
