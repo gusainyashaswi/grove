@@ -1,22 +1,10 @@
-import { Outlet, useLocation } from "react-router-dom";
-import AppNavbar from "./AppNavbar";
+import { Outlet } from "react-router-dom";
+import Navbar from "./Navbar";
 
 function MainLayout() {
-    const location = useLocation();
-    const isLandingPage = location.pathname === "/";
-
     return (
-        <div
-            className="flex min-h-dvh w-full flex-col font-sans antialiased selection:bg-[var(--color-selected)] selection:text-[var(--color-accent)]"
-            style={isLandingPage ? {} : {
-                backgroundColor: "var(--color-bg)",
-                color: "var(--color-text-primary)",
-            }}
-        >
-            {/* Structural Navigation Bar - only show on non-landing pages */}
-            {!isLandingPage && <AppNavbar />}
-
-            {/* Main Application Content Area */}
+        <div className="flex min-h-dvh w-full flex-col">
+            <Navbar />
             <main className="flex flex-1 flex-col w-full">
                 <Outlet />
             </main>
