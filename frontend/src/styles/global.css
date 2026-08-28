@@ -1,32 +1,39 @@
 @import "tailwindcss";
 
-/* ============================================================
-   GROVE DESIGN SYSTEM & TYPOGRAPHY TOKENS
-   ============================================================ */
+@theme {
+  --color-bg: #f1efe9;
+  --color-bg-alt: #e7e3d9;
+  --color-ink: #141311;
+  --color-ink-soft: #4a4740;
+  --color-muted: #8b8779;
+  --color-line: #d9d5c8;
+  --color-line-soft: #e2ded2;
+  --color-black: #0c0c0b;
+  --color-white: #f7f5ee;
+
+  --radius-card: 14px;
+  --radius-pill: 9999px;
+
+  --font-sans: "Inter", sans-serif;
+  --font-heading: "Inter Tight", sans-serif;
+  --font-body: "Inter", sans-serif;
+  --font-mono: "Fira Mono", monospace;
+}
 
 :root {
-  --font-heading: 'HelveticaNowDisplay-Medium', 'Helvetica Neue', Arial, sans-serif;
-  --font-body: 'HelveticaNowDisplayW01-Rg', 'Helvetica Neue', Arial, sans-serif;
-  --font-mono: 'JetBrains Mono', 'SFMono-Regular', Consolas, 'Fira Code', monospace;
-
-  /* Off-white / white high contrast */
-  --color-bg: #fdfdfd;
-  --color-surface: #ffffff;
-  --color-surface-hover: #f5f5f5;
-
-  /* Border & Separator Tokens */
-  --color-border-subtle: rgba(0, 0, 0, 0.05);
-  --color-border: rgba(0, 0, 0, 0.1);
-  --color-border-hover: rgba(0, 0, 0, 0.2);
-
-  /* Text Colors */
-  --color-text-primary: #000000;
-  --color-text-secondary: rgba(0, 0, 0, 0.6);
-  --color-text-muted: rgba(0, 0, 0, 0.4);
-  --color-text-dim: rgba(0, 0, 0, 0.2);
-
-  --container-max-w: 1380px;
-  --navbar-height: 68px;
+  --bg: #f1efe9;
+  --bg-alt: #e7e3d9;
+  --ink: #141311;
+  --ink-soft: #4a4740;
+  --muted: #8b8779;
+  --line: #d9d5c8;
+  --line-soft: #e2ded2;
+  --black: #0c0c0b;
+  --white: #f7f5ee;
+  
+  --font-heading: "Inter Tight", sans-serif;
+  --font-body: "Inter", sans-serif;
+  --font-mono: "Fira Mono", monospace;
 }
 
 *,
@@ -46,8 +53,8 @@ html {
 
 body {
   font-family: var(--font-body);
-  color: var(--color-text-primary);
-  background-color: var(--color-bg);
+  color: var(--ink);
+  background-color: var(--bg);
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
   min-height: 100dvh;
@@ -78,12 +85,12 @@ code, kbd, pre, samp {
 
 /* Selection */
 ::selection {
-  background-color: #000000;
-  color: #ffffff;
+  background-color: var(--black);
+  color: var(--white);
 }
 
 :focus-visible {
-  outline: 2px solid #000000;
+  outline: 2px solid var(--ink);
   outline-offset: 2px;
 }
 
@@ -98,12 +105,24 @@ code, kbd, pre, samp {
 }
 
 ::-webkit-scrollbar-thumb {
-  background: rgba(0, 0, 0, 0.2);
+  background: var(--muted);
   border-radius: 9999px;
 }
 
 ::-webkit-scrollbar-thumb:hover {
-  background: rgba(0, 0, 0, 0.4);
+  background: var(--ink-soft);
+}
+
+/* Scroll Reveal */
+.reveal {
+  opacity: 0;
+  transform: translateY(14px);
+  transition: opacity 0.6s ease-out, transform 0.6s ease-out;
+}
+
+.reveal.in-view {
+  opacity: 1;
+  transform: translateY(0);
 }
 
 /* Animations */
