@@ -4,6 +4,7 @@ import { useRepository } from "../context/RepositoryContext";
 import { analyzeRepository } from "../services/repository.service";
 import Hero from "../components/Hero";
 import ProcessSection from "../components/ProcessSection";
+import FeatureSection from "../components/FeatureSection";
 
 export default function Home() {
     const { setRepository } = useRepository();
@@ -92,6 +93,8 @@ export default function Home() {
             </div>
 
             <ProcessSection />
+
+            <FeatureSection />
         </div>
     );
 }
