@@ -7,9 +7,9 @@ const WHITE     = "#f7f5ee";
 const WHITE_DIM = "rgba(247,245,238,0.62)";
 
 const NAV_LINKS = [
-    { label: "How it works", href: "#how-it-works" },
-    { label: "Example",      href: "#example"      },
-    { label: "Features",     href: "#features"     },
+    { label: "How it works", href: "/#how-it-works" },
+    { label: "Example",      href: "/#example"      },
+    { label: "Features",     href: "/#features"     },
 ];
 
 /* ── Logo mark ────────────────────────────────────────────── */

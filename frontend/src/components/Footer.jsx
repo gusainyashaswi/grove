@@ -1,69 +1,203 @@
 import { Link } from "react-router-dom";
 
-export default function Footer() {
-    const scrollTo = (id) => {
-        const el = document.getElementById(id);
-        if (el) {
-            el.scrollIntoView({ behavior: "smooth" });
-        }
-    };
+/* Match variables exactly to reference spec */
+const WHITE_DIM = "rgba(247,245,238,0.62)";
+const BLACK_LINE = "rgba(247,245,238,0.14)";
 
+function LogoMark() {
     return (
-        <footer className="w-full border-t border-white/[0.08] bg-[#050708] py-12 px-5 sm:px-8 md:px-12 lg:px-20 relative z-10">
-            <div className="max-w-7xl mx-auto flex flex-col gap-8">
-                <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-6">
-                    {/* Left: Brand */}
-                    <div className="flex flex-col gap-1">
-                        <span className="font-heading font-extrabold text-lg text-white tracking-tight">
-                            Grove
-                        </span>
-                        <span className="font-mono text-xs text-white/40 uppercase tracking-wider">
-                            Repository Intelligence Engine
-                        </span>
-                    </div>
+        <svg
+            width="18"
+            height="18"
+            viewBox="0 0 24 24"
+            fill="none"
+            xmlns="http://www.w3.org/2000/svg"
+            style={{ color: "var(--white)" }}
+            aria-hidden="true"
+        >
+            <circle cx="12" cy="12" r="9" stroke="currentColor" strokeWidth="1.6" />
+            <circle cx="12" cy="12" r="2.4" fill="currentColor" />
+        </svg>
+    );
+}
 
-                    {/* Center: Navigation Links */}
-                    <div className="flex items-center gap-6 font-mono text-xs text-white/60">
-                        <button
-                            onClick={() => scrollTo("explorer")}
-                            className="hover:text-cyan-300 transition-colors cursor-pointer"
-                        >
-                            Explorer
-                        </button>
-                        <Link to="/repository" className="hover:text-cyan-300 transition-colors">
-                            Workspace
-                        </Link>
-                        <a
-                            href="https://github.com/gusainyashaswi/grove"
-                            target="_blank"
-                            rel="noreferrer"
-                            className="hover:text-cyan-300 transition-colors"
-                        >
-                            GitHub
-                        </a>
-                    </div>
+export default function Footer() {
+    return (
+        <>
+            <style>{`
+                .dark-footer {
+                    background: var(--black);
+                    color: var(--white);
+                    border-radius: 28px 28px 0 0;
+                    padding: 64px 0 28px;
+                    margin-top: 40px;
+                    position: relative;
+                    z-index: 10;
+                }
+                .footer-top {
+                    display: grid;
+                    grid-template-columns: 1.4fr 1fr 1fr 1fr;
+                    gap: 40px;
+                    margin-bottom: 56px;
+                }
+                .footer-brand p {
+                    font-size: 14px;
+                    color: ${WHITE_DIM};
+                    margin-top: 12px;
+                    max-width: 260px;
+                    line-height: 1.6;
+                }
+                .footer-col h4 {
+                    font-family: var(--font-mono);
+                    font-size: 12px;
+                    font-weight: 400;
+                    text-transform: uppercase;
+                    letter-spacing: 0.08em;
+                    color: rgba(247, 245, 238, 0.4);
+                    margin-bottom: 18px;
+                }
+                .footer-col ul {
+                    display: flex;
+                    flex-direction: column;
+                    gap: 12px;
+                    list-style: none;
+                    padding: 0;
+                    margin: 0;
+                }
+                .footer-col a {
+                    font-size: 14px;
+                    color: ${WHITE_DIM};
+                    text-decoration: none;
+                    transition: color .2s ease;
+                }
+                .footer-col a:hover {
+                    color: var(--white);
+                }
+                .footer-bottom {
+                    display: flex;
+                    justify-content: space-between;
+                    align-items: center;
+                    padding-top: 28px;
+                    border-top: 1px solid ${BLACK_LINE};
+                    font-size: 12.5px;
+                    color: rgba(247, 245, 238, 0.4);
+                    flex-wrap: wrap;
+                    gap: 12px;
+                }
+                .status-indicator {
+                    display: inline-flex;
+                    align-items: center;
+                    gap: 6px;
+                }
+                .status-dot {
+                    width: 6px;
+                    height: 6px;
+                    background: #2ecc71;
+                    border-radius: 50%;
+                    box-shadow: 0 0 8px #2ecc71;
+                }
 
-                    {/* Right: Engine Status & Version */}
-                    <div className="flex items-center gap-3 font-mono text-xs text-white/50">
-                        <div className="flex items-center gap-2 px-3 py-1 rounded-full bg-white/[0.03] border border-white/10">
-                            <span className="relative flex size-2">
-                                <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-emerald-400 opacity-75"></span>
-                                <span className="relative inline-flex rounded-full size-2 bg-emerald-500"></span>
-                            </span>
-                            <span className="text-[11px] text-white/70">AST Engine Active</span>
+                @media (max-width: 900px) {
+                    .footer-top {
+                        grid-template-columns: 1fr 1fr;
+                        row-gap: 32px;
+                    }
+                }
+                @media (max-width: 720px) {
+                    .footer-top {
+                        grid-template-columns: 1fr;
+                    }
+                }
+            `}</style>
+
+            <footer className="dark-footer">
+                <div style={{ maxWidth: "1440px", margin: "0 auto", padding: "0 48px" }}>
+                    <div className="footer-top">
+                        {/* Column 1 - Brand Info */}
+                        <div className="footer-brand">
+                            <div style={{ display: "flex", alignItems: "center", gap: "9px" }}>
+                                <LogoMark />
+                                <span
+                                    style={{
+                                        fontFamily: "var(--font-heading)",
+                                        fontSize: "16px",
+                                        fontWeight: 600,
+                                        letterSpacing: "-0.02em",
+                                    }}
+                                >
+                                    Grove
+                                </span>
+                            </div>
+                            <p>
+                                The search engine for understanding code. Point it at a repo, get
+                                the version a teammate would give you.
+                            </p>
                         </div>
-                        <span className="text-[11px] text-white/30 bg-white/[0.04] px-2 py-0.5 rounded border border-white/[0.06]">
-                            v1.0 Pro
-                        </span>
+
+                        {/* Column 2 - Links */}
+                        <div className="footer-col">
+                            <h4>Product</h4>
+                            <ul>
+                                <li>
+                                    <a href="/#features">Features</a>
+                                </li>
+                                <li>
+                                    <Link to="/repository">Workspace Explorer</Link>
+                                </li>
+                                <li>
+                                    <a
+                                        href="https://github.com/gusainyashaswi/grove"
+                                        target="_blank"
+                                        rel="noreferrer"
+                                    >
+                                        GitHub Repository
+                                    </a>
+                                </li>
+                            </ul>
+                        </div>
+
+                        {/* Column 3 - Links */}
+                        <div className="footer-col">
+                            <h4>Resources</h4>
+                            <ul>
+                                <li>
+                                    <a href="/#how-it-works">How it works</a>
+                                </li>
+                                <li>
+                                    <a href="/#example">Examples</a>
+                                </li>
+                                <li>
+                                    <a href="#">Documentation</a>
+                                </li>
+                            </ul>
+                        </div>
+
+                        {/* Column 4 - Links */}
+                        <div className="footer-col">
+                            <h4>Company</h4>
+                            <ul>
+                                <li>
+                                    <a href="#">About</a>
+                                </li>
+                                <li>
+                                    <a href="#">Careers</a>
+                                </li>
+                                <li>
+                                    <a href="#">Contact</a>
+                                </li>
+                            </ul>
+                        </div>
+                    </div>
+
+                    <div className="footer-bottom">
+                        <span>© 2026 Grove. Built for developers who read code for a living.</span>
+                        <div className="status-indicator">
+                            <span className="status-dot" />
+                            <span>Status: all systems live</span>
+                        </div>
                     </div>
                 </div>
-
-                {/* Bottom Tagline */}
-                <div className="pt-6 border-t border-white/[0.04] flex items-center justify-between text-xs font-mono text-white/30">
-                    <span>Built for developers who want to understand systems faster.</span>
-                    <span>© {new Date().getFullYear()} Grove Intelligence</span>
-                </div>
-            </div>
-        </footer>
+            </footer>
+        </>
     );
 }

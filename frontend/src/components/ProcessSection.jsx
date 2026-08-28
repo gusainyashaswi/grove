@@ -73,7 +73,7 @@ export default function ProcessSection() {
                 }
             `}</style>
 
-            <section className="process-section" id="how">
+            <section className="process-section" id="how-it-works">
                 <div style={{ maxWidth: "1440px", margin: "0 auto", padding: "0 48px" }}>
                     {/* Centered Heading */}
                     <div className="section-head center reveal">
