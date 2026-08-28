@@ -34,6 +34,12 @@
   --font-heading: "Inter Tight", sans-serif;
   --font-body: "Inter", sans-serif;
   --font-mono: "Fira Mono", monospace;
+
+  /* Radius aliases used by components */
+  --r-card:   14px;
+  --r-input:  9999px;
+  --r-button: 9999px;
+  --radius-card: 14px;
 }
 
 *,
@@ -113,7 +119,6 @@ code, kbd, pre, samp {
   background: var(--ink-soft);
 }
 
-/* Scroll Reveal */
 .reveal {
   opacity: 0;
   transform: translateY(14px);
@@ -123,6 +128,80 @@ code, kbd, pre, samp {
 .reveal.in-view {
   opacity: 1;
   transform: translateY(0);
+}
+
+/* Skip animations for users who prefer reduced motion */
+@media (prefers-reduced-motion: reduce) {
+  .reveal {
+    opacity: 1;
+    transform: none;
+    transition: none;
+  }
+}
+
+/* ── Responsive: Hero input bar wraps at 600px ── */
+@media (max-width: 600px) {
+  .analyze-bar,
+  .cta-analyze-bar {
+    flex-direction: column;
+    align-items: stretch !important;
+    padding: 10px 10px 10px 14px !important;
+    border-radius: 20px !important;
+    gap: 10px !important;
+  }
+  .analyze-bar input,
+  .cta-analyze-bar input {
+    font-size: 15px !important;
+  }
+  .analyze-bar button,
+  .cta-analyze-bar button {
+    width: 100%;
+    justify-content: center;
+    border-radius: 12px !important;
+  }
+}
+
+/* ── Responsive: 900px breakpoint ── */
+@media (max-width: 900px) {
+  .process-section > div,
+  .feature-section > div,
+  .features-grid-section > div,
+  .cta-band > div,
+  .dark-footer > div,
+  .breath > div {
+    padding-left: 28px !important;
+    padding-right: 28px !important;
+  }
+}
+
+/* ── Responsive: 720px breakpoint ── */
+@media (max-width: 720px) {
+  .process-section > div,
+  .feature-section > div,
+  .features-grid-section > div,
+  .cta-band > div,
+  .dark-footer > div,
+  .breath > div {
+    padding-left: 20px !important;
+    padding-right: 20px !important;
+  }
+
+  .dark-footer {
+    border-radius: 20px 20px 0 0 !important;
+  }
+}
+
+/* ── Responsive: 480px breakpoint ── */
+@media (max-width: 480px) {
+  .process-section > div,
+  .feature-section > div,
+  .features-grid-section > div,
+  .cta-band > div,
+  .dark-footer > div,
+  .breath > div {
+    padding-left: 16px !important;
+    padding-right: 16px !important;
+  }
 }
 
 /* Animations */
