@@ -1,104 +1,221 @@
-import { useState, useEffect } from "react";
-import RepositoryInput from "./RepositoryInput";
-import RobotVisual from "./RobotVisual";
-import DecorativeGraph from "./DecorativeGraph";
-import { Shield, Sparkles, Code2, FileCode, GitBranch, MessageSquare } from "lucide-react";
-import GithubIcon from "./common/GithubIcon";
+import { useState, useRef } from "react";
+import Button from "./ui/Button";
+import Chip from "./ui/Chip";
+
+const QUICK_FILLS = [
+    { label: "facebook/react",    value: "https://github.com/facebook/react"    },
+    { label: "vercel/next.js",    value: "https://github.com/vercel/next.js"    },
+    { label: "pandas-dev/pandas", value: "https://github.com/pandas-dev/pandas" },
+];
 
 export default function Hero({ onAnalyze, loading, error }) {
-    const [mounted, setMounted] = useState(false);
+    const [url, setUrl]         = useState("");
+    const [focused, setFocused] = useState(false);
+    const inputRef              = useRef(null);
 
-    useEffect(() => {
-        setMounted(true);
-    }, []);
+    function handleSubmit() {
+        if (url && !loading) onAnalyze(url);
+    }
 
-    const CAPABILITIES = [
-        { icon: GithubIcon, label: "GitHub Context" },
-        { icon: FileCode, label: "File Analysis" },
-        { icon: GitBranch, label: "Dependencies" },
-        { icon: MessageSquare, label: "AI Insights" },
-    ];
+    function handleChip(value) {
+        setUrl(value);
+        inputRef.current?.focus();
+        if (!loading) onAnalyze(value);
+    }
 
     return (
-        <section className="relative w-full min-h-screen flex flex-col justify-between pt-32 pb-8 px-4 sm:px-6 md:px-12 lg:px-16 overflow-hidden">
-            {/* Background elements (Decorative Graph) */}
-            <div className="absolute inset-0 pointer-events-none flex items-center justify-center">
-                <DecorativeGraph />
-            </div>
+        <>
+            {/* ── Keyframe animation ──────────────────────────────── */}
+            <style>{`
+                @keyframes heroIn {
+                    from { opacity: 0; transform: translateY(16px); }
+                    to   { opacity: 1; transform: translateY(0);    }
+                }
+                .hero-anim {
+                    opacity: 0;
+                    animation: heroIn .9s cubic-bezier(.16,.8,.4,1) forwards;
+                }
+                /* Stagger delays matching reference */
+                .hero-anim-eyebrow  { animation-delay: .05s; }
+                .hero-anim-heading  { animation-delay: .16s; }
+                .hero-anim-sub      { animation-delay: .30s; }
+                .hero-anim-input    { animation-delay: .44s; }
 
-            {/* Main 2-column Hero Content */}
-            <div className="relative z-10 max-w-7xl w-full mx-auto flex-1 flex flex-col lg:flex-row items-center justify-between gap-12 lg:gap-16">
-                
-                {/* LEFT COLUMN: Typography & Input */}
-                <div className={`w-full lg:w-[50%] xl:w-[45%] flex flex-col items-start text-left transition-all duration-1000 ${mounted ? "opacity-100 translate-y-0" : "opacity-0 translate-y-8"}`}>
-                    
+                /* Analyze bar */
+                .analyze-bar {
+                    animation: barGlow 4.5s ease-in-out infinite;
+                    transition: border-color .2s ease, box-shadow .2s ease;
+                }
+                .analyze-bar.focused {
+                    border-color: var(--ink) !important;
+                    box-shadow: 0 2px 14px rgba(0,0,0,0.06) !important;
+                    animation: none;
+                }
+                @keyframes barGlow {
+                    0%,100% { box-shadow: 0 1px 2px rgba(0,0,0,0.03); }
+                    50%     { box-shadow: 0 6px 22px rgba(20,19,17,0.07); }
+                }
+                @media (prefers-reduced-motion: reduce) {
+                    .hero-anim { opacity: 1; animation: none; }
+                    .analyze-bar { animation: none; }
+                }
+            `}</style>
+
+            {/* ── Hero section ────────────────────────────────────── */}
+            <section
+                style={{
+                    position: "relative",
+                    padding: "180px 0 120px",
+                    textAlign: "center",
+                    overflow: "hidden",
+                }}
+            >
+                {/* Inner constrained content */}
+                <div style={{ maxWidth: "760px", margin: "0 auto", padding: "0 24px" }}>
+
                     {/* Eyebrow */}
-                    <div className="flex items-center gap-2 px-3 py-1.5 rounded-full bg-black/[0.04] border border-black/[0.08] mb-6">
-                        <Sparkles size={14} className="text-black/60" />
-                        <span className="text-[11px] font-bold tracking-wider uppercase text-black/70">
-                            AI-Powered Repository Intelligence
-                        </span>
+                    <div
+                        className="hero-anim hero-anim-eyebrow"
+                        style={{
+                            fontFamily: "var(--font-mono)",
+                            fontSize: "12px",
+                            fontWeight: 400,
+                            textTransform: "uppercase",
+                            letterSpacing: "0.08em",
+                            color: "var(--muted)",
+                            marginBottom: "14px",
+                        }}
+                    >
+                        // repository intelligence
                     </div>
 
                     {/* Heading */}
-                    <h1 className="font-heading text-5xl sm:text-6xl md:text-7xl lg:text-[76px] leading-[1.05] tracking-tight text-black mb-6">
-                        Understand any<br />codebase.
+                    <h1
+                        className="hero-anim hero-anim-heading"
+                        style={{
+                            fontFamily: "var(--font-heading)",
+                            fontSize: "clamp(46px, 7.4vw, 88px)",
+                            lineHeight: 1.02,
+                            letterSpacing: "-0.035em",
+                            fontWeight: 700,
+                            color: "var(--ink)",
+                            marginBottom: "24px",
+                        }}
+                    >
+                        <span style={{ color: "var(--ink)" }}>Understand any </span>
+                        <span style={{ color: "var(--ink)" }}>repository.</span>
                     </h1>
 
-                    {/* Supporting Text */}
-                    <p className="text-lg sm:text-[21px] text-black/60 leading-relaxed max-w-[480px] mb-10 font-medium">
-                        Grove analyzes GitHub repositories and uses AI to help you explore, understand, and navigate unfamiliar code.
+                    {/* Sub-heading */}
+                    <p
+                        className="hero-anim hero-anim-sub"
+                        style={{
+                            fontSize: "18px",
+                            fontWeight: 400,
+                            lineHeight: 1.55,
+                            color: "var(--ink-soft)",
+                            maxWidth: "520px",
+                            margin: "0 auto 44px",
+                        }}
+                    >
+                        Paste a link. Grove reads the code, the commits, and the docs —
+                        then tells you what it does, how it&apos;s built, and where to start.
                     </p>
 
-                    {/* Input Container */}
-                    <div className="w-full max-w-[480px]">
-                        <RepositoryInput onAnalyze={onAnalyze} loading={loading} error={error} />
-                        
-                        {/* Feature Indicators */}
-                        <div className="mt-5 flex items-center gap-5 pl-2 text-[13px] text-black/50 font-medium">
-                            <div className="flex items-center gap-1.5">
-                                <Shield size={14} />
-                                <span>Secure</span>
-                            </div>
-                            <div className="w-[3px] h-[3px] rounded-full bg-black/20" />
-                            <div className="flex items-center gap-1.5">
-                                <Sparkles size={14} />
-                                <span>AI-Powered</span>
-                            </div>
-                            <div className="w-[3px] h-[3px] rounded-full bg-black/20" />
-                            <div className="flex items-center gap-1.5">
-                                <Code2 size={14} />
-                                <span>Repository Intelligence</span>
-                            </div>
+                    {/* Analyze bar + chips */}
+                    <div
+                        className="hero-anim hero-anim-input"
+                        style={{ maxWidth: "600px", margin: "0 auto 18px" }}
+                    >
+                        {/* Input pill */}
+                        <div
+                            className={`analyze-bar${focused ? " focused" : ""}`}
+                            style={{
+                                display: "flex",
+                                alignItems: "center",
+                                gap: "6px",
+                                background: "var(--white)",
+                                border: "1px solid var(--line)",
+                                borderRadius: "9999px",
+                                padding: "6px 6px 6px 22px",
+                                boxShadow: "0 1px 2px rgba(0,0,0,0.03)",
+                            }}
+                        >
+                            <input
+                                ref={inputRef}
+                                type="text"
+                                value={url}
+                                onChange={(e) => setUrl(e.target.value)}
+                                onKeyDown={(e) => e.key === "Enter" && handleSubmit()}
+                                onFocus={() => setFocused(true)}
+                                onBlur={() => setFocused(false)}
+                                placeholder="Paste a GitHub repo URL or owner/repo"
+                                autoComplete="off"
+                                spellCheck="false"
+                                style={{
+                                    flex: 1,
+                                    border: "none",
+                                    outline: "none",
+                                    background: "transparent",
+                                    fontFamily: "var(--font-mono)",
+                                    fontSize: "14.5px",
+                                    color: "var(--ink)",
+                                    minWidth: 0,
+                                }}
+                            />
+                            <Button
+                                variant="dark"
+                                onClick={handleSubmit}
+                                disabled={loading || !url}
+                                className="!py-[12px] !px-[22px] !text-sm shrink-0"
+                            >
+                                {loading ? "Analyzing…" : "Analyze"}
+                            </Button>
                         </div>
+
+                        {/* Chips row */}
+                        <div
+                            style={{
+                                display: "flex",
+                                alignItems: "center",
+                                justifyContent: "center",
+                                gap: "8px",
+                                flexWrap: "wrap",
+                                marginTop: "18px",
+                            }}
+                        >
+                            <span
+                                style={{
+                                    fontSize: "13px",
+                                    color: "var(--muted)",
+                                    marginRight: "2px",
+                                }}
+                            >
+                                Try:
+                            </span>
+                            {QUICK_FILLS.map(({ label, value }) => (
+                                <Chip key={value} onClick={() => handleChip(value)}>
+                                    {label}
+                                </Chip>
+                            ))}
+                        </div>
+
+                        {/* Error */}
+                        {error && (
+                            <p
+                                style={{
+                                    marginTop: "14px",
+                                    fontSize: "13.5px",
+                                    color: "#c0392b",
+                                    fontFamily: "var(--font-mono)",
+                                }}
+                            >
+                                {error}
+                            </p>
+                        )}
                     </div>
                 </div>
-
-                {/* RIGHT COLUMN: Robot Visual */}
-                <div className={`w-full lg:w-[45%] xl:w-[50%] flex justify-center items-center transition-all duration-1000 delay-300 ${mounted ? "opacity-100 translate-y-0" : "opacity-0 translate-y-8"}`}>
-                    <RobotVisual />
-                </div>
-            </div>
-
-            {/* BOTTOM: Explore Capabilities Strip */}
-            <div className={`relative z-10 w-full max-w-7xl mx-auto mt-16 lg:mt-24 pt-8 border-t border-black/10 transition-all duration-1000 delay-500 ${mounted ? "opacity-100 translate-y-0" : "opacity-0 translate-y-8"}`}>
-                <div className="flex flex-col sm:flex-row items-center justify-between gap-6">
-                    <span className="text-[11px] font-bold tracking-wider uppercase text-black/40">
-                        Explore Your Codebase
-                    </span>
-                    <div className="flex items-center gap-6 sm:gap-10">
-                        {CAPABILITIES.map((cap, idx) => {
-                            const Icon = cap.icon;
-                            return (
-                                <div key={idx} className="flex items-center gap-2.5 text-black/40 hover:text-black transition-colors cursor-default">
-                                    <Icon size={18} />
-                                    <span className="text-[13px] font-medium hidden sm:inline">{cap.label}</span>
-                                </div>
-                            );
-                        })}
-                    </div>
-                </div>
-            </div>
-        </section>
+            </section>
+        </>
     );
 }

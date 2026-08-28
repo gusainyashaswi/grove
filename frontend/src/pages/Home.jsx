@@ -2,15 +2,15 @@ import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { useRepository } from "../context/RepositoryContext";
 import { analyzeRepository } from "../services/repository.service";
+import Hero from "../components/Hero";
 
 export default function Home() {
     const { setRepository } = useRepository();
-    const navigate = useNavigate();
+    const navigate           = useNavigate();
     const [loading, setLoading] = useState(false);
-    const [error, setError] = useState("");
-    const [url, setUrl] = useState("");
+    const [error,   setError  ] = useState("");
 
-    async function handleAnalyze() {
+    async function handleAnalyze(url) {
         if (!url || loading) return;
         setLoading(true);
         setError("");
@@ -18,32 +18,28 @@ export default function Home() {
         try {
             const repositoryData = await analyzeRepository(url);
             let parsedOwner = repositoryData.owner;
-            let parsedName = repositoryData.name;
+            let parsedName  = repositoryData.name;
+
             try {
                 const parts = new URL(url).pathname.split("/").filter(Boolean);
                 if (parts[0]) parsedOwner = parsedOwner || parts[0];
-                if (parts[1]) parsedName = parsedName || parts[1].replace(/\.git$/, "");
+                if (parts[1]) parsedName  = parsedName  || parts[1].replace(/\.git$/, "");
             } catch {
-                // fallback
+                // fallback — url may not be a valid URL (e.g. owner/repo shorthand)
             }
 
-            setRepository({
-                ...repositoryData,
-                url,
-                owner: parsedOwner,
-                name: parsedName,
-            });
+            setRepository({ ...repositoryData, url, owner: parsedOwner, name: parsedName });
             navigate("/repository");
         } catch (err) {
             console.error("Repository analysis error:", err);
             if (err.code === "ERR_NETWORK" || !err.response) {
                 setError(
-                    "Cannot connect to backend server. Please ensure the backend is running on http://localhost:3000."
+                    "Cannot connect to backend. Please ensure the server is running on http://localhost:3000."
                 );
             } else {
                 setError(
                     err.response?.data?.message ||
-                    "Failed to analyze repository. Please check the GitHub URL and try again."
+                    "Failed to analyze repository. Please check the URL and try again."
                 );
             }
         } finally {
@@ -52,28 +48,15 @@ export default function Home() {
     }
 
     return (
-        <div className="w-full min-h-screen flex flex-col bg-[var(--bg)] text-[var(--ink)]">
-            {/* Main Content: Input and Button */}
-            <main className="flex-1 flex flex-col items-center justify-center p-4">
-                <div className="flex gap-2 w-full max-w-xl">
-                    <input
-                        type="text"
-                        placeholder="Enter repository link (e.g., https://github.com/owner/repo)"
-                        className="flex-1 p-3 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500"
-                        value={url}
-                        onChange={(e) => setUrl(e.target.value)}
-                        onKeyDown={(e) => e.key === "Enter" && handleAnalyze()}
-                    />
-                    <button
-                        className="px-6 py-3 bg-blue-600 text-white font-medium rounded-md shadow-sm hover:bg-blue-700 disabled:opacity-50 disabled:cursor-not-allowed transition-colors"
-                        onClick={handleAnalyze}
-                        disabled={loading || !url}
-                    >
-                        {loading ? "Loading..." : "Analyze"}
-                    </button>
-                </div>
-                {error && <p className="text-red-500 mt-4">{error}</p>}
-            </main>
+        <div
+            style={{
+                width: "100%",
+                minHeight: "100dvh",
+                background: "var(--bg)",
+                color: "var(--ink)",
+            }}
+        >
+            <Hero onAnalyze={handleAnalyze} loading={loading} error={error} />
         </div>
     );
 }
