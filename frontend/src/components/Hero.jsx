@@ -1,6 +1,23 @@
 import { useState, useRef } from "react";
 import Button from "./ui/Button";
 import Chip from "./ui/Chip";
+import Terminal from "./Terminal";
+
+/* Sample output shown on initial load — replace with real data later */
+const SAMPLE_LINES = [
+    { type: "prompt",  command: "grove explain facebook/react" },
+    { type: "blank"  },
+    { type: "heading", text: "Summary" },
+    { type: "body",    text: "A library for building user interfaces out" },
+    { type: "body",    text: "of composable, reusable components." },
+    { type: "blank"  },
+    { type: "heading", text: "Entry point" },
+    { type: "body",    text: "packages/react/src/React.js" },
+    { type: "blank"  },
+    { type: "heading", text: "Read first" },
+    { type: "dim",     text: "1. packages/react-reconciler/src/" },
+    { type: "dim",     text: "2. packages/react-dom/src/client/" },
+];
 
 const QUICK_FILLS = [
     { label: "facebook/react",    value: "https://github.com/facebook/react"    },
@@ -213,6 +230,22 @@ export default function Hero({ onAnalyze, loading, error }) {
                                 {error}
                             </p>
                         )}
+                    </div>
+
+                    {/* Terminal preview */}
+                    <div
+                        className="hero-anim hero-anim-input"
+                        style={{
+                            maxWidth: "600px",
+                            margin: "56px auto 0",
+                            animationDelay: ".58s",
+                        }}
+                    >
+                        <Terminal
+                            title="grove — output"
+                            lines={SAMPLE_LINES}
+                            isTyping={false}
+                        />
                     </div>
                 </div>
             </section>
