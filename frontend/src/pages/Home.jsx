@@ -5,6 +5,8 @@ import { analyzeRepository } from "../services/repository.service";
 import Hero from "../components/Hero";
 import ProcessSection from "../components/ProcessSection";
 import FeatureSection from "../components/FeatureSection";
+import QuoteBand from "../components/QuoteBand";
+import FeaturesGrid from "../components/FeaturesGrid";
 
 export default function Home() {
     const { setRepository } = useRepository();
@@ -95,6 +97,10 @@ export default function Home() {
             <ProcessSection />
 
             <FeatureSection />
+
+            <QuoteBand />
+
+            <FeaturesGrid />
         </div>
     );
 }
