@@ -40,6 +40,28 @@
   --r-input:  9999px;
   --r-button: 9999px;
   --radius-card: 14px;
+
+  /* Workspace Layout & Accent Tokens */
+  --container-max-w: 1440px;
+  --color-accent: #00f59b;
+  --color-accent-muted: rgba(0, 245, 155, 0.12);
+  --color-accent-border: rgba(0, 245, 155, 0.3);
+}
+
+/* Glass Card & Panel Utilities */
+.glass-card {
+  background: rgba(18, 24, 36, 0.85);
+  backdrop-filter: blur(20px) saturate(180%);
+  -webkit-backdrop-filter: blur(20px) saturate(180%);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.35);
+}
+
+.glass-panel {
+  background: rgba(18, 24, 36, 0.65);
+  backdrop-filter: blur(16px) saturate(180%);
+  -webkit-backdrop-filter: blur(16px) saturate(180%);
+  border: 1px solid rgba(255, 255, 255, 0.08);
 }
 
 *,

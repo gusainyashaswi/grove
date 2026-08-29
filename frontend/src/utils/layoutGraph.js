@@ -22,15 +22,14 @@ export function layoutGraph(nodes, edges) {
 
     dagre.layout(graph);
 
-    return nodes.map((node) => {
+    return (nodes || []).map((node, index) => {
         const position = graph.node(node.id);
 
         return {
             ...node,
-
             position: {
-                x: position.x,
-                y: position.y,
+                x: position ? position.x - 90 : (index % 4) * 220 + 50,
+                y: position ? position.y - 25 : Math.floor(index / 4) * 120 + 50,
             },
         };
     });

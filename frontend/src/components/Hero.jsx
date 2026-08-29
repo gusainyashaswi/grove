@@ -162,10 +162,13 @@ export default function Hero({ onAnalyze, loading: backendLoading, error: backen
     useEffect(() => () => cancelTyping(), []);
 
     function handleSubmit(rawUrl = url) {
-        if (!rawUrl || isTyping) return;
+        if (!rawUrl || backendLoading) return;
         const key  = parseRepo(rawUrl);
         const data = MOCK[key] ?? fallbackData(key || rawUrl);
         runSequence(data);
+        if (onAnalyze) {
+            onAnalyze(rawUrl);
+        }
     }
 
     function handleChip(value) {
@@ -176,7 +179,7 @@ export default function Hero({ onAnalyze, loading: backendLoading, error: backen
         runSequence(data);
     }
 
-    const busy = isTyping || backendLoading;
+    const busy = backendLoading;
 
     return (
         <>
