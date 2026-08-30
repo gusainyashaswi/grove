@@ -3,7 +3,11 @@ export default function QuoteBand() {
         <>
             <style>{`
                 .breath {
-                    background: var(--bg-alt);
+                    background: rgba(231, 227, 217, 0.7);
+                    backdrop-filter: blur(8px);
+                    -webkit-backdrop-filter: blur(8px);
+                    border-top: 1px solid var(--line);
+                    border-bottom: 1px solid var(--line);
                     text-align: center;
                     padding: 96px 0;
                 }

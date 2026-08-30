@@ -4,7 +4,8 @@ import { useRepository } from "../context/RepositoryContext";
 import { analyzeRepository } from "../services/repository.service";
 import { useReveal } from "../hooks/useReveal";
 
-import Hero          from "../components/Hero";
+import LiquidEther    from "../components/LiquidEther";
+import Hero           from "../components/Hero";
 import ProcessSection from "../components/ProcessSection";
 import FeatureSection from "../components/FeatureSection";
 import QuoteBand      from "../components/QuoteBand";
@@ -65,6 +66,7 @@ export default function Home() {
     return (
         <div
             style={{
+                position: "relative",
                 width: "100%",
                 minHeight: "100dvh",
                 background: "var(--bg)",
@@ -72,32 +74,65 @@ export default function Home() {
                 overflowX: "hidden",
             }}
         >
-            {/* ── Hero ── */}
-            <Hero onAnalyze={handleAnalyze} loading={loading} error={error} />
+            {/* ── Fixed Full-Page LiquidEther Fluid Background ── */}
+            <div
+                style={{
+                    position: "fixed",
+                    inset: 0,
+                    zIndex: 0,
+                    pointerEvents: "none",
+                    overflow: "hidden",
+                }}
+            >
+                <LiquidEther
+                    colors={["#141311", "#4a4740", "#8b8779", "#c5c0b2"]}
+                    backgroundColor="#f1efe9"
+                    lightMode={true}
+                    mouseForce={20}
+                    cursorSize={110}
+                    isViscous={true}
+                    viscous={25}
+                    iterationsViscous={32}
+                    iterationsPoisson={32}
+                    resolution={0.5}
+                    autoDemo={true}
+                    autoSpeed={0.4}
+                    autoIntensity={2.0}
+                    takeoverDuration={0.3}
+                    autoResumeDelay={1200}
+                    autoRampDuration={0.8}
+                />
+            </div>
 
-            {/* ── Section divider ── */}
-            <Divider />
+            {/* ── Page Content Layer ── */}
+            <div style={{ position: "relative", zIndex: 1 }}>
+                {/* Hero */}
+                <Hero onAnalyze={handleAnalyze} loading={loading} error={error} />
 
-            {/* ── How it works ── */}
-            <ProcessSection />
+                {/* Section divider */}
+                <Divider />
 
-            {/* ── Feature: two-column with Terminal ── */}
-            <FeatureSection />
+                {/* How it works */}
+                <ProcessSection />
 
-            {/* ── Quote band ── */}
-            <QuoteBand />
+                {/* Feature: two-column with Terminal */}
+                <FeatureSection />
 
-            {/* ── Features grid ── */}
-            <FeaturesGrid />
+                {/* Quote band */}
+                <QuoteBand />
 
-            {/* ── Divider before CTA ── */}
-            <Divider />
+                {/* Features grid */}
+                <FeaturesGrid />
 
-            {/* ── CTA ── */}
-            <CtaSection onAnalyze={handleAnalyze} />
+                {/* Divider before CTA */}
+                <Divider />
 
-            {/* ── Footer ── */}
-            <Footer />
+                {/* CTA */}
+                <CtaSection onAnalyze={handleAnalyze} />
+
+                {/* Footer */}
+                <Footer />
+            </div>
         </div>
     );
 }

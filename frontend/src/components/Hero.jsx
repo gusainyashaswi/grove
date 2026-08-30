@@ -2,7 +2,6 @@ import { useState, useRef, useEffect, useCallback } from "react";
 import Button from "./ui/Button";
 import Chip from "./ui/Chip";
 import Terminal from "./Terminal";
-import LiquidEther from "./LiquidEther";
 
 /* ── Mock data (mirrors the reference HTML exactly) ────────── */
 const MOCK = {
@@ -227,9 +226,6 @@ export default function Hero({ onAnalyze, loading: backendLoading, error: backen
                     overflow: "hidden",
                 }}
             >
-                {/* LiquidEther background effect */}
-                <LiquidEther />
-
                 <div style={{ position: "relative", zIndex: 1, maxWidth: "760px", margin: "0 auto", padding: "0 24px" }}>
 
                     {/* Eyebrow */}
