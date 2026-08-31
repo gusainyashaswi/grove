@@ -27,6 +27,8 @@ async function cloneRepository(owner, repository) {
     return new Promise((resolve, reject) => {
         const git = spawn("git", [
             "clone",
+            "--depth",
+            "1",
             `https://github.com/${owner}/${cleanRepo}.git`,
             repositoryPath
         ]);

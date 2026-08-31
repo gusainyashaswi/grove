@@ -45,7 +45,15 @@ function getRepositoryFiles(directoryPath, baseDir = directoryPath) {
 }
 
 function readFileContent(filePath) {
-    return fs.readFileSync(filePath, "utf8");
+    try {
+        const stats = fs.statSync(filePath);
+        if (stats.size > 2 * 1024 * 1024) {
+            return "// File omitted: exceeds size limit (2MB)";
+        }
+        return fs.readFileSync(filePath, "utf8");
+    } catch {
+        return "";
+    }
 }
 
 function readRepositoryFiles(filePaths, repositoryPath) {

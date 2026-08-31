@@ -131,6 +131,7 @@ export default function Hero({ onAnalyze, loading: backendLoading, error: backen
 
     const runSequence = useCallback((data) => {
         cancelTyping();
+        if (!data || !data.lines) return;
         abortRef.current = false;
 
         setTermTitle("grove — output");
@@ -143,11 +144,13 @@ export default function Hero({ onAnalyze, loading: backendLoading, error: backen
         function next() {
             if (abortRef.current) return;
             if (i >= lines.length) {
-                setTermTitle(title);
+                setTermTitle(title || "grove — output");
                 setIsTyping(false);
                 return;
             }
-            setTermLines((prev) => [...prev, lines[i]]);
+            if (lines[i]) {
+                setTermLines((prev) => [...prev, lines[i]]);
+            }
             i++;
             const delay = lines[i - 1]?.type === "blank"    ? 40
                         : lines[i - 1]?.type === "heading"  ? 120
@@ -173,9 +176,6 @@ export default function Hero({ onAnalyze, loading: backendLoading, error: backen
     function handleChip(value) {
         setUrl(value);
         inputRef.current?.focus();
-        const key  = parseRepo(value);
-        const data = MOCK[key] ?? fallbackData(key);
-        runSequence(data);
     }
 
     const busy = backendLoading;
@@ -326,7 +326,7 @@ export default function Hero({ onAnalyze, loading: backendLoading, error: backen
                                 className="!py-[12px] !px-[22px] !text-sm shrink-0"
                                 style={{ transition: "opacity .2s ease" }}
                             >
-                                {isTyping ? "Reading…" : backendLoading ? "Analyzing…" : "Analyze"}
+                                {backendLoading ? "Analyzing…" : isTyping ? "Reading…" : "Analyze"}
                             </Button>
                         </div>
 

@@ -60,6 +60,8 @@ function Cursor() {
 
 /* ── Single line renderer ────────────────────────────────── */
 function TermLine({ line, isLast, isTyping }) {
+    if (!line) return null;
+
     const base = {
         whiteSpace: "pre-wrap",
         wordBreak:  "break-word",
@@ -74,7 +76,7 @@ function TermLine({ line, isLast, isTyping }) {
         return (
             <span style={base}>
                 <span style={{ color: C.prompt }}>$ </span>
-                <span style={{ color: C.white }}>{line.command}</span>
+                <span style={{ color: C.white }}>{line.command || ""}</span>
                 {isLast && isTyping && <Cursor />}
             </span>
         );
@@ -89,7 +91,7 @@ function TermLine({ line, isLast, isTyping }) {
 
     return (
         <span style={{ ...base, color: colorMap[line.type] ?? C.body, fontWeight: weightMap[line.type] }}>
-            {line.text}
+            {line.text || ""}
             {isLast && isTyping && <Cursor />}
         </span>
     );
@@ -155,7 +157,7 @@ export default function Terminal({ title = "grove — output", lines = [], isTyp
                 }}
             >
                 {lines.length === 0 && isTyping && <Cursor />}
-                {lines.map((line, i) => (
+                {lines.filter(Boolean).map((line, i) => (
                     <TermLine
                         key={i}
                         line={line}

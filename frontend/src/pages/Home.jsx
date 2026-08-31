@@ -26,7 +26,21 @@ export default function Home() {
      */
     useReveal();
 
-    async function handleAnalyze(url) {
+    function normalizeRepoUrl(raw) {
+        if (!raw) return "";
+        let trimmed = raw.trim();
+        if (!trimmed.startsWith("http://") && !trimmed.startsWith("https://")) {
+            if (trimmed.startsWith("github.com/")) {
+                trimmed = "https://" + trimmed;
+            } else if (/^[a-zA-Z0-9_.-]+\/[a-zA-Z0-9_.-]+$/.test(trimmed)) {
+                trimmed = "https://github.com/" + trimmed;
+            }
+        }
+        return trimmed;
+    }
+
+    async function handleAnalyze(rawUrl) {
+        const url = normalizeRepoUrl(rawUrl);
         if (!url || loading) return;
         setLoading(true);
         setError("");

@@ -1,7 +1,13 @@
 const AppError = require("../errors/AppError");
+const { normalizeGithubUrl } = require("../validators/repository.validator");
 
-function extractRepositoryInfo(url) {
-    if (!url || typeof url !== "string") {
+function extractRepositoryInfo(rawUrl) {
+    if (!rawUrl || typeof rawUrl !== "string") {
+        throw new AppError("Invalid repository URL", 400);
+    }
+
+    const url = normalizeGithubUrl(rawUrl);
+    if (!url) {
         throw new AppError("Invalid repository URL", 400);
     }
 

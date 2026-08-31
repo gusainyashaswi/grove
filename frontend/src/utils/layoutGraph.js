@@ -1,6 +1,7 @@
 import dagre from "@dagrejs/dagre";
 
 export function layoutGraph(nodes, edges) {
+    if (!nodes || nodes.length === 0) return [];
     const graph = new dagre.graphlib.Graph();
 
     graph.setDefaultEdgeLabel(() => ({}));
@@ -10,20 +11,34 @@ export function layoutGraph(nodes, edges) {
     });
 
     nodes.forEach((node) => {
-        graph.setNode(node.id, {
-            width: 180,
-            height: 50,
-        });
+        if (node && node.id) {
+            graph.setNode(node.id, {
+                width: 180,
+                height: 50,
+            });
+        }
     });
 
-    edges.forEach((edge) => {
-        graph.setEdge(edge.source, edge.target);
+    (edges || []).forEach((edge) => {
+        if (edge && edge.source && edge.target) {
+            if (!graph.hasNode(edge.source)) {
+                graph.setNode(edge.source, { width: 180, height: 50 });
+            }
+            if (!graph.hasNode(edge.target)) {
+                graph.setNode(edge.target, { width: 180, height: 50 });
+            }
+            graph.setEdge(edge.source, edge.target);
+        }
     });
 
-    dagre.layout(graph);
+    try {
+        dagre.layout(graph);
+    } catch (e) {
+        console.warn("Dagre graph layout error:", e);
+    }
 
     return (nodes || []).map((node, index) => {
-        const position = graph.node(node.id);
+        const position = graph.hasNode(node.id) ? graph.node(node.id) : null;
 
         return {
             ...node,
