@@ -1,4 +1,5 @@
 const { GoogleGenAI } = require("@google/genai");
+const path = require("path");
 const AppError = require("../errors/AppError");
 const { buildRepositorySummaryPrompt } = require("../prompts/repositorySummary.prompt");
 const { buildExplainFilePrompt } = require("../prompts/explainFile.prompt");
@@ -15,7 +16,7 @@ function getAIClient() {
     });
 }
 
-const MODEL_NAME = process.env.GEMINI_MODEL || "gemini-2.5-flash";
+const MODEL_NAME = process.env.GEMINI_MODEL || "gemini-2.0-flash";
 
 async function explainFile(repository, file) {
     const ai = getAIClient();
@@ -46,8 +47,13 @@ async function summarizeRepository(repository) {
 async function answerRepositoryQuestion(repository, question) {
     const ai = getAIClient();
     const knowledge = repository?.knowledge || (repository?.files ? buildRepositoryKnowledge(repository) : repository);
+    const files = repository?.files || [];
 
-    const selectedSourceFiles = selectRelevantFiles(knowledge, question);
+    const repositoryPath = (repository?.owner && repository?.name)
+        ? path.resolve(process.cwd(), "temp", "repositories", `${repository.owner}-${repository.name}`)
+        : null;
+
+    const selectedSourceFiles = selectRelevantFiles(knowledge, question, repositoryPath, files);
 
     const prompt = buildRepositoryQuestionPrompt(knowledge, question, selectedSourceFiles);
 

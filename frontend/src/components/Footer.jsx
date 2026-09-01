@@ -110,8 +110,8 @@ export default function Footer() {
                 }
             `}</style>
 
-            <footer className="dark-footer">
-                <div style={{ maxWidth: "1440px", margin: "0 auto", padding: "0 48px" }}>
+            <footer className="dark-footer ">
+                <div style={{ maxWidth: "1320px", margin: "0 auto", padding: "0 48px" }}>
                     <div className="footer-top">
                         {/* Column 1 - Brand Info */}
                         <div className="footer-brand">

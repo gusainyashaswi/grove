@@ -20,7 +20,7 @@ async function explainFileController(req, res) {
     } catch (error) {
         console.error(error);
 
-        res.status(500).json({
+        res.status(error.statusCode || 500).json({
             success: false,
             message: error.message,
         });
@@ -47,7 +47,7 @@ async function summarizeRepositoryController(req, res) {
     } catch (error) {
         console.error(error);
 
-        res.status(500).json({
+        res.status(error.statusCode || 500).json({
             success: false,
             message: error.message,
         });
@@ -81,7 +81,7 @@ async function answerRepositoryQuestionController(req, res) {
     } catch (error) {
         console.error(error);
 
-        res.status(500).json({
+        res.status(error.statusCode || 500).json({
             success: false,
             message: error.message,
         });

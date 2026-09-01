@@ -1,4 +1,5 @@
 const { readFileContent } = require("./file.utils");
+const path = require("path");
 
 const MAX_SOURCE_FILES = 4;
 
@@ -39,15 +40,17 @@ function isMetadataQuestion(question) {
 function scoreFile(fileMeta, questionTokens) {
     let score = 0;
 
-    const nameLower = fileMeta.name.toLowerCase();
-    const pathLower = fileMeta.path.toLowerCase();
+    const nameLower = fileMeta.name ? fileMeta.name.toLowerCase() : "";
+    const pathLower = fileMeta.path ? fileMeta.path.toLowerCase() : "";
 
     for (const token of questionTokens) {
         if (nameLower.includes(token)) score += 3;
         if (pathLower.includes(token)) score += 1;
     }
 
-    score += fileMeta.dependents.length;
+    if (Array.isArray(fileMeta.dependents)) {
+        score += fileMeta.dependents.length;
+    }
 
     return score;
 }
@@ -60,22 +63,24 @@ function tokenize(question) {
         .filter(t => t.length > 2);
 }
 
-function selectRelevantFiles(knowledge, question, repositoryPath) {
+function selectRelevantFiles(knowledge, question, repositoryPath, fullFiles = []) {
     if (isMetadataQuestion(question)) {
         return [];
     }
 
     const files = Array.isArray(knowledge?.files) ? knowledge.files : [];
 
-    if (files.length === 0) {
+    if (files.length === 0 && (!Array.isArray(fullFiles) || fullFiles.length === 0)) {
         return [];
     }
+
+    const targetFilesList = files.length > 0 ? files : fullFiles;
 
     const questionTokens = tokenize(question);
     const selectedPaths = new Set();
     const candidates = [];
 
-    for (const fileMeta of files) {
+    for (const fileMeta of targetFilesList) {
         const score = scoreFile(fileMeta, questionTokens);
         if (score > 0) {
             candidates.push({ fileMeta, score });
@@ -92,9 +97,11 @@ function selectRelevantFiles(knowledge, question, repositoryPath) {
 
     const relatedPaths = new Set();
     for (const { fileMeta } of topCandidates) {
-        for (const dep of fileMeta.dependencies) {
-            if (!selectedPaths.has(dep) && relatedPaths.size + selectedPaths.size < MAX_SOURCE_FILES) {
-                relatedPaths.add(dep);
+        if (Array.isArray(fileMeta.dependencies)) {
+            for (const dep of fileMeta.dependencies) {
+                if (!selectedPaths.has(dep) && relatedPaths.size + selectedPaths.size < MAX_SOURCE_FILES) {
+                    relatedPaths.add(dep);
+                }
             }
         }
     }
@@ -103,6 +110,12 @@ function selectRelevantFiles(knowledge, question, repositoryPath) {
 
     const result = [];
     for (const filePath of allSelectedPaths) {
+        const fullFile = Array.isArray(fullFiles) ? fullFiles.find(f => f.path === filePath) : null;
+        if (fullFile && fullFile.content) {
+            result.push({ path: filePath, content: fullFile.content });
+            continue;
+        }
+
         const fileMeta = files.find(f => f.path === filePath);
         if (fileMeta && fileMeta.content) {
             result.push({ path: filePath, content: fileMeta.content });
@@ -114,7 +127,9 @@ function selectRelevantFiles(knowledge, question, repositoryPath) {
                 ? path.join(repositoryPath, filePath)
                 : filePath;
             const content = readFileContent(targetPath);
-            result.push({ path: filePath, content });
+            if (content) {
+                result.push({ path: filePath, content });
+            }
         } catch {
             // file not readable, skip
         }
