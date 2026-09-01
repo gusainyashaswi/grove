@@ -127,7 +127,7 @@ Coupling Hotspots:
                                         GROVE INTELLIGENCE
                                     </span>
                                     <span className="font-mono text-[9px] px-2 py-0.2 rounded bg-emerald-950/60 border border-emerald-500/30 text-emerald-300">
-                                        GEMINI 2.5 FLASH
+                                        GEMINI 3.6 FLASH
                                     </span>
                                 </div>
 

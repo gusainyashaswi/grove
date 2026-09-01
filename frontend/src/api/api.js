@@ -35,10 +35,9 @@ export async function summarizeRepository(repository) {
 export async function askRepositoryQuestion(repository, question) {
     const response = await axios.post(`${API_URL}/repository-question`, {
         repository: {
-            knowledge: repository?.knowledge,
-            files: repository?.files,
             owner: repository?.owner,
             name: repository?.name,
+            knowledge: repository?.knowledge,
         },
         question,
     });

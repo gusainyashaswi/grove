@@ -81,7 +81,7 @@ function RepositorySummary() {
                         </button>
                     ) : (
                         <Badge variant="purple" className="font-mono text-xs">
-                            Gemini 2.5 Flash
+                            Gemini 3.6 Flash
                         </Badge>
                     )}
                 </div>

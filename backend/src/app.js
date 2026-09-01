@@ -12,7 +12,8 @@ const corsOptions = process.env.CLIENT_URL
     : {};
 
 app.use(cors(corsOptions));
-app.use(express.json());
+app.use(express.json({ limit: "50mb" }));
+app.use(express.urlencoded({ limit: "50mb", extended: true }));
 app.use("/api", healthRoutes);
 app.use("/api", analysisRoutes);
 app.use("/api/ai", aiRoutes);
