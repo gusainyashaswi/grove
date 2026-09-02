@@ -99,8 +99,8 @@ export default function Home() {
                 }}
             >
                 <LiquidEther
-                    colors={["#141311", "#4a4740", "#8b8779", "#c5c0b2"]}
-                    backgroundColor="#f1efe9"
+                    colors={["#0d1b2a", "#2b5270", "#548db5", "#a4d2ee"]}
+                    backgroundColor="#eef6fc"
                     lightMode={true}
                     mouseForce={20}
                     cursorSize={110}

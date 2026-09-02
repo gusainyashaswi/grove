@@ -1,15 +1,15 @@
 @import "tailwindcss";
 
 @theme {
-  --color-bg: #f1efe9;
-  --color-bg-alt: #e7e3d9;
-  --color-ink: #141311;
-  --color-ink-soft: #4a4740;
-  --color-muted: #8b8779;
-  --color-line: #d9d5c8;
-  --color-line-soft: #e2ded2;
+  --color-bg: #eef6fc;
+  --color-bg-alt: #dbebf6;
+  --color-ink: #0d1b2a;
+  --color-ink-soft: #2b4559;
+  --color-muted: #59788e;
+  --color-line: #cbdce8;
+  --color-line-soft: #d9e7f2;
   --color-black: #0c0c0b;
-  --color-white: #f7f5ee;
+  --color-white: #f4f9fd;
 
   --radius-card: 14px;
   --radius-pill: 9999px;
@@ -21,15 +21,15 @@
 }
 
 :root {
-  --bg: #f1efe9;
-  --bg-alt: #e7e3d9;
-  --ink: #141311;
-  --ink-soft: #4a4740;
-  --muted: #8b8779;
-  --line: #d9d5c8;
-  --line-soft: #e2ded2;
+  --bg: #eef6fc;
+  --bg-alt: #dbebf6;
+  --ink: #0d1b2a;
+  --ink-soft: #2b4559;
+  --muted: #59788e;
+  --line: #cbdce8;
+  --line-soft: #d9e7f2;
   --black: #0c0c0b;
-  --white: #f7f5ee;
+  --white: #f4f9fd;
   
   --font-heading: "Inter Tight", sans-serif;
   --font-body: "Inter", sans-serif;

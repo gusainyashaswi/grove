@@ -2,9 +2,8 @@ import { useState, useEffect, useRef } from "react";
 import { Link, useLocation } from "react-router-dom";
 import Button from "../ui/Button";
 
-/* --white-dim from the reference */
-const WHITE     = "#f7f5ee";
-const WHITE_DIM = "rgba(247,245,238,0.62)";
+const INK     = "#0d1b2a";
+const INK_DIM = "#3a5266";
 
 const NAV_LINKS = [
     { label: "How it works", href: "/#how-it-works" },
@@ -22,7 +21,7 @@ function LogoMark() {
             fill="none"
             xmlns="http://www.w3.org/2000/svg"
             aria-hidden="true"
-            style={{ color: WHITE }}
+            style={{ color: INK }}
         >
             <circle cx="12" cy="12" r="9"   stroke="currentColor" strokeWidth="1.6" />
             <circle cx="12" cy="12" r="2.4" fill="currentColor" />
@@ -33,7 +32,7 @@ function LogoMark() {
 /* ── Hamburger icon ───────────────────────────────────────── */
 function BurgerIcon() {
     return (
-        <svg viewBox="0 0 24 24" fill="none" stroke={WHITE} strokeWidth="1.8"
+        <svg viewBox="0 0 24 24" fill="none" stroke={INK} strokeWidth="1.8"
             width="20" height="20" aria-hidden="true"
         >
             <path d="M3 6h18M3 12h18M3 18h18" strokeLinecap="round" />
@@ -63,12 +62,11 @@ export default function Navbar() {
 
     /* shared nav style */
     const pillStyle = {
-        /* match reference exactly */
-        background: "rgba(20,19,17,0.32)",
-        backdropFilter: "blur(22px) saturate(180%)",
-        WebkitBackdropFilter: "blur(22px) saturate(180%)",
-        border: "1px solid rgba(247,245,238,0.14)",
-        boxShadow: "0 8px 30px rgba(0,0,0,0.16), inset 0 1px 0 rgba(247,245,238,0.14)",
+        background: "rgba(255, 255, 255, 0.72)",
+        backdropFilter: "blur(24px) saturate(200%)",
+        WebkitBackdropFilter: "blur(24px) saturate(200%)",
+        border: "1px solid rgba(255, 255, 255, 0.95)",
+        boxShadow: "0 10px 36px rgba(13, 27, 42, 0.08), inset 0 1px 0 #ffffff",
         borderRadius: "9999px",
     };
 
@@ -105,7 +103,7 @@ export default function Navbar() {
                             alignItems: "center",
                             gap: "9px",
                             textDecoration: "none",
-                            color: WHITE,
+                            color: INK,
                         }}
                     >
                         <LogoMark />
@@ -113,7 +111,7 @@ export default function Navbar() {
                             fontFamily: "var(--font-heading)",
                             fontSize: "16px",
                             fontWeight: 600,
-                            color: WHITE,
+                            color: INK,
                             letterSpacing: "-0.02em",
                         }}>
                             Grove
@@ -129,12 +127,12 @@ export default function Navbar() {
                                 style={{
                                     fontSize: "14px",
                                     fontWeight: 500,
-                                    color: WHITE_DIM,
+                                    color: INK_DIM,
                                     textDecoration: "none",
                                     transition: "color .2s ease",
                                 }}
-                                onMouseEnter={e => (e.currentTarget.style.color = WHITE)}
-                                onMouseLeave={e => (e.currentTarget.style.color = WHITE_DIM)}
+                                onMouseEnter={e => (e.currentTarget.style.color = INK)}
+                                onMouseLeave={e => (e.currentTarget.style.color = INK_DIM)}
                             >
                                 {link.label}
                             </a>
@@ -150,20 +148,20 @@ export default function Navbar() {
                             style={{
                                 fontSize: "14px",
                                 fontWeight: 500,
-                                color: WHITE_DIM,
+                                color: INK_DIM,
                                 textDecoration: "none",
                                 padding: "0 4px",
                                 transition: "color .2s ease",
                             }}
-                            onMouseEnter={e => (e.currentTarget.style.color = WHITE)}
-                            onMouseLeave={e => (e.currentTarget.style.color = WHITE_DIM)}
+                            onMouseEnter={e => (e.currentTarget.style.color = INK)}
+                            onMouseLeave={e => (e.currentTarget.style.color = INK_DIM)}
                         >
                             Log in
                         </a>
 
                         {/* Sign up (hidden ≤720px) */}
                         <Button
-                            variant="light"
+                            variant="dark"
                             href="/signup"
                             id="nav-signup-desktop"
                             className="!py-[11px] !px-[22px] !text-sm whitespace-nowrap"
@@ -204,12 +202,12 @@ export default function Navbar() {
                         transform: "translateX(-50%)",
                         width: "min(1040px, calc(100% - 32px))",
                         zIndex: 199,
-                        background: "rgba(20,19,17,0.50)",
-                        backdropFilter: "blur(22px) saturate(180%)",
-                        WebkitBackdropFilter: "blur(22px) saturate(180%)",
-                        border: "1px solid rgba(247,245,238,0.14)",
+                        background: "rgba(255, 255, 255, 0.85)",
+                        backdropFilter: "blur(24px) saturate(200%)",
+                        WebkitBackdropFilter: "blur(24px) saturate(200%)",
+                        border: "1px solid rgba(255, 255, 255, 0.95)",
                         borderRadius: "20px",
-                        boxShadow: "0 8px 30px rgba(0,0,0,0.18), inset 0 1px 0 rgba(247,245,238,0.14)",
+                        boxShadow: "0 10px 36px rgba(13, 27, 42, 0.1), inset 0 1px 0 #ffffff",
                         padding: "8px",
                         display: "flex",
                         flexDirection: "column",
@@ -224,17 +222,17 @@ export default function Navbar() {
                                 padding: "14px 16px",
                                 fontSize: "15px",
                                 fontWeight: 500,
-                                color: WHITE_DIM,
+                                color: INK_DIM,
                                 textDecoration: "none",
                                 borderRadius: "12px",
                                 transition: "color .15s ease, background .15s ease",
                             }}
                             onMouseEnter={e => {
-                                e.currentTarget.style.color = WHITE;
-                                e.currentTarget.style.background = "rgba(255,255,255,0.06)";
+                                e.currentTarget.style.color = INK;
+                                e.currentTarget.style.background = "rgba(13, 27, 42, 0.05)";
                             }}
                             onMouseLeave={e => {
-                                e.currentTarget.style.color = WHITE_DIM;
+                                e.currentTarget.style.color = INK_DIM;
                                 e.currentTarget.style.background = "transparent";
                             }}
                         >
@@ -248,17 +246,17 @@ export default function Navbar() {
                             padding: "14px 16px",
                             fontSize: "15px",
                             fontWeight: 500,
-                            color: WHITE_DIM,
+                            color: INK_DIM,
                             textDecoration: "none",
                             borderRadius: "12px",
                             transition: "color .15s ease, background .15s ease",
                         }}
                         onMouseEnter={e => {
-                            e.currentTarget.style.color = WHITE;
-                            e.currentTarget.style.background = "rgba(255,255,255,0.06)";
+                            e.currentTarget.style.color = INK;
+                            e.currentTarget.style.background = "rgba(13, 27, 42, 0.05)";
                         }}
                         onMouseLeave={e => {
-                            e.currentTarget.style.color = WHITE_DIM;
+                            e.currentTarget.style.color = INK_DIM;
                             e.currentTarget.style.background = "transparent";
                         }}
                     >

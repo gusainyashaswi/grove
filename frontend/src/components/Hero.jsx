@@ -200,16 +200,17 @@ export default function Hero({ onAnalyze, loading: backendLoading, error: backen
 
                 .analyze-bar {
                     animation: barGlow 4.5s ease-in-out infinite;
-                    transition: border-color .2s ease, box-shadow .2s ease;
+                    transition: border-color .2s ease, box-shadow .2s ease, background .2s ease;
                 }
                 .analyze-bar.focused {
-                    border-color: var(--ink) !important;
-                    box-shadow: 0 2px 14px rgba(0,0,0,0.06) !important;
+                    border-color: rgba(13, 27, 42, 0.45) !important;
+                    box-shadow: 0 10px 30px rgba(13, 27, 42, 0.12), 0 0 0 3px rgba(0, 245, 155, 0.3) !important;
+                    background: rgba(255, 255, 255, 0.75) !important;
                     animation: none;
                 }
                 @keyframes barGlow {
-                    0%,100% { box-shadow: 0 1px 2px rgba(0,0,0,0.03); }
-                    50%     { box-shadow: 0 6px 22px rgba(20,19,17,0.07); }
+                    0%,100% { box-shadow: 0 8px 32px rgba(13, 27, 42, 0.06), inset 0 1px 0 rgba(255, 255, 255, 0.9); }
+                    50%     { box-shadow: 0 14px 40px rgba(13, 27, 42, 0.14), inset 0 1px 0 rgba(255, 255, 255, 1); }
                 }
                 @media (prefers-reduced-motion: reduce) {
                     .hero-anim   { opacity: 1; animation: none; }
@@ -288,8 +289,10 @@ export default function Hero({ onAnalyze, loading: backendLoading, error: backen
                                 display: "flex",
                                 alignItems: "center",
                                 gap: "6px",
-                                background: "var(--white)",
-                                border: "1px solid var(--line)",
+                                background: "rgba(255, 255, 255, 0.78)",
+                                backdropFilter: "blur(24px) saturate(200%)",
+                                WebkitBackdropFilter: "blur(24px) saturate(200%)",
+                                border: "1px solid rgba(255, 255, 255, 0.95)",
                                 borderRadius: "9999px",
                                 padding: "6px 6px 6px 22px",
                             }}

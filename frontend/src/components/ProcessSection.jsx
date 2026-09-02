@@ -27,14 +27,23 @@ export default function ProcessSection() {
                 .steps {
                     display: grid;
                     grid-template-columns: repeat(3, 1fr);
+                    gap: 20px;
                 }
                 .step {
-                    padding: 0 32px;
-                    border-left: 1px solid var(--line);
+                    padding: 32px 28px;
+                    background: rgba(255, 255, 255, 0.70);
+                    backdrop-filter: blur(24px) saturate(200%);
+                    -webkit-backdrop-filter: blur(24px) saturate(200%);
+                    border: 1px solid rgba(255, 255, 255, 0.95);
+                    border-radius: 20px;
+                    box-shadow: 0 10px 32px rgba(13, 27, 42, 0.05), inset 0 1px 0 #ffffff;
+                    transition: transform 0.25s cubic-bezier(0.16, 0.8, 0.4, 1), background 0.25s ease, border-color 0.25s ease, box-shadow 0.25s ease;
                 }
-                .step:first-child {
-                    border-left: none;
-                    padding-left: 0;
+                .step:hover {
+                    transform: translateY(-4px);
+                    background: rgba(255, 255, 255, 0.85);
+                    border-color: #ffffff;
+                    box-shadow: 0 18px 40px rgba(13, 27, 42, 0.09), inset 0 1px 0 #ffffff;
                 }
                 .step-num {
                     font-family: var(--font-mono);
@@ -58,17 +67,7 @@ export default function ProcessSection() {
                 @media (max-width: 900px) {
                     .steps {
                         grid-template-columns: 1fr;
-                        gap: 32px;
-                    }
-                    .step {
-                        border-left: none;
-                        padding-left: 0;
-                        border-top: 1px solid var(--line);
-                        padding-top: 28px;
-                    }
-                    .step:first-child {
-                        border-top: none;
-                        padding-top: 0;
+                        gap: 20px;
                     }
                 }
             `}</style>

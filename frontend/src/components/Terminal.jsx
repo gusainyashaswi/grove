@@ -23,16 +23,18 @@
  *     — empty spacer line (renders &nbsp;)
  */
 
-/* Token colours from reference --black-line / --white-dim values */
+/* Token colours for bright glassmorphic CLI board */
 const C = {
-    bg:       "#0c0c0b",                   /* --black */
-    divider:  "rgba(247,245,238,0.14)",    /* --black-line */
-    prompt:   "rgba(247,245,238,0.40)",    /* t-prompt */
-    white:    "#f7f5ee",                   /* --white / t-cmd, t-heading */
-    body:     "rgba(247,245,238,0.62)",    /* t-body */
-    dim:      "rgba(247,245,238,0.38)",    /* t-dim */
-    titleDim: "rgba(247,245,238,0.62)",    /* terminal-title */
-    dotDim:   "rgba(247,245,238,0.18)",    /* dots */
+    bg:       "rgba(255, 255, 255, 0.72)",        /* Bright white frosted glass background */
+    divider:  "rgba(203, 220, 232, 0.50)",       /* Glass divider line */
+    prompt:   "#0284c7",                         /* Sky blue $ prompt symbol */
+    white:    "#0f172a",                         /* Sharp dark slate for commands & headings */
+    body:     "#1e293b",                         /* Dark slate body text */
+    dim:      "#475569",                         /* Medium slate for secondary lines */
+    titleDim: "#334155",                         /* Window title label */
+    dotRed:   "#ff5f56",                         /* Window dot red */
+    dotYellow:"#ffbd2e",                         /* Window dot yellow */
+    dotGreen: "#27c93f",                         /* Window dot green */
 };
 
 /* ── Blinking cursor ─────────────────────────────────────── */
@@ -45,7 +47,7 @@ function Cursor() {
                     display: inline-block;
                     width: 7px;
                     height: 15px;
-                    background: #f7f5ee;
+                    background: #0f172a;
                     vertical-align: text-bottom;
                     animation: termBlink 1s steps(1) infinite;
                 }
@@ -75,8 +77,8 @@ function TermLine({ line, isLast, isTyping }) {
     if (line.type === "prompt") {
         return (
             <span style={base}>
-                <span style={{ color: C.prompt }}>$ </span>
-                <span style={{ color: C.white }}>{line.command || ""}</span>
+                <span style={{ color: C.prompt, fontWeight: 700 }}>$ </span>
+                <span style={{ color: C.white, fontWeight: 600 }}>{line.command || ""}</span>
                 {isLast && isTyping && <Cursor />}
             </span>
         );
@@ -87,10 +89,10 @@ function TermLine({ line, isLast, isTyping }) {
         body:    C.body,
         dim:     C.dim,
     };
-    const weightMap = { heading: 600 };
+    const weightMap = { heading: 700, body: 500 };
 
     return (
-        <span style={{ ...base, color: colorMap[line.type] ?? C.body, fontWeight: weightMap[line.type] }}>
+        <span style={{ ...base, color: colorMap[line.type] ?? C.body, fontWeight: weightMap[line.type] ?? 400 }}>
             {line.text || ""}
             {isLast && isTyping && <Cursor />}
         </span>
@@ -102,10 +104,14 @@ export default function Terminal({ title = "grove — output", lines = [], isTyp
     return (
         <div
             style={{
-                background:    C.bg,
-                borderRadius:  "16px",
-                overflow:      "hidden",
-                textAlign:     "left",
+                background:          C.bg,
+                backdropFilter:      "blur(24px) saturate(200%)",
+                WebkitBackdropFilter: "blur(24px) saturate(200%)",
+                border:              "1px solid rgba(255, 255, 255, 0.95)",
+                boxShadow:           "0 20px 50px rgba(13, 27, 42, 0.08), inset 0 1px 0 #ffffff",
+                borderRadius:        "20px",
+                overflow:            "hidden",
+                textAlign:           "left",
             }}
         >
             {/* Header bar */}
@@ -115,20 +121,22 @@ export default function Terminal({ title = "grove — output", lines = [], isTyp
                     alignItems:     "center",
                     justifyContent: "space-between",
                     padding:        "13px 18px",
+                    background:     "rgba(255, 255, 255, 0.40)",
                     borderBottom:   `1px solid ${C.divider}`,
                 }}
             >
-                {/* 3 decorative dots */}
+                {/* 3 decorative colored window dots */}
                 <div style={{ display: "flex", gap: "7px" }}>
-                    {[0, 1, 2].map((i) => (
+                    {[C.dotRed, C.dotYellow, C.dotGreen].map((color, i) => (
                         <span
                             key={i}
                             style={{
-                                width:        "7px",
-                                height:       "7px",
+                                width:        "9px",
+                                height:       "9px",
                                 borderRadius: "50%",
                                 display:      "block",
-                                background:   C.dotDim,
+                                background:   color,
+                                opacity:      0.85,
                             }}
                         />
                     ))}
@@ -139,6 +147,7 @@ export default function Terminal({ title = "grove — output", lines = [], isTyp
                     style={{
                         fontFamily: "var(--font-mono)",
                         fontSize:   "12px",
+                        fontWeight: 600,
                         color:      C.titleDim,
                     }}
                 >

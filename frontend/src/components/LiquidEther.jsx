@@ -13,7 +13,7 @@ export default function LiquidEther({
   BFECC = true,
   resolution = 0.5,
   isBounce = false,
-  colors = ['#141311', '#8b8779', '#c4bfb0'],
+  colors = ['#0d1b2a', '#548db5', '#a4d2ee'],
   style = {},
   className = '',
   autoDemo = true,
@@ -22,7 +22,7 @@ export default function LiquidEther({
   takeoverDuration = 0.25,
   autoResumeDelay = 1000,
   autoRampDuration = 0.6,
-  backgroundColor = '#f1efe9',
+  backgroundColor = '#eef6fc',
   lightMode = true
 }) {
   const mountRef = useRef(null);
