@@ -1,8 +1,7 @@
 import { Link } from "react-router-dom";
 
-/* Match variables exactly to reference spec */
-const WHITE_DIM = "rgba(247,245,238,0.62)";
-const BLACK_LINE = "rgba(247,245,238,0.14)";
+const INK_DIM = "#3a5266";
+const GLASS_LINE = "rgba(203, 220, 232, 0.60)";
 
 function LogoMark() {
     return (
@@ -12,7 +11,7 @@ function LogoMark() {
             viewBox="0 0 24 24"
             fill="none"
             xmlns="http://www.w3.org/2000/svg"
-            style={{ color: "var(--white)" }}
+            style={{ color: "var(--ink)" }}
             aria-hidden="true"
         >
             <circle cx="12" cy="12" r="9" stroke="currentColor" strokeWidth="1.6" />
@@ -26,9 +25,15 @@ export default function Footer() {
         <>
             <style>{`
                 .dark-footer {
-                    background: var(--black);
-                    color: var(--white);
-                    border-radius: 28px 28px 0 0;
+                    background: rgba(255, 255, 255, 0.32);
+                    backdrop-filter: blur(30px) saturate(220%);
+                    -webkit-backdrop-filter: blur(30px) saturate(220%);
+                    border-top: 1px solid rgba(255, 255, 255, 0.70);
+                    border-left: 1px solid rgba(255, 255, 255, 0.70);
+                    border-right: 1px solid rgba(255, 255, 255, 0.70);
+                    border-radius: 32px 32px 0 0;
+                    box-shadow: 0 -10px 40px rgba(13, 27, 42, 0.04), inset 0 1px 1px rgba(255, 255, 255, 0.95);
+                    color: var(--ink);
                     padding: 64px 0 28px;
                     margin-top: 40px;
                     position: relative;
@@ -42,7 +47,7 @@ export default function Footer() {
                 }
                 .footer-brand p {
                     font-size: 14px;
-                    color: ${WHITE_DIM};
+                    color: var(--ink-soft);
                     margin-top: 12px;
                     max-width: 260px;
                     line-height: 1.6;
@@ -50,10 +55,10 @@ export default function Footer() {
                 .footer-col h4 {
                     font-family: var(--font-mono);
                     font-size: 12px;
-                    font-weight: 400;
+                    font-weight: 600;
                     text-transform: uppercase;
                     letter-spacing: 0.08em;
-                    color: rgba(247, 245, 238, 0.4);
+                    color: var(--muted);
                     margin-bottom: 18px;
                 }
                 .footer-col ul {
@@ -66,21 +71,21 @@ export default function Footer() {
                 }
                 .footer-col a {
                     font-size: 14px;
-                    color: ${WHITE_DIM};
+                    color: var(--ink-soft);
                     text-decoration: none;
                     transition: color .2s ease;
                 }
                 .footer-col a:hover {
-                    color: var(--white);
+                    color: var(--ink);
                 }
                 .footer-bottom {
                     display: flex;
                     justify-content: space-between;
                     align-items: center;
                     padding-top: 28px;
-                    border-top: 1px solid ${BLACK_LINE};
+                    border-top: 1px solid ${GLASS_LINE};
                     font-size: 12.5px;
-                    color: rgba(247, 245, 238, 0.4);
+                    color: var(--muted);
                     flex-wrap: wrap;
                     gap: 12px;
                 }
@@ -92,9 +97,9 @@ export default function Footer() {
                 .status-dot {
                     width: 6px;
                     height: 6px;
-                    background: #2ecc71;
+                    background: #00f59b;
                     border-radius: 50%;
-                    box-shadow: 0 0 8px #2ecc71;
+                    box-shadow: 0 0 8px #00f59b;
                 }
 
                 @media (max-width: 900px) {
@@ -123,6 +128,7 @@ export default function Footer() {
                                         fontSize: "16px",
                                         fontWeight: 600,
                                         letterSpacing: "-0.02em",
+                                        color: "var(--ink)",
                                     }}
                                 >
                                     Grove
