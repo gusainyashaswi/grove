@@ -11,21 +11,21 @@ export default function FeaturesGrid() {
                     gap: 20px;
                 }
                 .grid-card {
-                    background: rgba(255, 255, 255, 0.72);
-                    backdrop-filter: blur(24px) saturate(200%);
-                    -webkit-backdrop-filter: blur(24px) saturate(200%);
-                    border: 1px solid rgba(255, 255, 255, 0.95);
+                    background: rgba(255, 255, 255, 0.28);
+                    backdrop-filter: blur(28px) saturate(220%);
+                    -webkit-backdrop-filter: blur(28px) saturate(220%);
+                    border: 1px solid rgba(255, 255, 255, 0.65);
                     border-radius: var(--radius-card);
                     padding: 32px;
                     text-align: left;
-                    box-shadow: 0 12px 36px rgba(13, 27, 42, 0.06), inset 0 1px 0 #ffffff;
+                    box-shadow: 0 16px 40px rgba(13, 27, 42, 0.06), inset 0 1px 1px rgba(255, 255, 255, 0.9);
                     transition: transform 0.25s cubic-bezier(0.16, 0.8, 0.4, 1), background 0.25s ease, border-color 0.25s ease, box-shadow 0.25s ease;
                 }
                 .grid-card:hover {
                     transform: translateY(-4px);
-                    background: rgba(255, 255, 255, 0.88);
-                    border-color: #ffffff;
-                    box-shadow: 0 20px 45px rgba(13, 27, 42, 0.1), inset 0 1px 0 #ffffff;
+                    background: rgba(255, 255, 255, 0.45);
+                    border-color: rgba(255, 255, 255, 0.9);
+                    box-shadow: 0 24px 50px rgba(13, 27, 42, 0.1), inset 0 1px 1px rgba(255, 255, 255, 1);
                 }
                 .grid-icon {
                     width: 26px;

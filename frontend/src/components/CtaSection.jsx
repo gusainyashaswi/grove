@@ -42,25 +42,25 @@ export default function CtaSection({ onAnalyze }) {
                     display: flex;
                     align-items: center;
                     gap: 6px;
-                    background: rgba(255, 255, 255, 0.78);
-                    backdrop-filter: blur(24px) saturate(200%);
-                    -webkit-backdrop-filter: blur(24px) saturate(200%);
-                    border: 1px solid rgba(255, 255, 255, 0.95);
+                    background: rgba(255, 255, 255, 0.32);
+                    backdrop-filter: blur(28px) saturate(220%);
+                    -webkit-backdrop-filter: blur(28px) saturate(220%);
+                    border: 1px solid rgba(255, 255, 255, 0.65);
                     border-radius: 9999px;
                     padding: 6px 6px 6px 22px;
-                    box-shadow: 0 12px 36px rgba(13, 27, 42, 0.08), inset 0 1px 0 #ffffff;
+                    box-shadow: 0 14px 36px rgba(13, 27, 42, 0.07), inset 0 1px 1px rgba(255, 255, 255, 0.85);
                     transition: border-color .2s ease, box-shadow .2s ease, background .2s ease;
                     animation: ctaBarGlow 4.5s ease-in-out infinite;
                 }
                 .cta-analyze-bar.focused {
-                    border-color: rgba(13, 27, 42, 0.45) !important;
-                    box-shadow: 0 10px 30px rgba(13, 27, 42, 0.12), 0 0 0 3px rgba(0, 245, 155, 0.3) !important;
-                    background: rgba(255, 255, 255, 0.75) !important;
+                    border-color: rgba(13, 27, 42, 0.5) !important;
+                    box-shadow: 0 16px 40px rgba(13, 27, 42, 0.12), 0 0 0 3px rgba(0, 245, 155, 0.35) !important;
+                    background: rgba(255, 255, 255, 0.45) !important;
                     animation: none;
                 }
                 @keyframes ctaBarGlow {
-                    0%,100% { box-shadow: 0 8px 32px rgba(13, 27, 42, 0.06), inset 0 1px 0 rgba(255, 255, 255, 0.9); }
-                    50%     { box-shadow: 0 14px 40px rgba(13, 27, 42, 0.14), inset 0 1px 0 rgba(255, 255, 255, 1); }
+                    0%,100% { box-shadow: 0 10px 36px rgba(13, 27, 42, 0.06), inset 0 1px 1px rgba(255, 255, 255, 0.9); }
+                    50%     { box-shadow: 0 18px 48px rgba(13, 27, 42, 0.14), inset 0 1px 1px rgba(255, 255, 255, 1); }
                 }
                 @media (prefers-reduced-motion: reduce) {
                     .cta-analyze-bar { animation: none; }

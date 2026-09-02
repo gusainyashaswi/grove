@@ -62,11 +62,11 @@ export default function Navbar() {
 
     /* shared nav style */
     const pillStyle = {
-        background: "rgba(255, 255, 255, 0.72)",
-        backdropFilter: "blur(24px) saturate(200%)",
-        WebkitBackdropFilter: "blur(24px) saturate(200%)",
-        border: "1px solid rgba(255, 255, 255, 0.95)",
-        boxShadow: "0 10px 36px rgba(13, 27, 42, 0.08), inset 0 1px 0 #ffffff",
+        background: "rgba(255, 255, 255, 0.28)",
+        backdropFilter: "blur(28px) saturate(220%)",
+        WebkitBackdropFilter: "blur(28px) saturate(220%)",
+        border: "1px solid rgba(255, 255, 255, 0.65)",
+        boxShadow: "0 16px 40px rgba(13, 27, 42, 0.08), inset 0 1px 1px rgba(255, 255, 255, 0.9)",
         borderRadius: "9999px",
     };
 

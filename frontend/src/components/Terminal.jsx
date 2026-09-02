@@ -25,8 +25,8 @@
 
 /* Token colours for bright glassmorphic CLI board */
 const C = {
-    bg:       "rgba(255, 255, 255, 0.72)",        /* Bright white frosted glass background */
-    divider:  "rgba(203, 220, 232, 0.50)",       /* Glass divider line */
+    bg:       "rgba(255, 255, 255, 0.32)",        /* Full translucent glass background */
+    divider:  "rgba(255, 255, 255, 0.40)",       /* Glass divider line */
     prompt:   "#0284c7",                         /* Sky blue $ prompt symbol */
     white:    "#0f172a",                         /* Sharp dark slate for commands & headings */
     body:     "#1e293b",                         /* Dark slate body text */
@@ -105,10 +105,10 @@ export default function Terminal({ title = "grove — output", lines = [], isTyp
         <div
             style={{
                 background:          C.bg,
-                backdropFilter:      "blur(24px) saturate(200%)",
-                WebkitBackdropFilter: "blur(24px) saturate(200%)",
-                border:              "1px solid rgba(255, 255, 255, 0.95)",
-                boxShadow:           "0 20px 50px rgba(13, 27, 42, 0.08), inset 0 1px 0 #ffffff",
+                backdropFilter:      "blur(30px) saturate(220%)",
+                WebkitBackdropFilter: "blur(30px) saturate(220%)",
+                border:              "1px solid rgba(255, 255, 255, 0.65)",
+                boxShadow:           "0 24px 60px rgba(13, 27, 42, 0.08), inset 0 1px 1px rgba(255, 255, 255, 0.95)",
                 borderRadius:        "20px",
                 overflow:            "hidden",
                 textAlign:           "left",
@@ -121,7 +121,7 @@ export default function Terminal({ title = "grove — output", lines = [], isTyp
                     alignItems:     "center",
                     justifyContent: "space-between",
                     padding:        "13px 18px",
-                    background:     "rgba(255, 255, 255, 0.40)",
+                    background:     "rgba(255, 255, 255, 0.20)",
                     borderBottom:   `1px solid ${C.divider}`,
                 }}
             >
