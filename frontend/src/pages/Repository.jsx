@@ -2,6 +2,8 @@ import { useEffect } from "react";
 import RepositoryHeader from "../components/repository/RepositoryHeader";
 import StatsBar from "../components/repository/StatsBar";
 import HealthSignals from "../components/repository/HealthSignals";
+import FolderDistribution from "../components/repository/FolderDistribution";
+import AiArchitectureCard from "../components/repository/AiArchitectureCard";
 import MainContent from "../components/repository/MainContent";
 import { useRepository } from "../context/RepositoryContext";
 import { Navigate } from "react-router-dom";
@@ -30,7 +32,13 @@ function Repository() {
             <div className="w-full max-w-[var(--max-w)] flex flex-col gap-8">
                 <RepositoryHeader />
                 <StatsBar />
-                {currentTab === "overview" && <HealthSignals />}
+                {currentTab === "overview" && (
+                    <>
+                        <HealthSignals />
+                        <FolderDistribution />
+                        <AiArchitectureCard />
+                    </>
+                )}
                 <MainContent />
             </div>
         </div>
