@@ -4,9 +4,15 @@ import StatsBar from "../components/repository/StatsBar";
 import HealthSignals from "../components/repository/HealthSignals";
 import FolderDistribution from "../components/repository/FolderDistribution";
 import AiArchitectureCard from "../components/repository/AiArchitectureCard";
+import FileExplorer from "../components/repository/FileExplorer";
+import CodePreview from "../components/repository/CodePreview";
+import DetailsPanel from "../components/repository/DetailsPanel";
+import DependencyGraph from "../components/repository/DependencyGraph";
+import AiInsights from "../components/repository/AiInsights";
 import MainContent from "../components/repository/MainContent";
 import { useRepository } from "../context/RepositoryContext";
 import { Navigate } from "react-router-dom";
+
 
 function Repository() {
     const { repository, selectedFile, setSelectedFile, activeTab } = useRepository();
@@ -39,7 +45,26 @@ function Repository() {
                         <AiArchitectureCard />
                     </>
                 )}
-                <MainContent />
+                {currentTab === "explorer" && (
+                    <div className="grid grid-cols-1 lg:grid-cols-[260px_1fr_280px] gap-6 items-start w-full">
+                        <FileExplorer />
+                        <CodePreview />
+                        <DetailsPanel />
+                    </div>
+                )}
+                {currentTab === "graph" && (
+                    <div className="flex flex-col gap-8 w-full">
+                        <DependencyGraph />
+                        <FolderDistribution />
+                    </div>
+                )}
+                {currentTab === "ai" && <AiInsights />}
+                {currentTab !== "explorer" && currentTab !== "graph" && currentTab !== "ai" && (
+                    <MainContent />
+                )}
+
+
+
             </div>
         </div>
     );
