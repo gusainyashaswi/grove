@@ -125,11 +125,10 @@ function RepositoryQuestion() {
                     {messages.map((msg, idx) => (
                         <div
                             key={idx}
-                            className={`flex gap-3 p-4 rounded-2xl ${
-                                msg.role === "user"
+                            className={`flex gap-3 p-4 rounded-2xl ${msg.role === "user"
                                     ? "bg-white/[0.05] border border-white/10 ml-8"
                                     : "bg-[#090d14] border border-emerald-500/20 mr-4 shadow-inner"
-                            }`}
+                                }`}
                         >
                             <div className="shrink-0 mt-0.5">
                                 {msg.role === "user" ? (

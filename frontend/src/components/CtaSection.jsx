@@ -2,9 +2,9 @@ import { useState, useRef } from "react";
 import Button from "./ui/Button";
 
 export default function CtaSection({ onAnalyze }) {
-    const [url, setUrl]         = useState("");
+    const [url, setUrl] = useState("");
     const [focused, setFocused] = useState(false);
-    const inputRef              = useRef(null);
+    const inputRef = useRef(null);
 
     function handleSubmit() {
         if (url) {
@@ -45,22 +45,22 @@ export default function CtaSection({ onAnalyze }) {
                     background: rgba(255, 255, 255, 0.32);
                     backdrop-filter: blur(28px) saturate(220%);
                     -webkit-backdrop-filter: blur(28px) saturate(220%);
-                    border: 1px solid rgba(255, 255, 255, 0.65);
+                    border: 1px solid rgba(255, 255, 255, 0.32);
                     border-radius: 9999px;
                     padding: 6px 6px 6px 22px;
-                    box-shadow: 0 14px 36px rgba(13, 27, 42, 0.07), inset 0 1px 1px rgba(255, 255, 255, 0.85);
+                    box-shadow: 0 14px 36px rgba(13, 27, 42, 0.07), inset 0 1px 1px rgba(255, 255, 255, 0.32);
                     transition: border-color .2s ease, box-shadow .2s ease, background .2s ease;
                     animation: ctaBarGlow 4.5s ease-in-out infinite;
                 }
                 .cta-analyze-bar.focused {
-                    border-color: rgba(13, 27, 42, 0.5) !important;
-                    box-shadow: 0 16px 40px rgba(13, 27, 42, 0.12), 0 0 0 3px rgba(0, 245, 155, 0.35) !important;
+                    border-color: rgba(255, 255, 255, 0.32), !important;
+                    box-shadow: 0 16px 40px rgba(255, 255, 255, 0.32), 0 0 0 3px rgba(255, 255, 255, 0.32);
                     background: rgba(255, 255, 255, 0.45) !important;
                     animation: none;
                 }
                 @keyframes ctaBarGlow {
-                    0%,100% { box-shadow: 0 10px 36px rgba(13, 27, 42, 0.06), inset 0 1px 1px rgba(255, 255, 255, 0.9); }
-                    50%     { box-shadow: 0 18px 48px rgba(13, 27, 42, 0.14), inset 0 1px 1px rgba(255, 255, 255, 1); }
+                    0%,100% { box-shadow: 0 10px 36px rgba(13, 27, 42, 0.06), inset 0 1px 1px rgba(255, 255, 255, 0.32); }
+                    50%     { box-shadow: 0 18px 48px rgba(13, 27, 42, 0.14), inset 0 1px 1px rgba(255, 255, 255, 0.32); }
                 }
                 @media (prefers-reduced-motion: reduce) {
                     .cta-analyze-bar { animation: none; }

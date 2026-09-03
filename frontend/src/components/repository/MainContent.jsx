@@ -55,11 +55,10 @@ function MainContent() {
                                 <span>{tab.label}</span>
                                 {tab.badge && (
                                     <span
-                                        className={`text-[10px] font-mono px-2 py-0.5 rounded-full ${
-                                            isActive
+                                        className={`text-[10px] font-mono px-2 py-0.5 rounded-full ${isActive
                                                 ? "bg-slate-950/20 text-slate-950 font-bold"
                                                 : "bg-white/10 text-slate-500"
-                                        }`}
+                                            }`}
                                     >
                                         {tab.badge}
                                     </span>

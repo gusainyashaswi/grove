@@ -41,8 +41,8 @@ export default function AppNavbar() {
         <>
             <header
                 className={`fixed top-0 left-0 right-0 z-50 px-5 sm:px-8 py-4 sm:py-5 flex items-center justify-between transition-all duration-300 ${scrolled
-                        ? "bg-[#050708]/85 backdrop-blur-xl border-b border-white/10 shadow-2xl"
-                        : "bg-transparent"
+                    ? "bg-[#050708]/85 backdrop-blur-xl border-b border-white/10 shadow-2xl"
+                    : "bg-transparent"
                     }`}
             >
                 {/* --- LEFT: LOGO WITH REGISTERED TRADEMARK & ASTERISK --- */}

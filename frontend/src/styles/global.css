@@ -30,14 +30,14 @@
   --line-soft: #d9e7f2;
   --black: #0c0c0b;
   --white: #f4f9fd;
-  
+
   --font-heading: "Inter Tight", sans-serif;
   --font-body: "Inter", sans-serif;
   --font-mono: "Fira Mono", monospace;
 
   /* Radius aliases used by components */
-  --r-card:   14px;
-  --r-input:  9999px;
+  --r-card: 14px;
+  --r-input: 9999px;
   --r-button: 9999px;
   --radius-card: 14px;
 
@@ -90,7 +90,12 @@ body {
 }
 
 /* Typography Classes */
-h1, h2, h3, h4, h5, h6 {
+h1,
+h2,
+h3,
+h4,
+h5,
+h6 {
   font-family: var(--font-heading);
   letter-spacing: -0.02em;
 }
@@ -107,7 +112,10 @@ h1, h2, h3, h4, h5, h6 {
   font-family: var(--font-mono);
 }
 
-code, kbd, pre, samp {
+code,
+kbd,
+pre,
+samp {
   font-family: var(--font-mono);
 }
 
@@ -163,6 +171,7 @@ code, kbd, pre, samp {
 
 /* ── Responsive: Hero input bar wraps at 600px ── */
 @media (max-width: 600px) {
+
   .analyze-bar,
   .cta-analyze-bar {
     flex-direction: column;
@@ -171,10 +180,12 @@ code, kbd, pre, samp {
     border-radius: 20px !important;
     gap: 10px !important;
   }
+
   .analyze-bar input,
   .cta-analyze-bar input {
     font-size: 15px !important;
   }
+
   .analyze-bar button,
   .cta-analyze-bar button {
     width: 100%;
@@ -185,12 +196,13 @@ code, kbd, pre, samp {
 
 /* ── Responsive: 900px breakpoint ── */
 @media (max-width: 900px) {
-  .process-section > div,
-  .feature-section > div,
-  .features-grid-section > div,
-  .cta-band > div,
-  .dark-footer > div,
-  .breath > div {
+
+  .process-section>div,
+  .feature-section>div,
+  .features-grid-section>div,
+  .cta-band>div,
+  .dark-footer>div,
+  .breath>div {
     padding-left: 28px !important;
     padding-right: 28px !important;
   }
@@ -198,12 +210,13 @@ code, kbd, pre, samp {
 
 /* ── Responsive: 720px breakpoint ── */
 @media (max-width: 720px) {
-  .process-section > div,
-  .feature-section > div,
-  .features-grid-section > div,
-  .cta-band > div,
-  .dark-footer > div,
-  .breath > div {
+
+  .process-section>div,
+  .feature-section>div,
+  .features-grid-section>div,
+  .cta-band>div,
+  .dark-footer>div,
+  .breath>div {
     padding-left: 20px !important;
     padding-right: 20px !important;
   }
@@ -215,12 +228,13 @@ code, kbd, pre, samp {
 
 /* ── Responsive: 480px breakpoint ── */
 @media (max-width: 480px) {
-  .process-section > div,
-  .feature-section > div,
-  .features-grid-section > div,
-  .cta-band > div,
-  .dark-footer > div,
-  .breath > div {
+
+  .process-section>div,
+  .feature-section>div,
+  .features-grid-section>div,
+  .cta-band>div,
+  .dark-footer>div,
+  .breath>div {
     padding-left: 16px !important;
     padding-right: 16px !important;
   }
@@ -228,8 +242,15 @@ code, kbd, pre, samp {
 
 /* Animations */
 @keyframes blink {
-  0%, 100% { opacity: 1; }
-  50% { opacity: 0; }
+
+  0%,
+  100% {
+    opacity: 1;
+  }
+
+  50% {
+    opacity: 0;
+  }
 }
 
 .animate-cursor-blink {
@@ -237,8 +258,13 @@ code, kbd, pre, samp {
 }
 
 @keyframes edge-flow {
-  0% { stroke-dashoffset: 24; }
-  100% { stroke-dashoffset: 0; }
+  0% {
+    stroke-dashoffset: 24;
+  }
+
+  100% {
+    stroke-dashoffset: 0;
+  }
 }
 
 .animate-edge-flow {
@@ -247,8 +273,15 @@ code, kbd, pre, samp {
 }
 
 @keyframes float {
-  0%, 100% { transform: translateY(0); }
-  50% { transform: translateY(-8px); }
+
+  0%,
+  100% {
+    transform: translateY(0);
+  }
+
+  50% {
+    transform: translateY(-8px);
+  }
 }
 
 .animate-float {
@@ -256,29 +289,59 @@ code, kbd, pre, samp {
 }
 
 /* Syntax Highlighting */
-.token.comment, .token.prolog, .token.doctype, .token.cdata {
+.token.comment,
+.token.prolog,
+.token.doctype,
+.token.cdata {
   color: #64748b;
   font-style: italic;
 }
-.token.punctuation { color: #475569; }
-.token.property, .token.tag, .token.boolean, .token.number, .token.constant, .token.symbol {
+
+.token.punctuation {
+  color: #475569;
+}
+
+.token.property,
+.token.tag,
+.token.boolean,
+.token.number,
+.token.constant,
+.token.symbol {
   color: #000000;
   font-weight: 600;
 }
-.token.selector, .token.attr-name, .token.string, .token.char, .token.builtin {
+
+.token.selector,
+.token.attr-name,
+.token.string,
+.token.char,
+.token.builtin {
   color: #15803d;
 }
-.token.operator, .token.entity, .token.url {
+
+.token.operator,
+.token.entity,
+.token.url {
   color: #be123c;
 }
+
 .token.keyword {
   color: #0369a1;
   font-weight: 600;
 }
+
 .token.function {
   color: #0f172a;
   font-weight: 600;
 }
+
+.token.variable {
+  color: #0f172a;
+}
+
+font-weight: 600;
+}
+
 .token.variable {
   color: #0f172a;
 }

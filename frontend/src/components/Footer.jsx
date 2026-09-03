@@ -28,14 +28,13 @@ export default function Footer() {
                     background: rgba(255, 255, 255, 0.32);
                     backdrop-filter: blur(30px) saturate(220%);
                     -webkit-backdrop-filter: blur(30px) saturate(220%);
-                    border-top: 1px solid rgba(255, 255, 255, 0.70);
-                    border-left: 1px solid rgba(255, 255, 255, 0.70);
-                    border-right: 1px solid rgba(255, 255, 255, 0.70);
-                    border-radius: 32px 32px 0 0;
-                    box-shadow: 0 -10px 40px rgba(13, 27, 42, 0.04), inset 0 1px 1px rgba(255, 255, 255, 0.95);
+                    border-top: 1px solid rgba(255, 255, 255, 0.32)
+                    border-left: 1px solid rgba(255, 255, 255, 0.32)
+                    border-right: 1px solid rgba(255, 255, 255, 0.7);
+                    box-shadow: 0 -10px 40px rgba(255, 255, 255, 0.32), inset 0 1px 1px rgba(255, 255, 255, 0.32)
                     color: var(--ink);
                     padding: 64px 0 28px;
-                    margin-top: 40px;
+                    margin-top: 60px;
                     position: relative;
                     z-index: 10;
                 }
@@ -115,7 +114,7 @@ export default function Footer() {
                 }
             `}</style>
 
-            <footer className="dark-footer ">
+            <footer className="dark-footer  ">
                 <div style={{ maxWidth: "1320px", margin: "0 auto", padding: "0 48px" }}>
                     <div className="footer-top">
                         {/* Column 1 - Brand Info */}
@@ -125,7 +124,7 @@ export default function Footer() {
                                 <span
                                     style={{
                                         fontFamily: "var(--font-heading)",
-                                        fontSize: "16px",
+                                        fontSize: "50px",
                                         fontWeight: 600,
                                         letterSpacing: "-0.02em",
                                         color: "var(--ink)",
