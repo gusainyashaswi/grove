@@ -9,6 +9,7 @@ import CodePreview from "../components/repository/CodePreview";
 import DetailsPanel from "../components/repository/DetailsPanel";
 import DependencyGraph from "../components/repository/DependencyGraph";
 import AiInsights from "../components/repository/AiInsights";
+import Assistant from "../components/repository/Assistant";
 import MainContent from "../components/repository/MainContent";
 import { useRepository } from "../context/RepositoryContext";
 import { Navigate } from "react-router-dom";
@@ -59,9 +60,13 @@ function Repository() {
                     </div>
                 )}
                 {currentTab === "ai" && <AiInsights />}
-                {currentTab !== "explorer" && currentTab !== "graph" && currentTab !== "ai" && (
-                    <MainContent />
-                )}
+                {currentTab === "assistant" && <Assistant />}
+                {currentTab !== "overview" &&
+                    currentTab !== "explorer" &&
+                    currentTab !== "graph" &&
+                    currentTab !== "ai" &&
+                    currentTab !== "assistant" && <MainContent />}
+
 
 
 
