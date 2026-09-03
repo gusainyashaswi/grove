@@ -1,14 +1,16 @@
 import { useState, useEffect, useRef } from "react";
-import { Link, useLocation } from "react-router-dom";
-import Button from "../ui/Button";
+import { Link, useLocation, useNavigate } from "react-router-dom";
+import { useRepository } from "../../context/RepositoryContext";
 
 const INK     = "#0d1b2a";
 const INK_DIM = "#3a5266";
 
-const NAV_LINKS = [
-    { label: "How it works", href: "/#how-it-works" },
-    { label: "Example",      href: "/#example"      },
-    { label: "Features",     href: "/#features"     },
+const NAV_TABS = [
+    { label: "Overview",         id: "overview" },
+    { label: "Code Explorer",    id: "explorer" },
+    { label: "Dependency Graph", id: "graph"    },
+    { label: "AI Insights",      id: "ai"       },
+    { label: "Assistant",        id: "assistant"},
 ];
 
 /* ── Logo mark ────────────────────────────────────────────── */
@@ -45,6 +47,8 @@ export default function Navbar() {
     const [menuOpen, setMenuOpen] = useState(false);
     const menuRef  = useRef(null);
     const location = useLocation();
+    const navigate = useNavigate();
+    const { activeTab, setActiveTab } = useRepository() || {};
 
     /* close on route change */
     useEffect(() => { setMenuOpen(false); }, [location]);
@@ -60,7 +64,17 @@ export default function Navbar() {
         return () => document.removeEventListener("mousedown", onOutside);
     }, [menuOpen]);
 
-    /* shared nav style */
+    const handleTabClick = (tabId) => {
+        if (setActiveTab) {
+            setActiveTab(tabId);
+        }
+        if (location.pathname !== "/repository") {
+            navigate("/repository");
+        }
+        setMenuOpen(false);
+    };
+
+    /* shared nav style — identical to landing page navbar */
     const pillStyle = {
         background: "rgba(255, 255, 255, 0.28)",
         backdropFilter: "blur(28px) saturate(220%)",
@@ -85,11 +99,11 @@ export default function Navbar() {
                     ...pillStyle,
                 }}
             >
-                {/* nav-inner: height 58px, padding 0 10px 0 22px */}
+                {/* nav-inner: height 58px, padding 0 16px 0 22px */}
                 <div
                     style={{
                         height: "58px",
-                        padding: "0 10px 0 22px",
+                        padding: "0 16px 0 22px",
                         display: "flex",
                         alignItems: "center",
                         justifyContent: "space-between",
@@ -118,58 +132,35 @@ export default function Navbar() {
                         </span>
                     </Link>
 
-                    {/* Center — nav links (hidden ≤720px) */}
-                    <div id="nav-links-desktop" style={{ display: "flex", alignItems: "center", gap: "30px" }}>
-                        {NAV_LINKS.map((link) => (
-                            <a
-                                key={link.href}
-                                href={link.href}
-                                style={{
-                                    fontSize: "14px",
-                                    fontWeight: 500,
-                                    color: INK_DIM,
-                                    textDecoration: "none",
-                                    transition: "color .2s ease",
-                                }}
-                                onMouseEnter={e => (e.currentTarget.style.color = INK)}
-                                onMouseLeave={e => (e.currentTarget.style.color = INK_DIM)}
-                            >
-                                {link.label}
-                            </a>
-                        ))}
+                    {/* Center — 5 tab controls (hidden ≤720px) */}
+                    <div id="nav-links-desktop" style={{ display: "flex", alignItems: "center", gap: "28px" }}>
+                        {NAV_TABS.map((tab) => {
+                            const isActive = (activeTab || "overview") === tab.id;
+                            return (
+                                <button
+                                    key={tab.id}
+                                    onClick={() => handleTabClick(tab.id)}
+                                    style={{
+                                        fontSize: "14px",
+                                        fontWeight: isActive ? 600 : 500,
+                                        color: isActive ? INK : INK_DIM,
+                                        background: "none",
+                                        border: "none",
+                                        cursor: "pointer",
+                                        padding: "4px 0",
+                                        transition: "color .2s ease",
+                                    }}
+                                    onMouseEnter={e => (e.currentTarget.style.color = INK)}
+                                    onMouseLeave={e => (e.currentTarget.style.color = isActive ? INK : INK_DIM)}
+                                >
+                                    {tab.label}
+                                </button>
+                            );
+                        })}
                     </div>
 
-                    {/* Right — login + signup + hamburger */}
-                    <div style={{ display: "flex", alignItems: "center", gap: "16px" }}>
-                        {/* Log in (hidden ≤720px) */}
-                        <a
-                            href="/login"
-                            id="nav-login-desktop"
-                            style={{
-                                fontSize: "14px",
-                                fontWeight: 500,
-                                color: INK_DIM,
-                                textDecoration: "none",
-                                padding: "0 4px",
-                                transition: "color .2s ease",
-                            }}
-                            onMouseEnter={e => (e.currentTarget.style.color = INK)}
-                            onMouseLeave={e => (e.currentTarget.style.color = INK_DIM)}
-                        >
-                            Log in
-                        </a>
-
-                        {/* Sign up (hidden ≤720px) */}
-                        <Button
-                            variant="dark"
-                            href="/signup"
-                            id="nav-signup-desktop"
-                            className="!py-[11px] !px-[22px] !text-sm whitespace-nowrap"
-                        >
-                            Sign up
-                        </Button>
-
-                        {/* Hamburger (visible ≤720px) */}
+                    {/* Right — hamburger (visible ≤720px) */}
+                    <div style={{ display: "flex", alignItems: "center" }}>
                         <button
                             id="nav-hamburger"
                             type="button"
@@ -213,55 +204,37 @@ export default function Navbar() {
                         flexDirection: "column",
                     }}
                 >
-                    {NAV_LINKS.map((link) => (
-                        <a
-                            key={link.href}
-                            href={link.href}
-                            onClick={() => setMenuOpen(false)}
-                            style={{
-                                padding: "14px 16px",
-                                fontSize: "15px",
-                                fontWeight: 500,
-                                color: INK_DIM,
-                                textDecoration: "none",
-                                borderRadius: "12px",
-                                transition: "color .15s ease, background .15s ease",
-                            }}
-                            onMouseEnter={e => {
-                                e.currentTarget.style.color = INK;
-                                e.currentTarget.style.background = "rgba(13, 27, 42, 0.05)";
-                            }}
-                            onMouseLeave={e => {
-                                e.currentTarget.style.color = INK_DIM;
-                                e.currentTarget.style.background = "transparent";
-                            }}
-                        >
-                            {link.label}
-                        </a>
-                    ))}
-                    <a
-                        href="/login"
-                        onClick={() => setMenuOpen(false)}
-                        style={{
-                            padding: "14px 16px",
-                            fontSize: "15px",
-                            fontWeight: 500,
-                            color: INK_DIM,
-                            textDecoration: "none",
-                            borderRadius: "12px",
-                            transition: "color .15s ease, background .15s ease",
-                        }}
-                        onMouseEnter={e => {
-                            e.currentTarget.style.color = INK;
-                            e.currentTarget.style.background = "rgba(13, 27, 42, 0.05)";
-                        }}
-                        onMouseLeave={e => {
-                            e.currentTarget.style.color = INK_DIM;
-                            e.currentTarget.style.background = "transparent";
-                        }}
-                    >
-                        Log in
-                    </a>
+                    {NAV_TABS.map((tab) => {
+                        const isActive = (activeTab || "overview") === tab.id;
+                        return (
+                            <button
+                                key={tab.id}
+                                onClick={() => handleTabClick(tab.id)}
+                                style={{
+                                    padding: "14px 16px",
+                                    fontSize: "15px",
+                                    fontWeight: isActive ? 600 : 500,
+                                    color: isActive ? INK : INK_DIM,
+                                    textAlign: "left",
+                                    background: isActive ? "rgba(13, 27, 42, 0.05)" : "transparent",
+                                    border: "none",
+                                    borderRadius: "12px",
+                                    cursor: "pointer",
+                                    transition: "color .15s ease, background .15s ease",
+                                }}
+                                onMouseEnter={e => {
+                                    e.currentTarget.style.color = INK;
+                                    e.currentTarget.style.background = "rgba(13, 27, 42, 0.05)";
+                                }}
+                                onMouseLeave={e => {
+                                    e.currentTarget.style.color = isActive ? INK : INK_DIM;
+                                    e.currentTarget.style.background = isActive ? "rgba(13, 27, 42, 0.05)" : "transparent";
+                                }}
+                            >
+                                {tab.label}
+                            </button>
+                        );
+                    })}
                 </div>
             )}
 
@@ -269,8 +242,6 @@ export default function Navbar() {
             <style>{`
                 @media (max-width: 720px) {
                     #nav-links-desktop { display: none !important; }
-                    #nav-login-desktop { display: none !important; }
-                    #nav-signup-desktop { display: none !important; }
                     #nav-hamburger { display: block !important; }
                 }
             `}</style>
