@@ -23,8 +23,8 @@ function Repository() {
     }
 
     return (
-        <div className="min-h-screen w-full bg-[#0c0c0b] text-[#f7f5ee] pt-28 pb-16 px-4 sm:px-8 lg:px-12 flex flex-col items-center">
-            <div className="w-full max-w-[1440px] flex flex-col gap-8">
+        <div className="min-h-screen w-full text-[var(--ink)] pt-28 pb-16 px-4 sm:px-8 lg:px-12 flex flex-col items-center relative z-10">
+            <div className="w-full max-w-[var(--max-w)] flex flex-col gap-8">
                 <RepositoryHeader />
                 <StatsBar />
                 <MainContent />
