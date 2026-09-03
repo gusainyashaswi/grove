@@ -1,12 +1,13 @@
 import { useEffect } from "react";
 import RepositoryHeader from "../components/repository/RepositoryHeader";
 import StatsBar from "../components/repository/StatsBar";
+import HealthSignals from "../components/repository/HealthSignals";
 import MainContent from "../components/repository/MainContent";
 import { useRepository } from "../context/RepositoryContext";
 import { Navigate } from "react-router-dom";
 
 function Repository() {
-    const { repository, selectedFile, setSelectedFile } = useRepository();
+    const { repository, selectedFile, setSelectedFile, activeTab } = useRepository();
 
     // Auto-select the first or entry-point file if none is selected yet
     useEffect(() => {
@@ -22,11 +23,14 @@ function Repository() {
         return <Navigate to="/" replace />;
     }
 
+    const currentTab = activeTab || "overview";
+
     return (
         <div className="min-h-screen w-full text-[var(--ink)] pt-28 pb-16 px-4 sm:px-8 lg:px-12 flex flex-col items-center relative z-10">
             <div className="w-full max-w-[var(--max-w)] flex flex-col gap-8">
                 <RepositoryHeader />
                 <StatsBar />
+                {currentTab === "overview" && <HealthSignals />}
                 <MainContent />
             </div>
         </div>
