@@ -59,7 +59,7 @@ function StatsBar() {
     return (
         <section aria-label="Repository statistics" className="w-full flex flex-col gap-4">
             {/* 4-Column Primary Stat Grid */}
-            <div className="stats-grid-primary grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
+            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
                 {topStats.map((stat) => {
                     const Icon = stat.icon;
                     return (
@@ -77,8 +77,7 @@ function StatsBar() {
             </div>
 
             {/* 3-Column Secondary Stat Grid */}
-            <div className="stats-grid-secondary grid grid-cols-1 md:grid-cols-3 gap-4">
-
+            <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
                 {/* Avg dependencies / file */}
                 <GlassCard className="stat-card flex flex-col justify-between">
                     <div className="stat-value">{avgDeps}</div>
