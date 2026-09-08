@@ -35,7 +35,8 @@ function Repository() {
     const currentTab = activeTab || "overview";
 
     return (
-        <div className="min-h-screen w-full text-[var(--ink)] pt-[150px] pb-16 px-4 sm:px-8 lg:px-12 flex flex-col items-center relative z-10" style={{ paddingTop: "150px" }}>
+        <div className="min-h-screen w-full text-[var(--ink)] pt-28 pb-16 px-4 sm:px-8 lg:px-12 flex flex-col items-center relative z-10" style={{ paddingTop: "150px" }}>
+
             <div className="w-full max-w-[var(--max-w)] flex flex-col gap-12">
                 <RepositoryHeader />
                 <StatsBar />
