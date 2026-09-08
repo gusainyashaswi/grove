@@ -1,4 +1,5 @@
 import { useEffect } from "react";
+import LiquidEther from "../components/LiquidEther";
 import RepositoryHeader from "../components/repository/RepositoryHeader";
 import StatsBar from "../components/repository/StatsBar";
 import HealthSignals from "../components/repository/HealthSignals";
@@ -35,9 +36,38 @@ function Repository() {
     const currentTab = activeTab || "overview";
 
     return (
-        <div className="min-h-screen w-full text-[var(--ink)] pt-28 pb-16 px-4 sm:px-8 lg:px-12 flex flex-col items-center relative z-10" style={{ paddingTop: "150px" }}>
+        <div className="min-h-screen w-full text-[var(--ink)] pt-[150px] pb-16 px-4 sm:px-8 lg:px-12 flex flex-col items-center relative" style={{ paddingTop: "150px" }}>
+            {/* ── Fixed Full-Page LiquidEther Fluid Background (Calm / Lesser Intensity) ── */}
+            <div
+                style={{
+                    position: "fixed",
+                    inset: 0,
+                    zIndex: 0,
+                    pointerEvents: "none",
+                    overflow: "hidden",
+                }}
+            >
+                <LiquidEther
+                    colors={["#0d1b2a", "#2b5270", "#548db5", "#a4d2ee"]}
+                    backgroundColor="#eef6fc"
+                    lightMode={true}
+                    mouseForce={12}
+                    cursorSize={50}
+                    isViscous={true}
+                    viscous={32}
+                    iterationsViscous={32}
+                    iterationsPoisson={32}
+                    resolution={0.5}
+                    autoDemo={true}
+                    autoSpeed={0.2}
+                    autoIntensity={10}
+                    takeoverDuration={0.4}
+                    autoResumeDelay={1500}
+                    autoRampDuration={1.0}
+                />
+            </div>
 
-            <div className="w-full max-w-[var(--max-w)] flex flex-col gap-12">
+            <div className="w-full max-w-[var(--max-w)] flex flex-col gap-12 relative z-10">
                 <RepositoryHeader />
                 <StatsBar />
                 {currentTab === "overview" && (
