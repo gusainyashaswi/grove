@@ -36,7 +36,12 @@ function Repository() {
     const currentTab = activeTab || "overview";
 
     return (
-        <div className="min-h-screen w-full text-[var(--ink)] pt-[150px] pb-16 px-4 sm:px-8 lg:px-12 flex flex-col items-center relative" style={{ paddingTop: "150px" }}>
+        <div
+            className="min-h-screen w-full text-[var(--ink)] pt-[var(--navbar-clearance)] pb-16 px-4 sm:px-8 lg:px-12 flex flex-col items-center relative"
+            style={{
+                paddingTop: "var(--navbar-clearance, calc(var(--navbar-top, 16px) + var(--navbar-height, 58px) + var(--navbar-gap, 76px)))",
+            }}
+        >
             {/* ── Fixed Full-Page LiquidEther Fluid Background (Calm / Lesser Intensity) ── */}
             <div
                 style={{

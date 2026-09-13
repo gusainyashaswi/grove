@@ -253,7 +253,7 @@ export default function Navbar() {
                 aria-label="Main navigation"
                 style={{
                     position: "fixed",
-                    top: "16px",
+                    top: "var(--navbar-top, 16px)",
                     left: "50%",
                     transform: "translateX(-50%)",
                     zIndex: 200,
@@ -264,7 +264,7 @@ export default function Navbar() {
                 {/* nav-inner: height 58px, padding 0 16px 0 22px */}
                 <div
                     style={{
-                        height: "58px",
+                        height: "var(--navbar-height, 58px)",
                         padding: "0 16px 0 22px",
                         display: "flex",
                         alignItems: "center",
@@ -322,13 +322,13 @@ export default function Navbar() {
                 </div>
             </nav>
 
-            {/* ── Mobile dropdown (top: 82px = 16px nav-top + 58px height + 8px gap) ── */}
+            {/* ── Mobile dropdown (derived from navbar top + height + 8px gap) ── */}
             {menuOpen && (
                 <div
                     id="mobile-menu"
                     style={{
                         position: "fixed",
-                        top: "82px",
+                        top: "calc(var(--navbar-top, 16px) + var(--navbar-height, 58px) + 8px)",
                         left: "50%",
                         transform: "translateX(-50%)",
                         width: "min(1040px, calc(100% - 32px))",
