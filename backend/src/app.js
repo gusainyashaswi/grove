@@ -7,9 +7,16 @@ const aiRoutes = require("./routes/ai.routes");
 
 const app = express();
 
-const corsOptions = process.env.CLIENT_URL
-    ? { origin: [process.env.CLIENT_URL, "http://localhost:5173", "http://localhost:3000"] }
-    : {};
+const allowedOrigins = [
+    "http://localhost:5173",
+    "http://localhost:3000",
+    process.env.CLIENT_URL,
+].filter(Boolean);
+
+const corsOptions = {
+    origin: allowedOrigins,
+    credentials: true,
+};
 
 app.use(cors(corsOptions));
 app.use(express.json({ limit: "50mb" }));

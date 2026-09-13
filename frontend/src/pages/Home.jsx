@@ -63,8 +63,11 @@ export default function Home() {
         } catch (err) {
             console.error("Repository analysis error:", err);
             if (err.code === "ERR_NETWORK" || !err.response) {
+                const apiUrl = import.meta.env.VITE_API_URL;
                 setError(
-                    "Cannot connect to backend. Please ensure the server is running on http://localhost:3000."
+                    apiUrl
+                        ? `Cannot reach the backend at ${apiUrl}. Please ensure the server is running.`
+                        : "Backend API URL is not configured. Set the VITE_API_URL environment variable and rebuild."
                 );
             } else {
                 setError(
