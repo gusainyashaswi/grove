@@ -13,6 +13,12 @@ const NAV_TABS = [
     { label: "Assistant", id: "assistant" },
 ];
 
+const LANDING_LINKS = [
+    { label: "Elements", sectionId: "how-it-works" },
+    { label: "Output", sectionId: "example" },
+    { label: "GitHub", href: "https://github.com/gusainyashaswi/grove" },
+];
+
 /* ── Logo mark ────────────────────────────────────────────── */
 function LogoMark() {
     return (
@@ -42,6 +48,35 @@ function BurgerIcon() {
     );
 }
 
+/* ── Shared link button style ─────────────────────────────── */
+const linkStyle = (isActive = false) => ({
+    fontSize: "14px",
+    fontWeight: isActive ? 600 : 500,
+    color: isActive ? INK : INK_DIM,
+    background: "none",
+    border: "none",
+    cursor: "pointer",
+    padding: "4px 0",
+    textDecoration: "none",
+    transition: "color .2s ease",
+});
+
+const mobileLinkStyle = (isActive = false) => ({
+    padding: "14px 16px",
+    fontSize: "15px",
+    fontWeight: isActive ? 600 : 500,
+    color: isActive ? INK : INK_DIM,
+    textAlign: "left",
+    background: isActive ? "rgba(13, 27, 42, 0.05)" : "transparent",
+    border: "none",
+    borderRadius: "12px",
+    cursor: "pointer",
+    textDecoration: "none",
+    display: "block",
+    width: "100%",
+    transition: "color .15s ease, background .15s ease",
+});
+
 /* ── Navbar ───────────────────────────────────────────────── */
 export default function Navbar() {
     const [menuOpen, setMenuOpen] = useState(false);
@@ -49,6 +84,8 @@ export default function Navbar() {
     const location = useLocation();
     const navigate = useNavigate();
     const { activeTab, setActiveTab } = useRepository() || {};
+
+    const isWorkspace = location.pathname === "/repository";
 
     /* close on route change */
     useEffect(() => { setMenuOpen(false); }, [location]);
@@ -74,6 +111,14 @@ export default function Navbar() {
         setMenuOpen(false);
     };
 
+    const scrollToSection = (sectionId) => {
+        setMenuOpen(false);
+        const el = document.getElementById(sectionId);
+        if (el) {
+            el.scrollIntoView({ behavior: "smooth" });
+        }
+    };
+
     /* shared nav style — identical to landing page navbar */
     const pillStyle = {
         background: "rgba(255, 255, 255, 0.28)",
@@ -83,6 +128,123 @@ export default function Navbar() {
         boxShadow: "0 16px 40px rgba(13, 27, 42, 0.08), inset 0 1px 1px rgba(255, 255, 255, 0.9)",
         borderRadius: "9999px",
     };
+
+    /* ── Render desktop center links ──────────────────────── */
+    function renderDesktopLinks() {
+        if (isWorkspace) {
+            return NAV_TABS.map((tab) => {
+                const isActive = (activeTab || "overview") === tab.id;
+                return (
+                    <button
+                        key={tab.id}
+                        onClick={() => handleTabClick(tab.id)}
+                        style={linkStyle(isActive)}
+                        onMouseEnter={e => (e.currentTarget.style.color = INK)}
+                        onMouseLeave={e => (e.currentTarget.style.color = isActive ? INK : INK_DIM)}
+                    >
+                        {tab.label}
+                    </button>
+                );
+            });
+        }
+
+        return LANDING_LINKS.map((item) => {
+            if (item.href) {
+                return (
+                    <a
+                        key={item.label}
+                        href={item.href}
+                        target="_blank"
+                        rel="noreferrer"
+                        style={linkStyle()}
+                        onMouseEnter={e => (e.currentTarget.style.color = INK)}
+                        onMouseLeave={e => (e.currentTarget.style.color = INK_DIM)}
+                    >
+                        {item.label}
+                    </a>
+                );
+            }
+            return (
+                <button
+                    key={item.label}
+                    onClick={() => scrollToSection(item.sectionId)}
+                    style={linkStyle()}
+                    onMouseEnter={e => (e.currentTarget.style.color = INK)}
+                    onMouseLeave={e => (e.currentTarget.style.color = INK_DIM)}
+                >
+                    {item.label}
+                </button>
+            );
+        });
+    }
+
+    /* ── Render mobile menu items ─────────────────────────── */
+    function renderMobileItems() {
+        if (isWorkspace) {
+            return NAV_TABS.map((tab) => {
+                const isActive = (activeTab || "overview") === tab.id;
+                return (
+                    <button
+                        key={tab.id}
+                        onClick={() => handleTabClick(tab.id)}
+                        style={mobileLinkStyle(isActive)}
+                        onMouseEnter={e => {
+                            e.currentTarget.style.color = INK;
+                            e.currentTarget.style.background = "rgba(13, 27, 42, 0.05)";
+                        }}
+                        onMouseLeave={e => {
+                            e.currentTarget.style.color = isActive ? INK : INK_DIM;
+                            e.currentTarget.style.background = isActive ? "rgba(13, 27, 42, 0.05)" : "transparent";
+                        }}
+                    >
+                        {tab.label}
+                    </button>
+                );
+            });
+        }
+
+        return LANDING_LINKS.map((item) => {
+            if (item.href) {
+                return (
+                    <a
+                        key={item.label}
+                        href={item.href}
+                        target="_blank"
+                        rel="noreferrer"
+                        onClick={() => setMenuOpen(false)}
+                        style={mobileLinkStyle()}
+                        onMouseEnter={e => {
+                            e.currentTarget.style.color = INK;
+                            e.currentTarget.style.background = "rgba(13, 27, 42, 0.05)";
+                        }}
+                        onMouseLeave={e => {
+                            e.currentTarget.style.color = INK_DIM;
+                            e.currentTarget.style.background = "transparent";
+                        }}
+                    >
+                        {item.label}
+                    </a>
+                );
+            }
+            return (
+                <button
+                    key={item.label}
+                    onClick={() => scrollToSection(item.sectionId)}
+                    style={mobileLinkStyle()}
+                    onMouseEnter={e => {
+                        e.currentTarget.style.color = INK;
+                        e.currentTarget.style.background = "rgba(13, 27, 42, 0.05)";
+                    }}
+                    onMouseLeave={e => {
+                        e.currentTarget.style.color = INK_DIM;
+                        e.currentTarget.style.background = "transparent";
+                    }}
+                >
+                    {item.label}
+                </button>
+            );
+        });
+    }
 
     return (
         <div ref={menuRef}>
@@ -132,31 +294,9 @@ export default function Navbar() {
                         </span>
                     </Link>
 
-                    {/* Center — 5 tab controls (hidden ≤720px) */}
+                    {/* Center — context-aware links (hidden ≤720px) */}
                     <div id="nav-links-desktop" style={{ display: "flex", alignItems: "center", gap: "28px" }}>
-                        {NAV_TABS.map((tab) => {
-                            const isActive = (activeTab || "overview") === tab.id;
-                            return (
-                                <button
-                                    key={tab.id}
-                                    onClick={() => handleTabClick(tab.id)}
-                                    style={{
-                                        fontSize: "14px",
-                                        fontWeight: isActive ? 600 : 500,
-                                        color: isActive ? INK : INK_DIM,
-                                        background: "none",
-                                        border: "none",
-                                        cursor: "pointer",
-                                        padding: "4px 0",
-                                        transition: "color .2s ease",
-                                    }}
-                                    onMouseEnter={e => (e.currentTarget.style.color = INK)}
-                                    onMouseLeave={e => (e.currentTarget.style.color = isActive ? INK : INK_DIM)}
-                                >
-                                    {tab.label}
-                                </button>
-                            );
-                        })}
+                        {renderDesktopLinks()}
                     </div>
 
                     {/* Right — hamburger (visible ≤720px) */}
@@ -204,37 +344,7 @@ export default function Navbar() {
                         flexDirection: "column",
                     }}
                 >
-                    {NAV_TABS.map((tab) => {
-                        const isActive = (activeTab || "overview") === tab.id;
-                        return (
-                            <button
-                                key={tab.id}
-                                onClick={() => handleTabClick(tab.id)}
-                                style={{
-                                    padding: "14px 16px",
-                                    fontSize: "15px",
-                                    fontWeight: isActive ? 600 : 500,
-                                    color: isActive ? INK : INK_DIM,
-                                    textAlign: "left",
-                                    background: isActive ? "rgba(13, 27, 42, 0.05)" : "transparent",
-                                    border: "none",
-                                    borderRadius: "12px",
-                                    cursor: "pointer",
-                                    transition: "color .15s ease, background .15s ease",
-                                }}
-                                onMouseEnter={e => {
-                                    e.currentTarget.style.color = INK;
-                                    e.currentTarget.style.background = "rgba(13, 27, 42, 0.05)";
-                                }}
-                                onMouseLeave={e => {
-                                    e.currentTarget.style.color = isActive ? INK : INK_DIM;
-                                    e.currentTarget.style.background = isActive ? "rgba(13, 27, 42, 0.05)" : "transparent";
-                                }}
-                            >
-                                {tab.label}
-                            </button>
-                        );
-                    })}
+                    {renderMobileItems()}
                 </div>
             )}
 
