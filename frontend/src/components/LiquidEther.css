@@ -5,3 +5,32 @@
   height: 100%;
   touch-action: none;
 }
+
+.liquid-ether-container canvas {
+  position: absolute;
+  inset: 0;
+  width: 100% !important;
+  height: 100% !important;
+  display: block;
+  opacity: 0.82;
+  transition: opacity 0.3s ease;
+}
+
+/* Subtle scrim & gradient overlay ensuring foreground text contrast */
+.liquid-ether-scrim {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  z-index: 1;
+  background:
+    radial-gradient(ellipse at 50% 25%, rgba(238, 246, 252, 0.45) 0%, rgba(238, 246, 252, 0.75) 100%),
+    linear-gradient(180deg, rgba(238, 246, 252, 0.25) 0%, rgba(238, 246, 252, 0.5) 100%);
+  backdrop-filter: blur(1.5px);
+  -webkit-backdrop-filter: blur(1.5px);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .liquid-ether-container canvas {
+    opacity: 0.65;
+  }
+}

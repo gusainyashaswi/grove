@@ -23,7 +23,10 @@ export default function LiquidEther({
   autoResumeDelay = 1000,
   autoRampDuration = 0.6,
   backgroundColor = '#eef6fc',
-  lightMode = true
+  lightMode = true,
+  scrim = true,
+  scrimClassName = '',
+  scrimStyle = {}
 }) {
   const mountRef = useRef(null);
   const webglRef = useRef(null);
@@ -31,6 +34,7 @@ export default function LiquidEther({
   const rafRef = useRef(null);
   const intersectionObserverRef = useRef(null);
   const isVisibleRef = useRef(true);
+  const prefersReducedMotionRef = useRef(false);
   const resizeRafRef = useRef(null);
 
   useEffect(() => {
@@ -955,12 +959,7 @@ export default function LiquidEther({
         this._resize = this.resize.bind(this);
         window.addEventListener('resize', this._resize);
         this._onVisibility = () => {
-          const hidden = document.hidden;
-          if (hidden) {
-            this.pause();
-          } else if (isVisibleRef.current) {
-            this.start();
-          }
+          updatePlayState();
         };
         document.addEventListener('visibilitychange', this._onVisibility);
         this.running = false;
@@ -1000,6 +999,7 @@ export default function LiquidEther({
         try {
           window.removeEventListener('resize', this._resize);
           document.removeEventListener('visibilitychange', this._onVisibility);
+          this.pause();
           Mouse.dispose();
           if (Common.renderer) {
             const canvas = Common.renderer.domElement;
@@ -1016,6 +1016,16 @@ export default function LiquidEther({
     const container = mountRef.current;
     container.style.position = container.style.position || 'relative';
     container.style.overflow = container.style.overflow || 'hidden';
+
+    const updatePlayState = () => {
+      if (!webglRef.current) return;
+      const shouldRun = isVisibleRef.current && !document.hidden && !prefersReducedMotionRef.current;
+      if (shouldRun) {
+        webglRef.current.start();
+      } else {
+        webglRef.current.pause();
+      }
+    };
 
     const webgl = new WebGLManager({
       $wrapper: container,
@@ -1051,19 +1061,37 @@ export default function LiquidEther({
     };
     applyOptionsFromProps();
 
-    webgl.start();
+    const motionQuery =
+      typeof window !== 'undefined' && window.matchMedia
+        ? window.matchMedia('(prefers-reduced-motion: reduce)')
+        : null;
+
+    const onMotionChange = (e) => {
+      prefersReducedMotionRef.current = !!e.matches;
+      updatePlayState();
+    };
+
+    if (motionQuery) {
+      prefersReducedMotionRef.current = !!motionQuery.matches;
+      if (motionQuery.addEventListener) {
+        motionQuery.addEventListener('change', onMotionChange);
+      } else if (motionQuery.addListener) {
+        motionQuery.addListener(onMotionChange);
+      }
+    }
+
+    // Render an initial static frame so background is painted even if animation is paused
+    webgl.render();
+
+    // Start loop only if in view, active tab, and reduced motion is not preferred
+    updatePlayState();
 
     const io = new IntersectionObserver(
       entries => {
         const entry = entries[0];
         const isVisible = entry.isIntersecting && entry.intersectionRatio > 0;
         isVisibleRef.current = isVisible;
-        if (!webglRef.current) return;
-        if (isVisible && !document.hidden) {
-          webglRef.current.start();
-        } else {
-          webglRef.current.pause();
-        }
+        updatePlayState();
       },
       { threshold: [0, 0.01, 0.1] }
     );
@@ -1082,7 +1110,18 @@ export default function LiquidEther({
     resizeObserverRef.current = ro;
 
     return () => {
-      if (rafRef.current) cancelAnimationFrame(rafRef.current);
+      if (motionQuery) {
+        if (motionQuery.removeEventListener) {
+          motionQuery.removeEventListener('change', onMotionChange);
+        } else if (motionQuery.removeListener) {
+          motionQuery.removeListener(onMotionChange);
+        }
+      }
+      if (rafRef.current) {
+        cancelAnimationFrame(rafRef.current);
+        rafRef.current = null;
+      }
+      if (resizeRafRef.current) cancelAnimationFrame(resizeRafRef.current);
       if (resizeObserverRef.current) {
         try {
           resizeObserverRef.current.disconnect();
@@ -1174,5 +1213,15 @@ export default function LiquidEther({
     autoRampDuration
   ]);
 
-  return <div ref={mountRef} className={`liquid-ether-container ${className || ''}`} style={style} />;
+  return (
+    <div ref={mountRef} className={`liquid-ether-container ${className || ''}`} style={style}>
+      {scrim && (
+        <div
+          className={`liquid-ether-scrim ${scrimClassName || ''}`}
+          style={scrimStyle}
+          aria-hidden="true"
+        />
+      )}
+    </div>
+  );
 }
