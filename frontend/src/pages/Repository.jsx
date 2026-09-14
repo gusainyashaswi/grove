@@ -1,4 +1,4 @@
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import LiquidEther from "../components/LiquidEther";
 import RepositoryHeader from "../components/repository/RepositoryHeader";
 import StatsBar from "../components/repository/StatsBar";
@@ -15,6 +15,48 @@ import MainContent from "../components/repository/MainContent";
 import { useRepository } from "../context/RepositoryContext";
 import { Navigate } from "react-router-dom";
 
+
+/* ─── ExplorerLayout — mobile tab switcher + desktop 3-col grid ───────── */
+
+const EXPLORER_TABS = [
+    { id: "files", label: "Files" },
+    { id: "code",  label: "Code"  },
+    { id: "details", label: "Details" },
+];
+
+function ExplorerLayout() {
+    const [mobilePanel, setMobilePanel] = useState("code");
+
+    return (
+        <div className="w-full">
+            {/* ── Segmented switcher — only visible below xl ── */}
+            <div className="explorer-mobile-tabs">
+                {EXPLORER_TABS.map((t) => (
+                    <button
+                        key={t.id}
+                        className={`explorer-mobile-tab${mobilePanel === t.id ? " active" : ""}`}
+                        onClick={() => setMobilePanel(t.id)}
+                    >
+                        {t.label}
+                    </button>
+                ))}
+            </div>
+
+            {/* ── Desktop: 3-column grid. Mobile: one panel at a time ── */}
+            <div className="explorer-grid">
+                <div className={`explorer-panel${mobilePanel === "files" ? " mobile-visible" : ""}`}>
+                    <FileExplorer />
+                </div>
+                <div className={`explorer-panel${mobilePanel === "code" ? " mobile-visible" : ""}`}>
+                    <CodePreview />
+                </div>
+                <div className={`explorer-panel${mobilePanel === "details" ? " mobile-visible" : ""}`}>
+                    <DetailsPanel />
+                </div>
+            </div>
+        </div>
+    );
+}
 
 function Repository() {
     const { repository, selectedFile, setSelectedFile, activeTab } = useRepository();
@@ -83,11 +125,7 @@ function Repository() {
                     </>
                 )}
                 {currentTab === "explorer" && (
-                    <div className="explorer-grid grid grid-cols-1 xl:grid-cols-[260px_1fr_280px] gap-6 items-start w-full">
-                        <FileExplorer />
-                        <CodePreview />
-                        <DetailsPanel />
-                    </div>
+                    <ExplorerLayout />
                 )}
 
                 {currentTab === "graph" && (
