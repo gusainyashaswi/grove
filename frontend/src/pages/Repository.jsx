@@ -12,6 +12,7 @@ import DependencyGraph from "../components/repository/DependencyGraph";
 import AiInsights from "../components/repository/AiInsights";
 import Assistant from "../components/repository/Assistant";
 import MainContent from "../components/repository/MainContent";
+import RepositoryFooter from "../components/repository/RepositoryFooter";
 import { useRepository } from "../context/RepositoryContext";
 import { Navigate } from "react-router-dom";
 
@@ -79,7 +80,7 @@ function Repository() {
 
     return (
         <div
-            className="min-h-screen w-full text-[var(--ink)] pt-[var(--navbar-clearance)] pb-16 px-4 sm:px-8 lg:px-12 flex flex-col items-center relative"
+            className="min-h-screen w-full text-[var(--ink)] pt-[var(--navbar-clearance)] pb-0 px-4 sm:px-8 lg:px-12 flex flex-col items-center relative"
             style={{
                 paddingTop: "var(--navbar-clearance, calc(var(--navbar-top, 16px) + var(--navbar-height, 58px) + var(--navbar-gap, 76px)))",
             }}
@@ -141,10 +142,19 @@ function Repository() {
                     currentTab !== "graph" &&
                     currentTab !== "ai" &&
                     currentTab !== "assistant" && <MainContent />}
+            </div>
 
-
-
-
+            {/* ── Full-bleed footer — escapes the max-w and side-padding ── */}
+            <div
+                style={{
+                    width: "100vw",
+                    marginLeft: "calc(-1 * var(--page-px, 16px))",
+                    position: "relative",
+                    zIndex: 10,
+                }}
+                className="[--page-px:1rem] sm:[--page-px:2rem] lg:[--page-px:3rem]"
+            >
+                <RepositoryFooter />
             </div>
         </div>
     );
