@@ -22,16 +22,9 @@ function EmptyState({ message, isHealthy = true }) {
 }
 
 /* ─── Single file row ─────────────────────────────────────────────────────── */
-function FileRow({ item, onSelectFile, badgeType = "neutral" }) {
+function FileRow({ item, onSelectFile }) {
     const fileName = item?.name || (typeof item === "string" ? item : "Unknown file");
     const fileValue = item?.value ?? "";
-
-    const badgeStyles = {
-        neutral: "bg-[rgba(13,27,42,0.04)] text-[var(--muted)] border border-[rgba(13,27,42,0.08)]",
-        warning: "bg-[rgba(245,158,11,0.08)] text-amber-700 border border-[rgba(245,158,11,0.22)]",
-        accent: "bg-[rgba(59,111,237,0.08)] text-[var(--accent)] border border-[rgba(59,111,237,0.20)]",
-        danger: "bg-[rgba(239,68,68,0.08)] text-red-600 border border-[rgba(239,68,68,0.20)]",
-    };
 
     return (
         <div
@@ -47,7 +40,7 @@ function FileRow({ item, onSelectFile, badgeType = "neutral" }) {
             </div>
             <div className="flex items-center gap-1.5 shrink-0">
                 {fileValue && (
-                    <span className={`font-mono text-[11px] px-2 py-0.5 rounded-md ${badgeStyles[badgeType] || badgeStyles.neutral}`}>
+                    <span className="font-mono text-xs text-[var(--muted)]">
                         {fileValue}
                     </span>
                 )}
@@ -58,7 +51,7 @@ function FileRow({ item, onSelectFile, badgeType = "neutral" }) {
 }
 
 /* ─── Paged signal panel ──────────────────────────────────────────────────── */
-function SignalPanel({ title, icon: Icon, items = [], emptyMessage, onSelectFile, badgeType = "neutral", isCleanPositive = true }) {
+function SignalPanel({ title, icon: Icon, items = [], emptyMessage, onSelectFile, isCleanPositive = true }) {
     const [visibleCount, setVisibleCount] = useState(PAGE_SIZE);
 
     const safeItems = Array.isArray(items) ? items : [];
@@ -80,15 +73,11 @@ function SignalPanel({ title, icon: Icon, items = [], emptyMessage, onSelectFile
                         {title}
                     </h3>
                 </div>
-                <span
-                    className={`font-mono text-[11px] px-2 py-0.5 rounded-full ${
-                        safeItems.length > 0
-                            ? "bg-[rgba(59,111,237,0.08)] text-[var(--accent)] font-semibold border border-[rgba(59,111,237,0.2)]"
-                            : "bg-[rgba(13,27,42,0.04)] text-[var(--muted)] border border-[var(--line-soft)]"
-                    }`}
-                >
-                    {safeItems.length} file{safeItems.length !== 1 ? "s" : ""}
-                </span>
+                {safeItems.length > 0 && (
+                    <span className="font-mono text-xs text-[var(--muted)]">
+                        {safeItems.length} file{safeItems.length !== 1 ? "s" : ""}
+                    </span>
+                )}
             </div>
 
             {/* Body: list or empty state */}
@@ -102,7 +91,6 @@ function SignalPanel({ title, icon: Icon, items = [], emptyMessage, onSelectFile
                                 key={item.name || i}
                                 item={item}
                                 onSelectFile={onSelectFile}
-                                badgeType={badgeType}
                             />
                         ))}
                     </div>
@@ -182,14 +170,9 @@ function HealthSignals() {
         <section aria-label="Health signals" className="w-full">
             {/* Block header */}
             <div className="flex items-center justify-between mb-4">
-                <div className="flex items-center gap-2.5">
-                    <h2 className="text-lg sm:text-xl font-bold font-display tracking-tight text-[var(--ink)]">
-                        Health signals
-                    </h2>
-                    <span className="badge badge-neutral text-[11px]">
-                        Quality metrics
-                    </span>
-                </div>
+                <h2 className="text-lg sm:text-xl font-bold font-display tracking-tight text-[var(--ink)]">
+                    Health signals
+                </h2>
             </div>
 
             {/* 2×2 grid */}
@@ -198,7 +181,6 @@ function HealthSignals() {
                     title="Large files (>300 lines)"
                     icon={FileCode}
                     items={largeFiles}
-                    badgeType="warning"
                     isCleanPositive={false}
                     emptyMessage={"No files exceed 300 lines.\nYour codebase is well-structured."}
                     onSelectFile={handleSelectFile}
@@ -207,7 +189,6 @@ function HealthSignals() {
                     title="Most imported files"
                     icon={Share2}
                     items={mostImported}
-                    badgeType="accent"
                     isCleanPositive={false}
                     emptyMessage={"Import data unavailable.\nRun a full analysis to populate this."}
                     onSelectFile={handleSelectFile}
@@ -216,7 +197,6 @@ function HealthSignals() {
                     title="Unused files"
                     icon={FileQuestion}
                     items={unusedFiles}
-                    badgeType="neutral"
                     isCleanPositive={true}
                     emptyMessage={"No unused files detected.\nEvery file is referenced somewhere."}
                     onSelectFile={handleSelectFile}
@@ -225,7 +205,6 @@ function HealthSignals() {
                     title="Orphan files"
                     icon={AlertCircle}
                     items={orphanFiles}
-                    badgeType="danger"
                     isCleanPositive={true}
                     emptyMessage={"No orphan files found.\nAll files are connected to the dependency graph."}
                     onSelectFile={handleSelectFile}

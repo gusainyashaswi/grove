@@ -33,14 +33,9 @@ function FolderDistribution() {
         <section aria-label="Folder distribution" className="w-full">
             {/* Header */}
             <div className="flex items-center justify-between mb-4">
-                <div className="flex items-center gap-2.5">
-                    <h2 className="text-lg sm:text-xl font-bold font-display tracking-tight text-[var(--ink)]">
-                        Folder distribution
-                    </h2>
-                    <span className="badge badge-neutral text-[11px]">
-                        {folders.length} directories
-                    </span>
-                </div>
+                <h2 className="text-lg sm:text-xl font-bold font-display tracking-tight text-[var(--ink)]">
+                    Folder distribution
+                </h2>
             </div>
 
             {/* Symmetrical GlassCard */}

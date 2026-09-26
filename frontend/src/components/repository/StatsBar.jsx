@@ -91,7 +91,7 @@ function StatsBar() {
                             <Network size={12} className="text-[var(--muted)]" />
                             Graph connectivity
                         </span>
-                        <span className="badge badge-neutral text-[10.5px] py-0.5 px-2">
+                        <span className="font-mono text-[11.5px] text-[var(--muted)]">
                             density
                         </span>
                     </div>
