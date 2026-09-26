@@ -222,17 +222,26 @@ function CodePreview() {
     }, [file?.content]);
 
     return (
-        <GlassCard className="code-panel !p-0 overflow-hidden w-full flex flex-col min-h-[460px]">
+        <GlassCard className="code-panel !p-0 overflow-hidden w-full flex flex-col h-[600px] sm:h-[640px]">
             {/* Top Bar (panel-bar) */}
-            <div className="panel-bar flex items-center justify-between px-4 py-3 border-b border-[var(--line)] bg-white/50 gap-3">
+            <div className="panel-bar flex items-center justify-between px-5 py-3 border-b border-[var(--line)] bg-white/50 gap-3 shrink-0">
                 {/* Left: Breadcrumbs */}
-                <div className="breadcrumb font-mono text-[11.5px] text-[var(--ink-soft)] flex items-center gap-1.5 flex-wrap min-w-0">
+                <div
+                    className="breadcrumb font-mono text-[11.5px] text-[var(--ink-soft)] flex items-center gap-1.5 min-w-0 flex-1 overflow-hidden text-ellipsis whitespace-nowrap"
+                    style={{ overflow: "hidden", textOverflow: "ellipsis", whiteSpace: "nowrap" }}
+                    title={file?.path || pathSegments.join(" / ")}
+                >
                     {pathSegments.map((segment, idx) => {
                         const isLast = idx === pathSegments.length - 1;
                         return (
-                            <span key={idx} className="flex items-center gap-1.5 truncate">
-                                {idx > 0 && <span className="sep opacity-40">/</span>}
-                                <span className={isLast ? "t-heading font-bold text-[var(--ink)]" : ""}>
+                            <span
+                                key={idx}
+                                className={`inline-flex items-center gap-1.5 min-w-0 ${
+                                    isLast ? "truncate font-bold text-[var(--ink)]" : "truncate text-[var(--ink-soft)]"
+                                }`}
+                            >
+                                {idx > 0 && <span className="sep opacity-40 shrink-0">/</span>}
+                                <span className="truncate">
                                     {segment}
                                 </span>
                             </span>
@@ -313,127 +322,131 @@ function CodePreview() {
                 </div>
             </div>
 
-            {/* Code Body */}
-            <div className="code-body flex-1 flex font-mono text-[12.5px] leading-[1.9] py-4 bg-white overflow-x-auto">
-                {/* Gutter */}
-                <div className="code-gutter select-none px-4 text-right text-[rgba(15,22,38,0.25)] shrink-0">
-                    {tokenizedLines.map((_, i) => {
-                        const isMatchLine =
-                            matches.length > 0 && matches[currentMatchIndex]?.lineIdx === i;
-                        return (
-                            <div
-                                key={i}
-                                className={isMatchLine ? "text-[var(--accent)] font-semibold" : ""}
-                            >
-                                {i + 1}
-                            </div>
-                        );
-                    })}
-                </div>
+            {/* Code Body — Fixed/Constrained Scrollable Area with Single Flex Row */}
+            <div className="code-body flex-1 min-h-0 overflow-y-auto overflow-x-auto bg-white">
+                <div className="flex min-w-full w-max py-3 font-mono text-[12.5px] leading-6">
+                    {/* Line-Number Gutter: Fixed-width Column (~40-48px, right-aligned, pr ~12px, border-right 1px) */}
+                    <div className="code-gutter select-none w-11 sm:w-12 shrink-0 text-right pr-3 border-r border-[var(--line-soft)] text-[rgba(15,22,38,0.25)] sticky left-0 bg-white z-10">
+                        {tokenizedLines.map((_, i) => {
+                            const isMatchLine =
+                                matches.length > 0 && matches[currentMatchIndex]?.lineIdx === i;
+                            return (
+                                <div
+                                    key={i}
+                                    className={`h-6 leading-6 ${isMatchLine ? "text-[var(--accent)] font-semibold" : ""}`}
+                                >
+                                    {i + 1}
+                                </div>
+                            );
+                        })}
+                    </div>
 
-                {/* Code Lines with Prism Tokens & Search Highlights */}
-                <div className="code-lines pr-5 overflow-x-auto flex-1">
-                    {tokenizedLines.map((tokens, lineIdx) => {
-                        let lineCharOffset = 0;
-                        const isMatchLine =
-                            matches.length > 0 && matches[currentMatchIndex]?.lineIdx === lineIdx;
+                    {/* Code Content Column in remaining flex:1 with matching line-height */}
+                    <div className="code-content flex-1 pl-3.5 pr-6 min-w-0">
+                        {tokenizedLines.map((tokens, lineIdx) => {
+                            let lineCharOffset = 0;
+                            const isMatchLine =
+                                matches.length > 0 && matches[currentMatchIndex]?.lineIdx === lineIdx;
 
-                        return (
-                            <div
-                                key={lineIdx}
-                                ref={(el) => (lineRefs.current[lineIdx] = el)}
-                                className={`whitespace-pre ${isMatchLine ? "bg-amber-50/70 -mx-2 px-2 rounded-xs" : ""}`}
-                            >
-                                {tokens.length === 0 ? (
-                                    <span>&nbsp;</span>
-                                ) : (
-                                    tokens.map((token, tokIdx) => {
-                                        const tokenStart = lineCharOffset;
-                                        lineCharOffset += token.text.length;
+                            return (
+                                <div
+                                    key={lineIdx}
+                                    ref={(el) => (lineRefs.current[lineIdx] = el)}
+                                    className={`h-6 leading-6 whitespace-pre ${
+                                        isMatchLine ? "bg-amber-100/75 -mx-1.5 px-1.5 rounded-xs" : ""
+                                    }`}
+                                >
+                                    {tokens.length === 0 ? (
+                                        <span>&nbsp;</span>
+                                    ) : (
+                                        tokens.map((token, tokIdx) => {
+                                            const tokenStart = lineCharOffset;
+                                            lineCharOffset += token.text.length;
 
-                                        // Render tokens with search highlighting if active
-                                        if (searchQuery && searchQuery.trim()) {
-                                            const q = searchQuery.toLowerCase();
-                                            const lower = token.text.toLowerCase();
-                                            const segments = [];
-                                            let lastIdx = 0;
-                                            let matchIdx = 0;
+                                            // Render tokens with search highlighting if active
+                                            if (searchQuery && searchQuery.trim()) {
+                                                const q = searchQuery.toLowerCase();
+                                                const lower = token.text.toLowerCase();
+                                                const segments = [];
+                                                let lastIdx = 0;
+                                                let matchIdx = 0;
 
-                                            while ((matchIdx = lower.indexOf(q, lastIdx)) !== -1) {
-                                                if (matchIdx > lastIdx) {
+                                                while ((matchIdx = lower.indexOf(q, lastIdx)) !== -1) {
+                                                    if (matchIdx > lastIdx) {
+                                                        segments.push({
+                                                            isMatch: false,
+                                                            text: token.text.slice(lastIdx, matchIdx),
+                                                        });
+                                                    }
+
+                                                    const globalMatchIdx = matches.findIndex(
+                                                        (m) =>
+                                                            m.lineIdx === lineIdx &&
+                                                            m.startIdx === tokenStart + matchIdx
+                                                    );
+                                                    const isCurrent =
+                                                        globalMatchIdx !== -1 &&
+                                                        globalMatchIdx === currentMatchIndex;
+
+                                                    segments.push({
+                                                        isMatch: true,
+                                                        isCurrent,
+                                                        text: token.text.slice(matchIdx, matchIdx + q.length),
+                                                    });
+                                                    lastIdx = matchIdx + q.length;
+                                                }
+
+                                                if (lastIdx < token.text.length) {
                                                     segments.push({
                                                         isMatch: false,
-                                                        text: token.text.slice(lastIdx, matchIdx),
+                                                        text: token.text.slice(lastIdx),
                                                     });
                                                 }
 
-                                                const globalMatchIdx = matches.findIndex(
-                                                    (m) =>
-                                                        m.lineIdx === lineIdx &&
-                                                        m.startIdx === tokenStart + matchIdx
+                                                return (
+                                                    <span
+                                                        key={tokIdx}
+                                                        className={TOKEN_STYLES[token.type] || "text-[var(--ink-soft)]"}
+                                                    >
+                                                        {segments.map((seg, sIdx) => {
+                                                            if (!seg.isMatch) return seg.text;
+                                                            return (
+                                                                <mark
+                                                                    key={sIdx}
+                                                                    className={`rounded-xs px-0.5 ${
+                                                                        seg.isCurrent
+                                                                            ? "bg-amber-400 text-black font-semibold shadow-xs ring-1 ring-amber-500"
+                                                                            : "bg-amber-200/90 text-black"
+                                                                    }`}
+                                                                >
+                                                                    {seg.text}
+                                                                </mark>
+                                                            );
+                                                        })}
+                                                    </span>
                                                 );
-                                                const isCurrent =
-                                                    globalMatchIdx !== -1 &&
-                                                    globalMatchIdx === currentMatchIndex;
-
-                                                segments.push({
-                                                    isMatch: true,
-                                                    isCurrent,
-                                                    text: token.text.slice(matchIdx, matchIdx + q.length),
-                                                });
-                                                lastIdx = matchIdx + q.length;
                                             }
 
-                                            if (lastIdx < token.text.length) {
-                                                segments.push({
-                                                    isMatch: false,
-                                                    text: token.text.slice(lastIdx),
-                                                });
-                                            }
-
+                                            // Default Prism highlighting
                                             return (
                                                 <span
                                                     key={tokIdx}
                                                     className={TOKEN_STYLES[token.type] || "text-[var(--ink-soft)]"}
                                                 >
-                                                    {segments.map((seg, sIdx) => {
-                                                        if (!seg.isMatch) return seg.text;
-                                                        return (
-                                                            <mark
-                                                                key={sIdx}
-                                                                className={`rounded-xs px-0.5 ${
-                                                                    seg.isCurrent
-                                                                        ? "bg-amber-400 text-black font-semibold shadow-xs ring-1 ring-amber-500"
-                                                                        : "bg-amber-200/90 text-black"
-                                                                }`}
-                                                            >
-                                                                {seg.text}
-                                                            </mark>
-                                                        );
-                                                    })}
+                                                    {token.text}
                                                 </span>
                                             );
-                                        }
-
-                                        // Default Prism highlighting
-                                        return (
-                                            <span
-                                                key={tokIdx}
-                                                className={TOKEN_STYLES[token.type] || "text-[var(--ink-soft)]"}
-                                            >
-                                                {token.text}
-                                            </span>
-                                        );
-                                    })
-                                )}
-                            </div>
-                        );
-                    })}
+                                        })
+                                    )}
+                                </div>
+                            );
+                        })}
+                    </div>
                 </div>
             </div>
 
             {/* Status Bar */}
-            <div className="code-status flex items-center justify-between px-4 py-2.5 border-t border-[var(--line)] font-mono text-[11px] text-[var(--muted)] bg-white/50">
+            <div className="code-status flex items-center justify-between px-5 py-2.5 border-t border-[var(--line)] font-mono text-[11px] text-[var(--muted)] bg-white/50 shrink-0">
                 <span>{language.toUpperCase()} · UTF-8 · LF</span>
                 <span>{tokenizedLines.length.toLocaleString()} lines</span>
             </div>
