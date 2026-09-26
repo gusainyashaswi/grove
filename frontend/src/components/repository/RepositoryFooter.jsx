@@ -31,8 +31,8 @@ export default function RepositoryFooter() {
                     border-top: 1px solid rgba(255, 255, 255, 0.32);
                     box-shadow: 0 -10px 40px rgba(255, 255, 255, 0.32), inset 0 1px 1px rgba(255, 255, 255, 0.32);
                     color: var(--ink);
-                    padding: 64px 0 28px;
-                    margin-top: 60px;
+                    padding: 56px 0 28px;
+                    margin-top: 16px;
                     position: relative;
                     z-index: 10;
                 }

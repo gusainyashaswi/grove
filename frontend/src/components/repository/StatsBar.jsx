@@ -1,6 +1,6 @@
 import { useRepository } from "../../context/RepositoryContext";
 import { GlassCard } from "../ui/GlassCard";
-import { FileText, Folder, AlignLeft, Clock, ArrowUpRight } from "lucide-react";
+import { FileText, Folder, AlignLeft, Clock, ArrowUpRight, Network } from "lucide-react";
 
 function StatsBar() {
     const { repository, setSelectedFile, setActiveTab } = useRepository() || {};
@@ -12,10 +12,12 @@ function StatsBar() {
 
     const avgDeps = repository?.statistics?.averageDependencies ?? 4.2;
     const maxDeps = repository?.statistics?.maximumDependencies ?? 27;
-    const maxDepFileName = repository?.statistics?.maxDepFile?.name ?? "ReactFiberWorkLoop.js";
+    const maxDepFileRaw = repository?.statistics?.maxDepFile;
+    const maxDepFileName = typeof maxDepFileRaw === "string" ? maxDepFileRaw : (maxDepFileRaw?.name ?? "ReactFiberWorkLoop.js");
 
-    const largestFileName = repository?.statistics?.largestFile?.name ?? "ReactFiberBeginWork.js";
-    const largestFileLines = repository?.statistics?.largestFile?.lines ?? 1184;
+    const largestFileRaw = repository?.statistics?.largestFile;
+    const largestFileName = typeof largestFileRaw === "string" ? largestFileRaw : (largestFileRaw?.name ?? "ReactFiberBeginWork.js");
+    const largestFileLines = typeof largestFileRaw === "object" && largestFileRaw?.lines ? largestFileRaw.lines : (repository?.statistics?.largestFileLines ?? 1184);
 
     const formattedLines = totalLines >= 1000
         ? `${(totalLines / 1000).toFixed(1)}k`
@@ -39,14 +41,14 @@ function StatsBar() {
         },
         {
             label: "Avg lines / file",
-            value: avgLinesPerFile,
+            value: typeof avgLinesPerFile === "number" ? Math.round(avgLinesPerFile) : avgLinesPerFile,
             icon: Clock,
         },
     ];
 
-    const handleOpenLargest = () => {
+    const handleOpenFile = (targetFileName) => {
         if (repository?.files && setSelectedFile) {
-            const target = repository.files.find(f => f.name === largestFileName || f.path?.includes(largestFileName));
+            const target = repository.files.find(f => f.name === targetFileName || f.path?.endsWith(targetFileName));
             if (target) {
                 setSelectedFile(target);
             }
@@ -59,14 +61,12 @@ function StatsBar() {
     return (
         <section aria-label="Repository statistics" className="w-full flex flex-col gap-4">
             {/* 4-Column Primary Stat Grid */}
-            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
+            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 items-stretch">
                 {topStats.map((stat) => {
                     const Icon = stat.icon;
                     return (
                         <GlassCard key={stat.label} className="stat-card flex flex-col justify-between">
-                            <div className="icon-box mb-4">
-                                <Icon size={17} />
-                            </div>
+                            <Icon size={20} className="text-[var(--accent)] mb-3 shrink-0" />
                             <div>
                                 <div className="stat-value">{stat.value}</div>
                                 <div className="stat-label">{stat.label}</div>
@@ -76,41 +76,67 @@ function StatsBar() {
                 })}
             </div>
 
-            {/* 3-Column Secondary Stat Grid */}
-            <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
-                {/* Avg dependencies / file */}
+            {/* 3-Column Secondary Stat Grid — Symmetrically Balanced */}
+            <div className="grid grid-cols-1 md:grid-cols-3 gap-4 items-stretch">
+                {/* 1. Avg dependencies / file */}
                 <GlassCard className="stat-card flex flex-col justify-between">
-                    <div className="stat-value">{avgDeps}</div>
-                    <div className="stat-label">Avg dependencies / file</div>
+                    <div>
+                        <div className="stat-value">
+                            {typeof avgDeps === "number" ? avgDeps.toFixed(1) : avgDeps}
+                        </div>
+                        <div className="stat-label">Avg dependencies / file</div>
+                    </div>
+                    <div className="stat-sub flex items-center justify-between gap-2">
+                        <span className="font-mono text-[11.5px] text-[var(--ink-soft)] truncate flex items-center gap-1.5">
+                            <Network size={12} className="text-[var(--muted)]" />
+                            Graph connectivity
+                        </span>
+                        <span className="badge badge-neutral text-[10.5px] py-0.5 px-2">
+                            density
+                        </span>
+                    </div>
                 </GlassCard>
 
-                {/* Max dependencies */}
+                {/* 2. Max dependencies */}
                 <GlassCard className="stat-card flex flex-col justify-between">
                     <div>
                         <div className="stat-value">{maxDeps}</div>
                         <div className="stat-label">Max dependencies</div>
                     </div>
-                    <div className="stat-sub font-mono text-[11.5px] text-[var(--ink-soft)] mt-2.5 truncate">
-                        {maxDepFileName}
+                    <div className="stat-sub flex items-center justify-between gap-2">
+                        <span className="font-mono text-[11.5px] text-[var(--ink-soft)] truncate" title={maxDepFileName}>
+                            {maxDepFileName}
+                        </span>
+                        <button
+                            onClick={() => handleOpenFile(maxDepFileName)}
+                            className="chip text-[11.5px] py-0.5 px-2.5 cursor-pointer shrink-0"
+                            title="Inspect in explorer"
+                        >
+                            <span>Open</span>
+                            <ArrowUpRight size={11} />
+                        </button>
                     </div>
                 </GlassCard>
 
-                {/* Largest file */}
+                {/* 3. Largest file */}
                 <GlassCard className="stat-card flex flex-col justify-between">
                     <div>
-                        <div className="stat-value">{typeof largestFileLines === "number" ? largestFileLines.toLocaleString() : largestFileLines} lines</div>
+                        <div className="stat-value">
+                            {typeof largestFileLines === "number" ? largestFileLines.toLocaleString() : largestFileLines} lines
+                        </div>
                         <div className="stat-label">Largest file</div>
                     </div>
-                    <div className="stat-sub flex items-center justify-between gap-2 mt-2.5">
-                        <span className="font-mono text-[11.5px] text-[var(--ink-soft)] truncate">
+                    <div className="stat-sub flex items-center justify-between gap-2">
+                        <span className="font-mono text-[11.5px] text-[var(--ink-soft)] truncate" title={largestFileName}>
                             {largestFileName}
                         </span>
                         <button
-                            onClick={handleOpenLargest}
-                            className="chip text-[12.5px] py-1 px-3 cursor-pointer shrink-0"
+                            onClick={() => handleOpenFile(largestFileName)}
+                            className="chip text-[11.5px] py-0.5 px-2.5 cursor-pointer shrink-0"
+                            title="Inspect in explorer"
                         >
                             <span>Open</span>
-                            <ArrowUpRight size={12} />
+                            <ArrowUpRight size={11} />
                         </button>
                     </div>
                 </GlassCard>

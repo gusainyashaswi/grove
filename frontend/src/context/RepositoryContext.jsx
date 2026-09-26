@@ -24,6 +24,25 @@ const DEFAULT_REPO = {
         averageLinesPerFile: 52,
         averageDependencies: 4.2,
         maximumDependencies: 27,
+        largestFile: { name: "ReactFiberWorkLoop.js", lines: 2420 },
+        maxDepFile: { name: "ReactFiberBeginWork.js", lines: 3 },
+    },
+    health: {
+        totalFiles: 7,
+        largeFiles: [
+            { name: "ReactFiberWorkLoop.js", lines: 2420 },
+            { name: "ReactFiberHooks.js", lines: 1450 },
+            { name: "ReactFiberBeginWork.js", lines: 1184 },
+            { name: "ReactFiberCompleteWork.js", lines: 890 },
+            { name: "ReactDOMRoot.js", lines: 320 },
+        ],
+        mostImportedFiles: [
+            { name: "ReactSharedInternals.js", imports: 3 },
+            { name: "ReactFiberBeginWork.js", imports: 2 },
+            { name: "ReactFiberHooks.js", imports: 1 },
+        ],
+        unusedFiles: ["ReactDOMRoot.js", "React.js"],
+        orphanFiles: [],
     },
     files: [
         {

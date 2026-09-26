@@ -79,12 +79,7 @@ function Repository() {
     const currentTab = activeTab || "overview";
 
     return (
-        <div
-            className="min-h-screen w-full text-[var(--ink)] pt-[var(--navbar-clearance)] pb-0 px-4 sm:px-8 lg:px-12 flex flex-col items-center relative"
-            style={{
-                paddingTop: "var(--navbar-clearance, calc(var(--navbar-top, 16px) + var(--navbar-height, 58px) + var(--navbar-gap, 76px)))",
-            }}
-        >
+        <div className="min-h-screen w-full text-[var(--ink)] pt-[98px] sm:pt-[106px] pb-0 px-4 sm:px-6 lg:px-8 flex flex-col items-center relative">
             {/* ── Fixed Full-Page LiquidEther Fluid Background (Calm / Lesser Intensity) ── */}
             <div
                 style={{
@@ -115,7 +110,7 @@ function Repository() {
                 />
             </div>
 
-            <div className="w-full max-w-[var(--max-w)] flex flex-col gap-12 relative z-10">
+            <div className="w-full max-w-[1240px] flex flex-col gap-9 sm:gap-10 relative z-10">
                 <RepositoryHeader />
                 <StatsBar />
                 {currentTab === "overview" && (
@@ -152,7 +147,7 @@ function Repository() {
                     position: "relative",
                     zIndex: 10,
                 }}
-                className="[--page-px:1rem] sm:[--page-px:2rem] lg:[--page-px:3rem]"
+                className="[--page-px:1rem] sm:[--page-px:1.5rem] lg:[--page-px:2rem]"
             >
                 <RepositoryFooter />
             </div>
