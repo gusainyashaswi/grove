@@ -1,5 +1,36 @@
 @import "tailwindcss";
 
+/* ── View Transitions API — Global Page Animations ──────────────────────── */
+
+/* Root-level page transitions */
+@keyframes vt-slide-out-up {
+  to { opacity: 0; transform: translateY(-18px) scale(0.98); }
+}
+@keyframes vt-slide-in-up {
+  from { opacity: 0; transform: translateY(22px) scale(0.98); }
+}
+@keyframes vt-fade-scale-out {
+  to { opacity: 0; transform: scale(0.92); }
+}
+@keyframes vt-fade-scale-in {
+  from { opacity: 0; transform: scale(1.06); }
+}
+
+/* Default page cross-fade */
+::view-transition-old(root) {
+  animation: 320ms ease-in both vt-slide-out-up;
+}
+::view-transition-new(root) {
+  animation: 400ms cubic-bezier(.16,.8,.4,1) both vt-slide-in-up;
+}
+
+/* Shared leaf element — morphs across pages */
+::view-transition-old(grove-leaf) {
+  animation: 300ms ease-in both vt-fade-scale-out;
+}
+::view-transition-new(grove-leaf) {
+  animation: 440ms cubic-bezier(.16,.8,.4,1) both vt-fade-scale-in;
+}
 
 
 @theme {

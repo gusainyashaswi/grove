@@ -14,7 +14,7 @@ import CtaSection     from "../components/CtaSection";
 import Footer         from "../components/Footer";
 
 export default function Home() {
-    const { setRepository } = useRepository();
+    const { setRepository, clearRepository } = useRepository();
     const navigate           = useNavigate();
     const [loading, setLoading] = useState(false);
     const [error,   setError  ] = useState("");
@@ -45,6 +45,16 @@ export default function Home() {
         setLoading(true);
         setError("");
 
+        // ── Step 1: Clear stale data & transition to loading page immediately ────
+        clearRepository();
+        const doNavToLoading = () => navigate("/loading");
+        if (document.startViewTransition) {
+            document.startViewTransition(doNavToLoading);
+        } else {
+            doNavToLoading();
+        }
+
+        // ── Step 2: Run the API call in the background ───────────────────────
         try {
             const repositoryData = await analyzeRepository(url);
             let parsedOwner = repositoryData.owner;
@@ -58,10 +68,12 @@ export default function Home() {
                 // fallback — url may not be a valid URL (e.g. owner/repo shorthand)
             }
 
+            // Setting repository triggers Loading.jsx to navigate → /repository
             setRepository({ ...repositoryData, url, owner: parsedOwner, name: parsedName });
-            navigate("/repository");
         } catch (err) {
             console.error("Repository analysis error:", err);
+            // Navigate back home on error and show the message
+            navigate("/");
             if (err.code === "ERR_NETWORK" || !err.response) {
                 const apiUrl = import.meta.env.VITE_API_URL;
                 setError(

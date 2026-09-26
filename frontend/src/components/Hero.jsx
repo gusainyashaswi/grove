@@ -2,6 +2,7 @@ import { useState, useRef, useEffect, useCallback } from "react";
 import Button from "./ui/Button";
 import Chip from "./ui/Chip";
 import Terminal from "./Terminal";
+import GroveLeaf from "./GroveLeaf";
 
 /* ── Mock data (mirrors the reference HTML exactly) ────────── */
 const MOCK = {
@@ -228,6 +229,34 @@ export default function Hero({ onAnalyze, loading: backendLoading, error: backen
                 }}
             >
                 <div style={{ position: "relative", zIndex: 1, maxWidth: "760px", margin: "0 auto", padding: "0 24px" }}>
+
+                    {/* ── Shared transition leaf ───────────────────── */}
+                    <div
+                        className="hero-anim hero-anim-eyebrow"
+                        style={{
+                            display: "flex",
+                            justifyContent: "center",
+                            marginBottom: "20px",
+                        }}
+                    >
+                        <div
+                            style={{
+                                background: "rgba(255,255,255,0.32)",
+                                backdropFilter: "blur(16px) saturate(200%)",
+                                WebkitBackdropFilter: "blur(16px) saturate(200%)",
+                                border: "1px solid rgba(255,255,255,0.6)",
+                                borderRadius: "50%",
+                                width: 56,
+                                height: 56,
+                                display: "flex",
+                                alignItems: "center",
+                                justifyContent: "center",
+                                boxShadow: "0 8px 28px rgba(59,111,237,0.14)",
+                            }}
+                        >
+                            <GroveLeaf size={32} />
+                        </div>
+                    </div>
 
                     {/* Eyebrow */}
                     <div
