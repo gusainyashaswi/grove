@@ -224,7 +224,7 @@ function CodePreview() {
     return (
         <GlassCard className="code-panel !p-0 overflow-hidden w-full flex flex-col h-[600px] sm:h-[640px]">
             {/* Top Bar (panel-bar) */}
-            <div className="panel-bar flex items-center justify-between px-5 py-3 border-b border-[var(--line)] bg-white/50 gap-3 shrink-0">
+            <div className="panel-bar flex items-center justify-between px-5 sm:px-6 py-2.5 min-h-[58px] border-b border-[var(--line)] bg-white/60 gap-4 shrink-0">
                 {/* Left: Breadcrumbs */}
                 <div
                     className="breadcrumb font-mono text-[11.5px] text-[var(--ink-soft)] flex items-center gap-1.5 min-w-0 flex-1 overflow-hidden text-ellipsis whitespace-nowrap"
@@ -250,10 +250,10 @@ function CodePreview() {
                 </div>
 
                 {/* Right: Search, Copy & Extension */}
-                <div className="flex items-center gap-2 shrink-0">
+                <div className="flex items-center gap-2.5 shrink-0">
                     {/* Minimal in-file Search Input */}
-                    <div className="flex items-center gap-1 bg-white/80 border border-[var(--line)] rounded-lg px-2 py-1 text-xs focus-within:border-[var(--accent)] transition-all">
-                        <Search size={12} className="text-[var(--muted)] shrink-0" />
+                    <div className="flex items-center gap-1.5 bg-white/90 border border-[var(--line)] rounded-lg px-3 h-[34px] sm:h-[36px] text-xs focus-within:border-[var(--accent)] focus-within:ring-2 focus-within:ring-[var(--accent-soft)] transition-all shadow-2xs">
+                        <Search size={13} className="text-[var(--muted)] shrink-0" />
                         <input
                             ref={searchInputRef}
                             type="text"
@@ -261,10 +261,10 @@ function CodePreview() {
                             onChange={(e) => setSearchQuery(e.target.value)}
                             onKeyDown={handleSearchKeyDown}
                             placeholder="Find..."
-                            className="bg-transparent text-[var(--ink)] font-mono text-xs outline-none w-16 sm:w-24 focus:w-28 sm:focus:w-32 placeholder:text-[var(--muted)] transition-all"
+                            className="bg-transparent text-[var(--ink)] font-mono text-xs outline-none w-16 sm:w-24 focus:w-28 sm:focus:w-32 placeholder:text-[var(--muted)] transition-all h-full"
                         />
                         {searchQuery && (
-                            <div className="flex items-center gap-1 text-[10.5px] font-mono text-[var(--muted)] pl-1.5 border-l border-[var(--line)] shrink-0">
+                            <div className="flex items-center gap-1 text-[10.5px] font-mono text-[var(--muted)] pl-2 border-l border-[var(--line)] shrink-0">
                                 <span>
                                     {matches.length > 0 ? `${currentMatchIndex + 1}/${matches.length}` : "0/0"}
                                 </span>
@@ -305,20 +305,22 @@ function CodePreview() {
                         onClick={handleCopy}
                         title={copied ? "Copied to clipboard!" : "Copy file contents"}
                         aria-label="Copy file content"
-                        className="px-2 py-1 rounded-lg border border-[var(--line)] bg-white/80 hover:bg-white text-[var(--ink-soft)] hover:text-[var(--ink)] transition-all flex items-center gap-1.5 text-xs cursor-pointer shadow-2xs"
+                        className="h-[34px] sm:h-[36px] px-3 sm:px-3.5 rounded-lg border border-[var(--line)] bg-white/90 hover:bg-white text-[var(--ink-soft)] hover:text-[var(--ink)] transition-all flex items-center justify-center gap-1.5 text-xs font-medium cursor-pointer shadow-2xs hover:shadow-xs hover:border-[var(--accent-line)]"
                     >
                         {copied ? (
-                            <Check size={13} className="text-emerald-600 shrink-0" />
+                            <Check size={13.5} className="text-emerald-600 shrink-0" />
                         ) : (
-                            <Copy size={13} className="shrink-0" />
+                            <Copy size={13.5} className="shrink-0" />
                         )}
-                        <span className="hidden sm:inline font-mono text-[11px]">
+                        <span className="hidden sm:inline font-mono text-xs">
                             {copied ? "Copied" : "Copy"}
                         </span>
                     </button>
 
                     {/* Extension Badge */}
-                    <span className="badge badge-neutral shrink-0">{extension}</span>
+                    <span className="h-[34px] sm:h-[36px] px-3 sm:px-3.5 rounded-lg font-mono text-xs font-semibold text-[var(--ink-soft)] bg-white/90 border border-[var(--line)] inline-flex items-center justify-center shrink-0 shadow-2xs select-none">
+                        {extension}
+                    </span>
                 </div>
             </div>
 
