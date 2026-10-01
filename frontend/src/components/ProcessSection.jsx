@@ -15,14 +15,17 @@ export default function ProcessSection() {
                     text-align: center;
                 }
                 .section-head h2 {
-                    font-size: clamp(28px, 3.6vw, 38px);
-                    line-height: 1.1;
+                    font-size: clamp(30px, 4vw, 44px);
+                    line-height: 1.08;
+                    letter-spacing: -0.03em;
+                    font-weight: 800;
                 }
                 .section-head p {
-                    font-size: 16px;
-                    line-height: 1.55;
+                    font-size: 16.5px;
+                    line-height: 1.6;
                     color: var(--ink-soft);
                     margin-top: 14px;
+                    letter-spacing: -0.01em;
                 }
                 .steps {
                     display: grid;
@@ -46,21 +49,26 @@ export default function ProcessSection() {
                     box-shadow: 0 22px 48px rgba(13, 27, 42, 0.09), inset 0 1px 1px rgba(255, 255, 255, 1);
                 }
                 .step-num {
-                    font-family: var(--font-mono);
-                    font-size: 13px;
-                    color: var(--muted);
-                    margin-bottom: 22px;
+                    font-family: var(--font-heading);
+                    font-size: 28px;
+                    font-weight: 800;
+                    color: var(--accent);
+                    opacity: 0.25;
+                    margin-bottom: 16px;
                     display: block;
+                    letter-spacing: -0.04em;
+                    line-height: 1;
                 }
                 .step h3 {
-                    font-size: 20px;
-                    font-weight: 600;
-                    line-height: 1.3;
+                    font-size: 21px;
+                    font-weight: 700;
+                    line-height: 1.25;
                     margin-bottom: 10px;
+                    letter-spacing: -0.02em;
                 }
                 .step p {
                     font-size: 15px;
-                    line-height: 1.6;
+                    line-height: 1.65;
                     color: var(--ink-soft);
                 }
 
@@ -80,11 +88,12 @@ export default function ProcessSection() {
                             className="eyebrow"
                             style={{
                                 fontFamily: "var(--font-mono)",
-                                fontSize: "12px",
-                                fontWeight: 400,
+                                fontSize: "11px",
+                                fontWeight: 500,
                                 textTransform: "uppercase",
-                                letterSpacing: "0.08em",
-                                color: "var(--muted)",
+                                letterSpacing: "0.12em",
+                                color: "var(--accent)",
+                                opacity: 0.75,
                                 marginBottom: "14px",
                                 textAlign: "center",
                             }}

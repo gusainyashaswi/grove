@@ -124,9 +124,9 @@ export default function Footer() {
                                 <span
                                     style={{
                                         fontFamily: "var(--font-heading)",
-                                        fontSize: "50px",
-                                        fontWeight: 600,
-                                        letterSpacing: "-0.02em",
+                                        fontSize: "22px",
+                                        fontWeight: 700,
+                                        letterSpacing: "-0.03em",
                                         color: "var(--ink)",
                                     }}
                                 >

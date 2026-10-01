@@ -2,7 +2,6 @@ import { useState, useRef, useEffect, useCallback } from "react";
 import Button from "./ui/Button";
 import Chip from "./ui/Chip";
 import Terminal from "./Terminal";
-import GroveLeaf from "./GroveLeaf";
 
 /* ── Mock data (mirrors the reference HTML exactly) ────────── */
 const MOCK = {
@@ -223,84 +222,44 @@ export default function Hero({ onAnalyze, loading: backendLoading, error: backen
             <section
                 style={{
                     position: "relative",
-                    padding: "180px 0 120px",
+                    padding: "160px 0 120px",
                     textAlign: "center",
-                    overflow: "hidden",
+                    overflow: "visible",
                 }}
             >
-                <div style={{ position: "relative", zIndex: 1, maxWidth: "760px", margin: "0 auto", padding: "0 24px" }}>
-
-                    {/* ── Shared transition leaf ───────────────────── */}
-                    <div
-                        className="hero-anim hero-anim-eyebrow"
-                        style={{
-                            display: "flex",
-                            justifyContent: "center",
-                            marginBottom: "20px",
-                        }}
-                    >
-                        <div
-                            style={{
-                                background: "rgba(255,255,255,0.32)",
-                                backdropFilter: "blur(16px) saturate(200%)",
-                                WebkitBackdropFilter: "blur(16px) saturate(200%)",
-                                border: "1px solid rgba(255,255,255,0.6)",
-                                borderRadius: "50%",
-                                width: 56,
-                                height: 56,
-                                display: "flex",
-                                alignItems: "center",
-                                justifyContent: "center",
-                                boxShadow: "0 8px 28px rgba(59,111,237,0.14)",
-                            }}
-                        >
-                            <GroveLeaf size={32} />
-                        </div>
-                    </div>
-
-                    {/* Eyebrow */}
-                    <div
-                        className="hero-anim hero-anim-eyebrow"
-                        style={{
-                            fontFamily: "var(--font-mono)",
-                            fontSize: "12px",
-                            fontWeight: 400,
-                            textTransform: "uppercase",
-                            letterSpacing: "0.08em",
-                            color: "var(--muted)",
-                            marginBottom: "14px",
-                        }}
-                    >
-                        // repository intelligence
-                    </div>
-
+                <div style={{ position: "relative", zIndex: 1, maxWidth: "860px", margin: "0 auto", padding: "0 32px" }}>
                     {/* Heading */}
                     <h1
-                        className="hero-anim hero-anim-heading"
+                        className="hero-anim hero-anim-heading text-align-center w-auto"
                         style={{
                             fontFamily: "var(--font-heading)",
-                            fontSize: "clamp(46px, 7.4vw, 88px)",
-                            lineHeight: 1.02,
-                            letterSpacing: "-0.035em",
-                            fontWeight: 700,
+                            fontSize: "clamp(37px, 7.2vw, 90px)",
+                            lineHeight: 1.08,
+                            letterSpacing: "-0.04em",
+                            fontWeight: 800,
                             color: "var(--ink)",
-                            marginBottom: "24px",
+                            marginBottom: "28px",
+                            overflow: "visible",
+                            paddingBottom: "0.08em",
                         }}
                     >
-                        <span>Understand any </span>
-                        <span>repository.</span>
+                        <span className="text-gradient leading-tight">Figure Out</span>
+                        <br/>
+                        <span className="text-gradient">any</span>
+                        <span> repository.</span>
                     </h1>
 
                     {/* Sub-heading */}
                     <p
                         className="hero-anim hero-anim-sub"
                         style={{
-                            fontSize: "18px",
+                            fontSize: "19px",
                             fontWeight: 400,
-                            lineHeight: 1.55,
+                            lineHeight: 1.6,
                             color: "var(--ink-soft)",
                             maxWidth: "520px",
                             margin: "0 auto 44px",
+                            letterSpacing: "-0.01em",
                         }}
                     >
                         Paste a link. Grove reads the code, the commits, and the docs —

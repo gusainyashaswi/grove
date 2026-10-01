@@ -34,14 +34,16 @@ export default function FeaturesGrid() {
                     color: var(--ink);
                 }
                 .grid-card h3 {
-                    font-size: 19px;
-                    font-weight: 600;
+                    font-size: 20px;
+                    font-weight: 700;
                     margin-bottom: 10px;
+                    letter-spacing: -0.02em;
                 }
                 .grid-card p {
                     font-size: 15px;
-                    line-height: 1.6;
+                    line-height: 1.65;
                     color: var(--ink-soft);
+                    letter-spacing: -0.005em;
                 }
 
                 @media (max-width: 900px) {
@@ -59,11 +61,12 @@ export default function FeaturesGrid() {
                             className="eyebrow"
                             style={{
                                 fontFamily: "var(--font-mono)",
-                                fontSize: "12px",
-                                fontWeight: 400,
+                                fontSize: "11px",
+                                fontWeight: 500,
                                 textTransform: "uppercase",
-                                letterSpacing: "0.08em",
-                                color: "var(--muted)",
+                                letterSpacing: "0.12em",
+                                color: "var(--accent)",
+                                opacity: 0.75,
                                 marginBottom: "14px",
                             }}
                         >

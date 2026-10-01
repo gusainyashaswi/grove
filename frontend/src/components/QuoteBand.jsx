@@ -14,23 +14,26 @@ export default function QuoteBand() {
                 }
                 .breath blockquote {
                     font-family: var(--font-heading);
-                    font-weight: 500;
-                    font-size: clamp(24px, 3.4vw, 34px);
-                    line-height: 1.3;
+                    font-weight: 600;
+                    font-size: clamp(26px, 3.6vw, 38px);
+                    line-height: 1.25;
+                    letter-spacing: -0.03em;
                     color: var(--ink-soft);
                     max-width: 720px;
                     margin: 0 auto;
                 }
                 .breath blockquote b {
                     color: var(--ink);
-                    font-weight: 700;
+                    font-weight: 800;
+                    letter-spacing: -0.04em;
                 }
                 .breath cite {
                     display: block;
                     margin-top: 22px;
                     font-style: normal;
                     font-family: var(--font-mono);
-                    font-size: 13px;
+                    font-size: 12px;
+                    letter-spacing: 0.02em;
                     color: var(--muted);
                 }
             `}</style>

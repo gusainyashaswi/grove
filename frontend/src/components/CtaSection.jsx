@@ -22,17 +22,18 @@ export default function CtaSection({ onAnalyze }) {
                 }
                 .cta-band h2 {
                     font-family: var(--font-heading);
-                    font-size: clamp(30px, 4.6vw, 44px);
-                    line-height: 1.08;
-                    letter-spacing: -0.035em;
-                    font-weight: 700;
+                    font-size: clamp(32px, 4.8vw, 52px);
+                    line-height: 1.05;
+                    letter-spacing: -0.04em;
+                    font-weight: 800;
                     margin-bottom: 16px;
                     color: var(--ink);
                 }
                 .cta-band p {
-                    font-size: 16px;
+                    font-size: 17px;
                     color: var(--ink-soft);
                     margin-bottom: 36px;
+                    letter-spacing: -0.01em;
                 }
                 .cta-analyze {
                     max-width: 600px;

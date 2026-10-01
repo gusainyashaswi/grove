@@ -34,7 +34,7 @@ export default function LandingNavbar() {
                     <div className="size-6 rounded bg-black flex items-center justify-center text-white font-mono text-[10px] font-bold">
                         G
                     </div>
-                    <span className="font-heading font-medium text-lg text-black tracking-tight mt-0.5">
+                    <span className="font-heading font-bold text-[17px] text-black tracking-[-0.03em] mt-0.5">
                         Grove
                     </span>
                 </Link>

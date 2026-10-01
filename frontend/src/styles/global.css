@@ -52,10 +52,10 @@
   --radius-pill: 9999px;
 
   --font-sans: "Inter", ui-sans-serif, system-ui, sans-serif;
-  --font-heading: "Inter Tight", ui-sans-serif, system-ui, sans-serif;
-  --font-display: "Inter Tight", ui-sans-serif, system-ui, sans-serif;
+  --font-heading: "Syne", ui-sans-serif, system-ui, sans-serif;
+  --font-display: "Syne", ui-sans-serif, system-ui, sans-serif;
   --font-body: "Inter", ui-sans-serif, system-ui, sans-serif;
-  --font-mono: "Fira Mono", ui-monospace, "SF Mono", monospace;
+  --font-mono: "JetBrains Mono", ui-monospace, "SF Mono", monospace;
 
   --spacing-navbar-top: 16px;
   --spacing-navbar-height: 58px;
@@ -78,10 +78,10 @@
   --accent-soft: rgba(59, 111, 237, 0.1);
   --accent-line: rgba(59, 111, 237, 0.28);
 
-  --font-display: "Inter Tight", ui-sans-serif, system-ui, sans-serif;
-  --font-heading: "Inter Tight", ui-sans-serif, system-ui, sans-serif;
+  --font-display: "Syne", ui-sans-serif, system-ui, sans-serif;
+  --font-heading: "Syne", ui-sans-serif, system-ui, sans-serif;
   --font-body: "Inter", ui-sans-serif, system-ui, sans-serif;
-  --font-mono: "Fira Mono", ui-monospace, "SF Mono", monospace;
+  --font-mono: "JetBrains Mono", ui-monospace, "SF Mono", monospace;
 
   /* Radius aliases */
   --r-card: 20px;
@@ -269,7 +269,27 @@ h4,
 h5,
 h6 {
   font-family: var(--font-heading);
-  letter-spacing: -0.02em;
+  letter-spacing: -0.025em;
+  font-weight: 700;
+}
+
+/* Gradient text — accent splash on key headings */
+.text-gradient {
+  background: linear-gradient(135deg, var(--ink) 0%, #2563eb 55%, #38bdf8 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+}
+
+/* Eyebrow label utility */
+.eyebrow-label {
+  font-family: var(--font-mono);
+  font-size: 11px;
+  font-weight: 500;
+  text-transform: uppercase;
+  letter-spacing: 0.12em;
+  color: var(--accent);
+  opacity: 0.75;
 }
 
 .font-heading {

@@ -29,15 +29,18 @@ export default function FeatureSection() {
                     align-items: center;
                 }
                 .feature h2 {
-                    font-size: clamp(26px, 3.4vw, 34px);
-                    line-height: 1.15;
+                    font-size: clamp(28px, 3.6vw, 40px);
+                    line-height: 1.1;
+                    letter-spacing: -0.03em;
+                    font-weight: 800;
                     margin-bottom: 18px;
                 }
                 .feature p {
-                    font-size: 16px;
-                    line-height: 1.6;
+                    font-size: 16.5px;
+                    line-height: 1.65;
                     color: var(--ink-soft);
                     margin-bottom: 28px;
+                    letter-spacing: -0.01em;
                 }
                 .check-list {
                     display: flex;
@@ -48,8 +51,9 @@ export default function FeatureSection() {
                     display: flex;
                     gap: 12px;
                     align-items: flex-start;
-                    font-size: 15px;
+                    font-size: 15.5px;
                     color: var(--ink-soft);
+                    letter-spacing: -0.005em;
                 }
                 .check-item svg {
                     flex-shrink: 0;
@@ -73,11 +77,12 @@ export default function FeatureSection() {
                                 className="eyebrow"
                                 style={{
                                     fontFamily: "var(--font-mono)",
-                                    fontSize: "12px",
-                                    fontWeight: 400,
+                                    fontSize: "11px",
+                                    fontWeight: 500,
                                     textTransform: "uppercase",
-                                    letterSpacing: "0.08em",
-                                    color: "var(--muted)",
+                                    letterSpacing: "0.12em",
+                                    color: "var(--accent)",
+                                    opacity: 0.75,
                                     marginBottom: "14px",
                                 }}
                             >
