@@ -59,8 +59,50 @@ function ExplorerLayout() {
     );
 }
 
+/* ─── GraphLayout — mobile tab switcher + desktop 3-col grid ───────── */
+
+const GRAPH_TABS = [
+    { id: "files", label: "Files" },
+    { id: "graph", label: "Graph" },
+    { id: "details", label: "Details" },
+];
+
+function GraphLayout() {
+    const [mobilePanel, setMobilePanel] = useState("graph");
+
+    return (
+        <div className="w-full">
+            {/* ── Segmented switcher — only visible below xl ── */}
+            <div className="explorer-mobile-tabs">
+                {GRAPH_TABS.map((t) => (
+                    <button
+                        key={t.id}
+                        className={`explorer-mobile-tab${mobilePanel === t.id ? " active" : ""}`}
+                        onClick={() => setMobilePanel(t.id)}
+                    >
+                        {t.label}
+                    </button>
+                ))}
+            </div>
+
+            {/* ── Desktop: 3-column grid. Mobile: one panel at a time ── */}
+            <div className="explorer-grid">
+                <div className={`explorer-panel${mobilePanel === "files" ? " mobile-visible" : ""}`}>
+                    <FileExplorer />
+                </div>
+                <div className={`explorer-panel${mobilePanel === "graph" ? " mobile-visible" : ""}`}>
+                    <DependencyGraph />
+                </div>
+                <div className={`explorer-panel${mobilePanel === "details" ? " mobile-visible" : ""}`}>
+                    <DetailsPanel />
+                </div>
+            </div>
+        </div>
+    );
+}
+
 function Repository() {
-    const { repository, selectedFile, setSelectedFile, activeTab } = useRepository();
+    const { repository, selectedFile, setSelectedFile, activeTab, sourcePreviewOpen, setSourcePreviewOpen } = useRepository();
 
     // Auto-select the first or entry-point file if none is selected yet
     useEffect(() => {
@@ -108,7 +150,7 @@ function Repository() {
                     resolution={0.5}
                     autoDemo={true}
                     autoSpeed={0.2}
-                    autoIntensity={10}
+                    autoIntensity={2.0}
                     takeoverDuration={0.4}
                     autoResumeDelay={1500}
                     autoRampDuration={1.0}
@@ -131,7 +173,7 @@ function Repository() {
 
                 {currentTab === "graph" && (
                     <div className="flex flex-col gap-8 w-full">
-                        <DependencyGraph />
+                        <GraphLayout />
                         <FolderDistribution />
                     </div>
                 )}
@@ -156,6 +198,19 @@ function Repository() {
             >
                 <RepositoryFooter />
             </div>
+
+            {/* ── Source Preview Modal ── */}
+            {sourcePreviewOpen && (
+                <div className="fixed inset-0 z-50 flex items-center justify-center p-4 sm:p-8">
+                    <div
+                        className="absolute inset-0 bg-slate-950/60 backdrop-blur-sm"
+                        onClick={() => setSourcePreviewOpen?.(false)}
+                    />
+                    <div className="relative w-full max-w-5xl h-[85vh] flex flex-col rounded-2xl overflow-hidden shadow-2xl border border-[var(--line)] bg-white z-10">
+                        <CodePreview />
+                    </div>
+                </div>
+            )}
         </div>
     );
 }

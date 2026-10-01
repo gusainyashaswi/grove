@@ -5,7 +5,7 @@ import { explainFile } from "../../api/api";
 import { Sparkles, Check, Copy } from "lucide-react";
 
 function DetailsPanel() {
-    const { repository, selectedFile, setSelectedFile } = useRepository() || {};
+    const { repository, selectedFile, setSelectedFile, setSourcePreviewOpen } = useRepository() || {};
 
     const [loading, setLoading] = useState(false);
     const [explanation, setExplanation] = useState("");
@@ -150,11 +150,19 @@ function DetailsPanel() {
                 </div>
             )}
 
-            {/* Full-width dark button */}
+            {/* Full-width View Source button */}
+            <button
+                onClick={() => setSourcePreviewOpen?.(true)}
+                className="btn btn-outline flex items-center justify-center gap-2 mt-2 font-mono text-[11px] font-bold tracking-widest text-[var(--ink-soft)] border border-[var(--line)] py-2.5 rounded-xl hover:border-[var(--ink)] hover:text-[var(--ink)] cursor-pointer"
+            >
+                [ VIEW SOURCE ]
+            </button>
+
+            {/* AI Explanation Button */}
             <button
                 onClick={handleExplain}
                 disabled={loading}
-                className="btn btn-dark explain-btn"
+                className="btn btn-dark explain-btn mt-2"
             >
                 {loading ? (
                     <>

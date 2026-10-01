@@ -1,4 +1,4 @@
-import { useState, useMemo, useCallback, useEffect } from "react";
+import React, { useState, useMemo, useCallback, useEffect } from "react";
 import {
     ReactFlow,
     ReactFlowProvider,
@@ -7,85 +7,97 @@ import {
     Position,
     MarkerType,
     Background,
-    BackgroundVariant
+    BackgroundVariant,
+    MiniMap
 } from "@xyflow/react";
 import "@xyflow/react/dist/style.css";
 import dagre from "@dagrejs/dagre";
 import { useRepository } from "../../context/RepositoryContext";
-import { Plus, Minus, Maximize2, FileCode2, ExternalLink, ArrowRight, RotateCcw } from "lucide-react";
+import { Plus, Minus, Maximize2, RotateCcw, Map as MapIcon, Settings2, Search, FileCode2, Code2, FileJson, Layout, FileText, Braces, Sparkles, Hash } from "lucide-react";
 import { GlassCard } from "../ui/GlassCard";
 
-const NODE_WIDTH = 220;
-const NODE_HEIGHT = 54;
+const NODE_WIDTH = 260;
+const NODE_HEIGHT = 90;
+
+const getIconForExt = (ext) => {
+    switch (ext) {
+        case '.jsx': case '.tsx': return Layout;
+        case '.js': case '.ts': return Braces;
+        case '.css': case '.scss': return Hash;
+        case '.json': return FileJson;
+        case '.md': return FileText;
+        default: return FileCode2;
+    }
+};
+
+const getCategoryForExt = (ext) => {
+    switch (ext) {
+        case '.jsx': case '.tsx': return 'Component';
+        case '.js': case '.ts': return 'Module';
+        case '.css': case '.scss': return 'Stylesheet';
+        case '.json': return 'Config';
+        default: return 'File';
+    }
+};
 
 /* ── Custom File Node Component ───────────────────────────── */
 function FileNode({ data, selected }) {
-    const { label, ext, isConnected, isDimmed, onOpen } = data;
+    const { label, ext, path, depsCount, dependentsCount, isConnected, isDimmed, isHovered, direction } = data;
+    const Icon = getIconForExt(ext);
+    const category = getCategoryForExt(ext);
 
-    let borderClass = "border-[var(--line)]";
-    let shadowClass = "shadow-[0_4px_16px_rgba(15,22,38,0.06)]";
-    let ringClass = "";
-
+    let containerClass = "bg-[#ffffff] border border-[var(--line-soft)] shadow-sm";
     if (selected) {
-        borderClass = "border-[var(--accent)]";
-        shadowClass = "shadow-[0_0_0_3px_rgba(59,111,237,0.25),0_10px_28px_rgba(59,111,237,0.22)]";
-        ringClass = "ring-2 ring-[var(--accent)]/40";
+        containerClass = "bg-[#f8fafc] border-[var(--accent)] shadow-[0_0_0_2px_rgba(59,111,237,0.15)]";
+    } else if (isHovered) {
+        containerClass = "bg-[#f8fafc] border-[var(--accent)]/50 shadow-md";
     } else if (isConnected) {
-        borderClass = "border-[var(--accent)]/70";
-        shadowClass = "shadow-[0_0_0_2px_rgba(59,111,237,0.15),0_6px_20px_rgba(59,111,237,0.14)]";
+        containerClass = "bg-[#ffffff] border-[var(--accent)]/40 shadow-sm";
+    } else if (isDimmed) {
+        containerClass = "bg-[#f1f5f9]/50 border-[var(--line-soft)] opacity-40 grayscale";
     }
 
     return (
         <div
-            className={`
-                relative bg-white/95 backdrop-blur-md rounded-xl px-3.5 py-2.5
-                flex items-center justify-between gap-2.5 min-w-[190px] max-w-[240px]
-                cursor-pointer select-none transition-all duration-200 border
-                ${borderClass} ${shadowClass} ${ringClass}
-                ${isDimmed ? "opacity-25 filter grayscale contrast-75" : "opacity-100 hover:-translate-y-0.5"}
-            `}
+            className={`relative w-[260px] rounded-xl p-3 transition-all duration-300 ${containerClass}`}
+            onMouseEnter={data.onMouseEnter}
+            onMouseLeave={data.onMouseLeave}
         >
             <Handle
                 type="target"
-                position={Position.Left}
-                style={{ opacity: 0, width: 1, height: 1, border: "none" }}
+                position={direction === "TB" ? Position.Top : Position.Left}
+                className="!opacity-0 !w-1 !h-1"
             />
-
-            <div className="flex items-center gap-2 min-w-0 flex-1">
-                <FileCode2
-                    size={15}
-                    className={selected || isConnected ? "text-[var(--accent)]" : "text-[var(--muted)]"}
-                />
-                <span className="font-mono text-[11.5px] font-medium text-[var(--ink)] truncate" title={label}>
-                    {label}
-                </span>
-            </div>
-
-            <div className="flex items-center gap-1.5 shrink-0">
-                {ext && (
-                    <span className="font-mono text-[9.5px] text-[var(--muted)] bg-black/[0.04] px-1.5 py-0.5 rounded border border-black/[0.06]">
-                        {ext}
-                    </span>
-                )}
-                {selected && onOpen && (
-                    <button
-                        type="button"
-                        onClick={(e) => {
-                            e.stopPropagation();
-                            onOpen();
-                        }}
-                        title="Open in Code Explorer"
-                        className="p-1 rounded bg-[var(--accent-soft)] hover:bg-[var(--accent)] text-[var(--accent)] hover:text-white transition-colors cursor-pointer"
-                    >
-                        <ExternalLink size={12} />
-                    </button>
-                )}
+            
+            <div className="flex items-start gap-3">
+                <div className={`p-2 rounded-lg shrink-0 transition-colors ${selected || isHovered || isConnected ? 'bg-[var(--accent)]/10 text-[var(--accent)]' : 'bg-slate-100 text-slate-500'}`}>
+                    <Icon size={16} strokeWidth={2} />
+                </div>
+                <div className="flex-1 min-w-0">
+                    <div className="flex items-start justify-between gap-2">
+                        <h3 className={`font-mono text-[12.5px] font-semibold truncate leading-tight ${selected ? 'text-[var(--accent)]' : 'text-slate-800'}`} title={label}>
+                            {label}
+                        </h3>
+                    </div>
+                    <p className="text-[10px] text-slate-400 font-mono truncate mt-0.5" title={path}>
+                        {path}
+                    </p>
+                    <div className="flex items-center justify-between mt-3 pt-2 border-t border-[var(--line-soft)]">
+                        <span className="text-[9px] uppercase font-bold tracking-wider text-slate-400">
+                            {category}
+                        </span>
+                        <div className="flex items-center gap-2.5 text-[10px] text-slate-400 font-medium font-mono">
+                            <span title="Imports">{depsCount} ↓</span>
+                            <span title="Imported by">{dependentsCount} ↑</span>
+                        </div>
+                    </div>
+                </div>
             </div>
 
             <Handle
                 type="source"
-                position={Position.Right}
-                style={{ opacity: 0, width: 1, height: 1, border: "none" }}
+                position={direction === "TB" ? Position.Bottom : Position.Right}
+                className="!opacity-0 !w-1 !h-1"
             />
         </div>
     );
@@ -95,48 +107,14 @@ const nodeTypes = {
     fileNode: FileNode
 };
 
-/* ── Floating Zoom / Pan Controls ─────────────────────────── */
-function GraphControls() {
-    const { zoomIn, zoomOut, fitView } = useReactFlow();
-
-    return (
-        <div className="graph-controls" style={{ zIndex: 10 }}>
-            <button
-                type="button"
-                onClick={() => zoomIn({ duration: 300 })}
-                title="Zoom in"
-                aria-label="Zoom in"
-            >
-                <Plus size={14} />
-            </button>
-            <button
-                type="button"
-                onClick={() => zoomOut({ duration: 300 })}
-                title="Zoom out"
-                aria-label="Zoom out"
-            >
-                <Minus size={14} />
-            </button>
-            <button
-                type="button"
-                onClick={() => fitView({ duration: 400, padding: 0.25 })}
-                title="Fit view"
-                aria-label="Fit view"
-            >
-                <Maximize2 size={14} />
-            </button>
-        </div>
-    );
-}
-
 /* ── Auto Layout Helper using Dagre ───────────────────────── */
-function getLayoutedElements(nodes, edges) {
+function getLayoutedElements(nodes, edges, direction = "TB") {
     const dagreGraph = new dagre.graphlib.Graph();
     dagreGraph.setDefaultEdgeLabel(() => ({}));
     dagreGraph.setGraph({
-        rankdir: "LR",
+        rankdir: direction,
         nodesep: 40,
-        ranksep: 80,
+        ranksep: 90,
         marginx: 40,
         marginy: 40
     });
@@ -152,24 +130,33 @@ function getLayoutedElements(nodes, edges) {
     dagre.layout(dagreGraph);
 
     const layoutedNodes = nodes.map((node) => {
-        const nodeWithPosition = dagreGraph.node(node.id);
+        const nodeWithPosition = dagreGraph.node(node.id) || { x: 0, y: 0 };
         return {
             ...node,
             position: {
-                x: nodeWithPosition ? nodeWithPosition.x - NODE_WIDTH / 2 : 0,
-                y: nodeWithPosition ? nodeWithPosition.y - NODE_HEIGHT / 2 : 0
-            }
+                x: (nodeWithPosition.x || 0) - NODE_WIDTH / 2,
+                y: (nodeWithPosition.y || 0) - NODE_HEIGHT / 2
+            },
+            targetPosition: direction === 'TB' ? Position.Top : Position.Left,
+            sourcePosition: direction === 'TB' ? Position.Bottom : Position.Right,
         };
     });
 
-    return { nodes: layoutedNodes, edges };
+    return { layoutedNodes, layoutedEdges: edges };
 }
 
 /* ── Main Graph Canvas Inner Component ────────────────────── */
 function DependencyGraphInner() {
-    const { selectedFile, setSelectedFile, repository, setActiveTab } = useRepository() || {};
+    const { selectedFile, setSelectedFile, repository, setSourcePreviewOpen } = useRepository() || {};
     const [selectedNodeId, setSelectedNodeId] = useState(null);
-    const { fitView } = useReactFlow();
+    const [hoverNodeId, setHoverNodeId] = useState(null);
+    
+    // Controls State
+    const [direction, setDirection] = useState("TB");
+    const [showMinimap, setShowMinimap] = useState(false);
+    const [searchQuery, setSearchQuery] = useState("");
+    
+    const { fitView, zoomIn, zoomOut } = useReactFlow();
 
     // 1. Build or normalize raw nodes & edges from repository
     const rawData = useMemo(() => {
@@ -198,7 +185,7 @@ function DependencyGraphInner() {
                 }));
             }
         } else if (Array.isArray(repository?.files) && repository.files.length > 0) {
-            // Fallback: derive graph from repository.files if dependencyGraph is not populated
+            // Fallback: derive graph from repository.files
             rawNodes = repository.files.map((file) => {
                 const label = file.name || file.path.split("/").pop();
                 const lastDot = label.lastIndexOf(".");
@@ -234,106 +221,97 @@ function DependencyGraphInner() {
             });
         }
 
-        // Resolve edges where target may be a label/filename rather than full path
-        const nodeMap = new Map();
-        rawNodes.forEach((n) => {
-            nodeMap.set(n.id, n.id);
-            nodeMap.set(n.label, n.id);
-            const base = n.label.replace(/\.[^/.]+$/, "");
-            if (base) nodeMap.set(base, n.id);
-        });
-
         const validEdges = [];
         const seen = new Set();
+        const nodeMap = new Set(rawNodes.map(n => n.id));
 
         rawEdges.forEach((e) => {
-            const src = nodeMap.get(e.source) || e.source;
-            const tgt = nodeMap.get(e.target) || e.target;
-            if (src && tgt && src !== tgt && nodeMap.has(src) && nodeMap.has(tgt)) {
-                const key = `${src}->${tgt}`;
+            if (nodeMap.has(e.source) && nodeMap.has(e.target) && e.source !== e.target) {
+                const key = `${e.source}->${e.target}`;
                 if (!seen.has(key)) {
                     seen.add(key);
-                    validEdges.push({
-                        id: e.id || key,
-                        source: src,
-                        target: tgt
-                    });
+                    validEdges.push({ id: e.id || key, source: e.source, target: e.target });
                 }
             }
         });
 
-        return { nodes: rawNodes, edges: validEdges };
+        // Compute deps count
+        const depsCountMap = new Map();
+        const dependentsCountMap = new Map();
+        validEdges.forEach(e => {
+            depsCountMap.set(e.source, (depsCountMap.get(e.source) || 0) + 1);
+            dependentsCountMap.set(e.target, (dependentsCountMap.get(e.target) || 0) + 1);
+        });
+
+        const finalNodes = rawNodes.map(n => ({
+            ...n,
+            depsCount: depsCountMap.get(n.id) || 0,
+            dependentsCount: dependentsCountMap.get(n.id) || 0
+        }));
+
+        return { nodes: finalNodes, edges: validEdges };
     }, [repository]);
 
-    // 2. Open file in Code Explorer
-    const openInExplorer = useCallback(
-        (targetFileOrId) => {
-            if (!repository?.files) return;
-            const targetId = typeof targetFileOrId === "string" ? targetFileOrId : targetFileOrId?.id;
-            const foundFile = repository.files.find(
-                (f) =>
-                    f.path === targetId ||
-                    f.name === targetId ||
-                    f.path.endsWith("/" + targetId) ||
-                    (targetId && targetId.endsWith(f.path))
-            );
-            if (foundFile) {
-                if (setSelectedFile) setSelectedFile(foundFile);
-                if (setActiveTab) setActiveTab("explorer");
-            } else if (setActiveTab) {
-                setActiveTab("explorer");
-            }
-        },
-        [repository, setSelectedFile, setActiveTab]
-    );
+    // Search Logic
+    const searchMatchNodeId = useMemo(() => {
+        if (!searchQuery.trim()) return null;
+        const lower = searchQuery.toLowerCase();
+        const match = rawData.nodes.find(n => n.label.toLowerCase().includes(lower) || n.path.toLowerCase().includes(lower));
+        return match ? match.id : null;
+    }, [searchQuery, rawData.nodes]);
 
-    // Sync selected file from context if user navigates in with a file preselected
     useEffect(() => {
-        if (selectedFile?.path && !selectedNodeId) {
+        if (searchMatchNodeId) {
+            setSelectedNodeId(searchMatchNodeId);
+        }
+    }, [searchMatchNodeId]);
+
+    // Sync selected file from context
+    useEffect(() => {
+        if (selectedFile?.path && selectedFile.path !== selectedNodeId) {
             setSelectedNodeId(selectedFile.path);
         }
     }, [selectedFile]);
 
-    // 3. Compute connection sets when a node is selected
-    const { connectedNodeIds, connectedEdgeIds, selectedStats } = useMemo(() => {
-        if (!selectedNodeId) {
+    // 3. Compute connection sets when a node is selected or hovered
+    const { connectedNodeIds, connectedEdgeIds } = useMemo(() => {
+        const activeNodeId = hoverNodeId || selectedNodeId;
+        
+        if (!activeNodeId) {
             return {
                 connectedNodeIds: new Set(),
-                connectedEdgeIds: new Set(),
-                selectedStats: { deps: 0, dependents: 0 }
+                connectedEdgeIds: new Set()
             };
         }
 
-        const connNodes = new Set([selectedNodeId]);
+        const connNodes = new Set([activeNodeId]);
         const connEdges = new Set();
-        let deps = 0;
-        let dependents = 0;
 
         rawData.edges.forEach((edge) => {
-            if (edge.source === selectedNodeId) {
+            if (edge.source === activeNodeId) {
                 connNodes.add(edge.target);
                 connEdges.add(edge.id);
-                deps += 1;
-            } else if (edge.target === selectedNodeId) {
+            } else if (edge.target === activeNodeId) {
                 connNodes.add(edge.source);
                 connEdges.add(edge.id);
-                dependents += 1;
             }
         });
 
         return {
             connectedNodeIds: connNodes,
-            connectedEdgeIds: connEdges,
-            selectedStats: { deps, dependents }
+            connectedEdgeIds: connEdges
         };
-    }, [selectedNodeId, rawData.edges]);
+    }, [selectedNodeId, hoverNodeId, rawData.edges]);
 
     // 4. Compute layout and React Flow nodes/edges
     const { layoutedNodes, layoutedEdges } = useMemo(() => {
+        const hasActiveFocus = !!hoverNodeId || !!selectedNodeId;
+
         const flowNodes = rawData.nodes.map((node) => {
             const isSelected = selectedNodeId === node.id;
-            const isConnected = connectedNodeIds.has(node.id) && !isSelected;
-            const isDimmed = !!selectedNodeId && !connectedNodeIds.has(node.id);
+            const isHovered = hoverNodeId === node.id;
+            const isConnected = connectedNodeIds.has(node.id) && !isSelected && !isHovered;
+            const isDimmed = hasActiveFocus && !connectedNodeIds.has(node.id);
 
             return {
                 id: node.id,
@@ -342,9 +320,14 @@ function DependencyGraphInner() {
                     label: node.label,
                     ext: node.ext,
                     path: node.path,
+                    depsCount: node.depsCount,
+                    dependentsCount: node.dependentsCount,
                     isConnected,
                     isDimmed,
-                    onOpen: () => openInExplorer(node.id)
+                    isHovered,
+                    direction,
+                    onMouseEnter: () => setHoverNodeId(node.id),
+                    onMouseLeave: () => setHoverNodeId(null)
                 },
                 selected: isSelected,
                 position: { x: 0, y: 0 }
@@ -353,7 +336,7 @@ function DependencyGraphInner() {
 
         const flowEdges = rawData.edges.map((edge) => {
             const isConnected = connectedEdgeIds.has(edge.id);
-            const isDimmed = !!selectedNodeId && !isConnected;
+            const isDimmed = hasActiveFocus && !isConnected;
 
             return {
                 id: edge.id,
@@ -365,160 +348,167 @@ function DependencyGraphInner() {
                     stroke: isConnected
                         ? "#3b6fed"
                         : isDimmed
-                        ? "rgba(15, 22, 38, 0.05)"
-                        : "rgba(59, 111, 237, 0.32)",
-                    strokeWidth: isConnected ? 2.2 : 1.2,
-                    opacity: isDimmed ? 0.12 : 1,
-                    transition: "all 0.25s ease"
+                        ? "rgba(15, 22, 38, 0.04)"
+                        : "rgba(15, 22, 38, 0.15)",
+                    strokeWidth: isConnected ? 2 : 1.2,
+                    opacity: isDimmed ? 0.2 : 1,
+                    transition: "all 0.3s ease"
                 },
                 markerEnd: {
                     type: MarkerType.ArrowClosed,
-                    width: isConnected ? 14 : 10,
-                    height: isConnected ? 14 : 10,
+                    width: isConnected ? 16 : 12,
+                    height: isConnected ? 16 : 12,
                     color: isConnected
                         ? "#3b6fed"
                         : isDimmed
-                        ? "rgba(15, 22, 38, 0.1)"
-                        : "rgba(59, 111, 237, 0.45)"
+                        ? "rgba(15, 22, 38, 0.05)"
+                        : "rgba(15, 22, 38, 0.2)"
                 }
             };
         });
 
-        return getLayoutedElements(flowNodes, flowEdges);
-    }, [rawData, selectedNodeId, connectedNodeIds, connectedEdgeIds, openInExplorer]);
+        return getLayoutedElements(flowNodes, flowEdges, direction);
+    }, [rawData, selectedNodeId, hoverNodeId, connectedNodeIds, connectedEdgeIds, direction]);
 
-    // Fit view on initial render or repo change
+    // Fit view on initial render or layout change
     useEffect(() => {
         const timer = setTimeout(() => {
-            fitView({ duration: 400, padding: 0.25 });
-        }, 80);
+            fitView({ duration: 600, padding: 0.15 });
+        }, 50);
         return () => clearTimeout(timer);
-    }, [fitView, rawData]);
+    }, [fitView, layoutedNodes?.length, direction]);
+
+    // Focus on selection
+    useEffect(() => {
+        if (selectedNodeId && layoutedNodes) {
+            const node = layoutedNodes.find(n => n.id === selectedNodeId);
+            if (node) {
+                // Not strictly fitting view to single node, but we could center it if desired.
+                // React Flow provides setCenter, but fitView is safer if we want to see surroundings.
+            }
+        }
+    }, [selectedNodeId, layoutedNodes]);
 
     // Handlers
-    const handleNodeClick = useCallback(
-        (_event, node) => {
-            setSelectedNodeId(node.id);
-            if (repository?.files && setSelectedFile) {
-                const found = repository.files.find(
-                    (f) =>
-                        f.path === node.id ||
-                        f.name === node.id ||
-                        f.path.endsWith("/" + node.id) ||
-                        node.id.endsWith(f.path)
-                );
-                if (found) setSelectedFile(found);
-            }
-        },
-        [repository, setSelectedFile]
-    );
+    const handleNodeClick = useCallback((_event, node) => {
+        setSelectedNodeId(node.id);
+        if (repository?.files && setSelectedFile) {
+            const found = repository.files.find(f => f.path === node.id || f.name === node.id || f.path.endsWith('/' + node.id));
+            if (found) setSelectedFile(found);
+        }
+    }, [repository, setSelectedFile]);
 
-    const handleNodeDoubleClick = useCallback(
-        (_event, node) => {
-            openInExplorer(node.id);
-        },
-        [openInExplorer]
-    );
+    const handleNodeDoubleClick = useCallback((_event, node) => {
+        setSelectedNodeId(node.id);
+        if (repository?.files && setSelectedFile) {
+            const found = repository.files.find(f => f.path === node.id || f.name === node.id || f.path.endsWith('/' + node.id));
+            if (found) {
+                setSelectedFile(found);
+                setSourcePreviewOpen?.(true);
+            }
+        }
+    }, [repository, setSelectedFile, setSourcePreviewOpen]);
 
     const handlePaneClick = useCallback(() => {
         setSelectedNodeId(null);
     }, []);
 
-    const selectedNodeInfo = useMemo(() => {
-        if (!selectedNodeId) return null;
-        return rawData.nodes.find((n) => n.id === selectedNodeId);
-    }, [selectedNodeId, rawData.nodes]);
+    // Meta stats
+    const totalComponents = rawData.nodes.filter(n => getCategoryForExt(n.ext) === 'Component').length;
+    const totalModules = rawData.nodes.filter(n => getCategoryForExt(n.ext) === 'Module').length;
 
     return (
-        <div className="flex flex-col gap-6 w-full">
-            {/* Page Header */}
-            <div className="flex items-center justify-between flex-wrap gap-4">
-                <div>
-                    <div className="eyebrow font-mono text-[11px] uppercase tracking-wider text-[var(--accent)] font-semibold mb-1">
-                        // dependency flow
-                    </div>
-                    <h1 className="text-2xl font-bold text-[var(--ink)] tracking-tight">
-                        Module topology
-                    </h1>
-                </div>
-                <div className="page-header-meta flex items-center gap-2.5">
-                    <span className="chip">
-                        {rawData.nodes.length} {rawData.nodes.length === 1 ? "node" : "nodes"} ·{" "}
-                        {rawData.edges.length} {rawData.edges.length === 1 ? "edge" : "edges"}
+        <div className="flex flex-col gap-4 w-full h-[620px] sm:h-[680px] xl:h-[720px] min-h-[540px] relative group">
+            {/* Minimal Repository Top Bar */}
+            <div className="absolute top-4 left-4 right-4 z-10 flex items-center justify-between gap-4 pointer-events-none">
+                <div className="bg-white/95 backdrop-blur-md shadow-sm border border-[var(--line)] rounded-full px-4 py-2 flex items-center gap-3 pointer-events-auto">
+                    <span className="font-semibold text-[13px] text-slate-800 tracking-tight">
+                        {repository?.name || "Repository"}
                     </span>
-                    {selectedNodeId && (
-                        <button
-                            type="button"
-                            onClick={() => setSelectedNodeId(null)}
-                            className="chip text-[var(--accent)] hover:text-[var(--ink)] flex items-center gap-1.5 transition-colors cursor-pointer"
-                            title="Reset graph selection"
-                        >
-                            <RotateCcw size={11} />
-                            <span>Reset</span>
-                        </button>
-                    )}
+                    <span className="w-px h-3 bg-slate-200" />
+                    <span className="text-[11px] font-medium text-slate-500">
+                        {rawData.nodes.length} files · {rawData.edges.length} dependencies · {totalComponents} components
+                    </span>
+                </div>
+
+                <div className="bg-white/95 backdrop-blur-md shadow-sm border border-[var(--line)] rounded-full px-3 py-1.5 flex items-center gap-2 pointer-events-auto w-64 focus-within:ring-2 focus-within:ring-[var(--accent)]/30 focus-within:border-[var(--accent)] transition-all">
+                    <Search size={14} className="text-slate-400 shrink-0" />
+                    <input 
+                        type="text" 
+                        placeholder="Search files..."
+                        value={searchQuery}
+                        onChange={(e) => setSearchQuery(e.target.value)}
+                        className="bg-transparent border-none outline-none text-[12px] font-medium text-slate-700 w-full placeholder:text-slate-400"
+                    />
+                </div>
+            </div>
+
+            {/* Floating Controls Panel */}
+            <div className="absolute bottom-6 left-6 z-10 flex flex-col gap-2">
+                <div className="bg-white/95 backdrop-blur-md shadow-lg border border-[var(--line)] rounded-xl p-1 flex flex-col gap-1">
+                    <button onClick={() => zoomIn({ duration: 300 })} className="p-2 hover:bg-slate-100 rounded-lg text-slate-600 transition-colors cursor-pointer" title="Zoom in">
+                        <Plus size={16} />
+                    </button>
+                    <button onClick={() => zoomOut({ duration: 300 })} className="p-2 hover:bg-slate-100 rounded-lg text-slate-600 transition-colors cursor-pointer" title="Zoom out">
+                        <Minus size={16} />
+                    </button>
+                    <button onClick={() => fitView({ duration: 600, padding: 0.15 })} className="p-2 hover:bg-slate-100 rounded-lg text-slate-600 transition-colors cursor-pointer" title="Fit view">
+                        <Maximize2 size={16} />
+                    </button>
+                    <div className="h-px bg-slate-100 mx-2 my-1" />
+                    <button onClick={() => setDirection(d => d === "TB" ? "LR" : "TB")} className="p-2 hover:bg-slate-100 rounded-lg text-slate-600 transition-colors cursor-pointer" title="Toggle Layout Direction (Top-Bottom / Left-Right)">
+                        <Settings2 size={16} />
+                    </button>
+                    <button onClick={() => setShowMinimap(!showMinimap)} className={`p-2 rounded-lg transition-colors cursor-pointer ${showMinimap ? 'bg-[var(--accent)]/10 text-[var(--accent)]' : 'hover:bg-slate-100 text-slate-600'}`} title="Toggle Minimap">
+                        <MapIcon size={16} />
+                    </button>
+                    <button onClick={() => {
+                        setSelectedNodeId(null);
+                        setSearchQuery("");
+                        fitView({ duration: 600, padding: 0.15 });
+                    }} className="p-2 hover:bg-slate-100 rounded-lg text-slate-600 transition-colors cursor-pointer" title="Reset Layout">
+                        <RotateCcw size={16} />
+                    </button>
                 </div>
             </div>
 
             {/* Interactive Graph Canvas */}
-            <GlassCard className="!p-0 overflow-hidden relative">
-                <div className="graph-canvas w-full h-[580px] sm:h-[640px] relative">
-                    <GraphControls />
-
-                    <ReactFlow
-                        nodes={layoutedNodes}
-                        edges={layoutedEdges}
-                        nodeTypes={nodeTypes}
-                        onNodeClick={handleNodeClick}
-                        onNodeDoubleClick={handleNodeDoubleClick}
-                        onPaneClick={handlePaneClick}
-                        fitView
-                        minZoom={0.2}
-                        maxZoom={2.2}
-                        defaultEdgeOptions={{ type: "smoothstep" }}
-                        proOptions={{ hideAttribution: true }}
-                    >
-                        <Background
-                            variant={BackgroundVariant.Dots}
-                            gap={24}
-                            size={1.2}
-                            color="rgba(15, 22, 38, 0.08)"
+            <div className="w-full h-full bg-[#f8fafc] rounded-3xl border border-[var(--line)] shadow-inner overflow-hidden relative">
+                <ReactFlow
+                    nodes={layoutedNodes}
+                    edges={layoutedEdges}
+                    nodeTypes={nodeTypes}
+                    onNodeClick={handleNodeClick}
+                    onNodeDoubleClick={handleNodeDoubleClick}
+                    onPaneClick={handlePaneClick}
+                    fitView
+                    minZoom={0.1}
+                    maxZoom={2.5}
+                    defaultEdgeOptions={{ type: "smoothstep" }}
+                    proOptions={{ hideAttribution: true }}
+                    nodesDraggable={true}
+                    nodesConnectable={false}
+                    elementsSelectable={true}
+                >
+                    <Background
+                        variant={BackgroundVariant.Dots}
+                        gap={24}
+                        size={1.5}
+                        color="rgba(148, 163, 184, 0.2)" // slate-400 with opacity
+                    />
+                    {showMinimap && (
+                        <MiniMap 
+                            nodeColor={(node) => {
+                                return node.id === selectedNodeId ? '#3b6fed' : '#cbd5e1';
+                            }}
+                            nodeStrokeWidth={3}
+                            zoomable
+                            pannable
+                            className="!bg-white/80 !backdrop-blur-md !border-none !shadow-xl !rounded-xl !bottom-6 !right-6"
                         />
-                    </ReactFlow>
-
-                    {/* Bottom Floating Status & Action Bar */}
-                    {selectedNodeInfo ? (
-                        <div className="absolute bottom-4 left-4 right-4 sm:left-auto sm:right-auto sm:left-1/2 sm:-translate-x-1/2 z-10">
-                            <div className="bg-white/95 backdrop-blur-xl border border-[var(--accent-line)] shadow-[0_12px_36px_rgba(15,22,38,0.14)] rounded-full px-4 py-2 flex items-center justify-between sm:justify-start gap-4 text-xs">
-                                <div className="flex items-center gap-2.5 min-w-0">
-                                    <span className="size-2 rounded-full bg-[var(--accent)] animate-pulse shrink-0" />
-                                    <span className="font-mono font-semibold text-[var(--ink)] truncate max-w-[160px] sm:max-w-[260px]">
-                                        {selectedNodeInfo.label}
-                                    </span>
-                                    <span className="text-[var(--muted)] text-[11px] hidden md:inline">
-                                        ({selectedStats.deps} {selectedStats.deps === 1 ? "dependency" : "dependencies"},{" "}
-                                        {selectedStats.dependents} {selectedStats.dependents === 1 ? "dependent" : "dependents"})
-                                    </span>
-                                </div>
-                                <button
-                                    type="button"
-                                    onClick={() => openInExplorer(selectedNodeInfo.id)}
-                                    className="btn btn-primary !py-1 !px-3 !text-xs !h-auto flex items-center gap-1.5 cursor-pointer font-medium shrink-0"
-                                >
-                                    <span>Open in Explorer</span>
-                                    <ArrowRight size={13} />
-                                </button>
-                            </div>
-                        </div>
-                    ) : (
-                        <div className="absolute bottom-3.5 left-1/2 -translate-x-1/2 z-10 pointer-events-none hidden sm:block">
-                            <div className="bg-white/85 backdrop-blur-md border border-[var(--line)] shadow-sm rounded-full px-3.5 py-1.5 text-[11px] text-[var(--muted)] font-medium">
-                                Click a node to trace dependencies · Double-click to open in Code Explorer
-                            </div>
-                        </div>
                     )}
-                </div>
-            </GlassCard>
+                </ReactFlow>
+            </div>
         </div>
     );
 }

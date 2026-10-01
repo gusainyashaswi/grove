@@ -15,11 +15,14 @@ import {
     MessageSquare,
 } from "lucide-react";
 
+import { useRepository } from "../../context/RepositoryContext";
+
 /**
  * MainContent — Advanced multi-mode developer workspace.
  */
 function MainContent() {
-    const [viewMode, setViewMode] = useState("studio");
+    const [viewMode, setViewMode] = useState("graph"); // Let's default to graph for immediate feedback!
+    const { sourcePreviewOpen, setSourcePreviewOpen } = useRepository() || {};
 
     const TABS = [
         { id: "studio", label: "Studio Hub", icon: LayoutDashboard, badge: "All" },
@@ -123,14 +126,20 @@ function MainContent() {
                 </div>
             )}
 
-            {/* --- VIEW MODE 3: DEPENDENCY FLOW --- */}
+            {/* --- VIEW MODE 3: DEPENDENCY FLOW (HERO REDESIGN) --- */}
             {viewMode === "graph" && (
-                <main className="w-full flex flex-col gap-8">
-                    <DependencyGraph />
-                    <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
-                        <RepositoryStructure />
-                        <DetailsPanel />
+                <main className="w-full h-[85vh] min-h-[640px] flex flex-col lg:flex-row gap-6 relative">
+                    <aside className="w-full lg:w-64 xl:w-72 shrink-0 h-full overflow-hidden rounded-3xl glass-card border border-white/10 shadow-xl flex flex-col">
+                        <FileExplorer />
+                    </aside>
+
+                    <div className="flex-1 min-w-0 h-full relative">
+                        <DependencyGraph />
                     </div>
+
+                    <aside className="w-full lg:w-72 xl:w-80 shrink-0 h-full overflow-y-auto hidden lg:flex flex-col gap-6">
+                        <DetailsPanel />
+                    </aside>
                 </main>
             )}
 
@@ -146,12 +155,22 @@ function MainContent() {
                 </main>
             )}
 
-            {/* --- VIEW MODE 5: Q&A CHAT --- */}
+            {/* --- Q&A CHAT ... --- */}
             {viewMode === "chat" && (
                 <main className="w-full flex flex-col gap-8">
                     <RepositoryQuestion />
                     <RepositorySummary />
                 </main>
+            )}
+
+            {/* --- SOURCE PREVIEW MODAL --- */}
+            {sourcePreviewOpen && (
+                <div className="fixed inset-0 z-50 flex items-center justify-center p-4 sm:p-8">
+                    <div className="absolute inset-0 bg-slate-950/60 backdrop-blur-sm" onClick={() => setSourcePreviewOpen(false)} />
+                    <div className="relative w-full max-w-5xl h-[85vh] flex flex-col rounded-2xl overflow-hidden shadow-2xl border border-white/10 bg-[#0A0F1C]">
+                        <CodePreview />
+                    </div>
+                </div>
             )}
         </div>
     );

@@ -142,17 +142,25 @@ export function RepositoryProvider({ children }) {
     const [repository, setRepository] = useState(DEFAULT_REPO);
     const [selectedFile, setSelectedFile] = useState(DEFAULT_REPO.files[0]);
     const [activeTab, setActiveTab] = useState("overview");
+    const [sourcePreviewOpen, setSourcePreviewOpen] = useState(false);
 
     /** Clears the repository so the loading page doesn't forward-navigate instantly */
     function clearRepository() {
         setRepository(null);
         setSelectedFile(null);
         setActiveTab("overview");
+        setSourcePreviewOpen(false);
     }
 
     return (
         <RepositoryContext.Provider
-            value={{ repository, setRepository, clearRepository, selectedFile, setSelectedFile, activeTab, setActiveTab }}
+            value={{ 
+                repository, setRepository, 
+                clearRepository, 
+                selectedFile, setSelectedFile, 
+                activeTab, setActiveTab,
+                sourcePreviewOpen, setSourcePreviewOpen
+            }}
         >
             {children}
         </RepositoryContext.Provider>
