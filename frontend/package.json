@@ -11,10 +11,13 @@
   },
   "dependencies": {
     "@dagrejs/dagre": "^3.0.0",
+    "@react-three/drei": "^10.7.9",
+    "@react-three/fiber": "^9.8.1",
     "@tailwindcss/vite": "^4.3.3",
     "@xyflow/react": "^12.11.2",
     "axios": "^1.18.1",
     "lucide-react": "^1.33.0",
+    "maath": "^0.10.8",
     "motion": "^13.4.6",
     "ogl": "^1.0.11",
     "prismjs": "^1.30.0",
