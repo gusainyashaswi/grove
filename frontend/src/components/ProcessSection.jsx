@@ -1,3 +1,5 @@
+import WarpText from "./WarpText";
+
 export default function ProcessSection() {
     return (
         <>
@@ -100,7 +102,27 @@ export default function ProcessSection() {
                         >
                             Process
                         </div>
-                        <h2>Three steps, no setup</h2>
+                        <div className="w-full">
+                            <h2 className="sr-only">Three steps, no setup</h2>
+                            <WarpText
+                                text="Three steps, no setup"
+                                color="#0f1626"
+                                fontSize="clamp(30px, 4vw, 44px)"
+                                fontWeight={800}
+                            fontFamily="var(--font-heading)"
+                            letterSpacing="-0.03em"
+                            lineHeight={1.1}
+                            warpStrength={0.06}
+                            warpScale={1.6}
+                            speed={0.45}
+                            pointerInfluence={0.36}
+                            pointerStrength={0.34}
+                            refraction={0.015}
+                            ripple={true}
+                            align="center"
+                            style={{ height: "clamp(50px, 6vw, 76px)" }}
+                        />
+                        </div>
                         <p>Grove works on any public repository — no cloning, no install.</p>
                     </div>
 

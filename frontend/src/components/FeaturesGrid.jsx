@@ -1,3 +1,5 @@
+import WarpText from "./WarpText";
+
 export default function FeaturesGrid() {
     return (
         <>
@@ -72,7 +74,27 @@ export default function FeaturesGrid() {
                         >
                             What you get
                         </div>
-                        <h2>Built for the moment before you commit to reading</h2>
+                        <div className="w-full">
+                            <h2 className="sr-only">Built for the moment before you commit to reading</h2>
+                            <WarpText
+                                text={"Built for the moment before\nyou commit to reading"}
+                                color="#0f1626"
+                                fontSize="clamp(26px, 3.4vw, 40px)"
+                                fontWeight={800}
+                                fontFamily="var(--font-heading)"
+                                letterSpacing="-0.03em"
+                                lineHeight={1.12}
+                                warpStrength={0.06}
+                                warpScale={1.6}
+                                speed={0.45}
+                                pointerInfluence={0.36}
+                                pointerStrength={0.34}
+                                refraction={0.015}
+                                ripple={true}
+                                align="left"
+                                style={{ height: "clamp(72px, 8vw, 100px)" }}
+                            />
+                        </div>
                     </div>
 
                     {/* Grid of Cards */}

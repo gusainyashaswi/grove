@@ -1,4 +1,5 @@
 import Terminal from "./Terminal";
+import WarpText from "./WarpText";
 
 const REDIS_LINES = [
     { type: "prompt",  command: "grove explain redis/redis" },
@@ -88,7 +89,27 @@ export default function FeatureSection() {
                             >
                                 Example output
                             </div>
-                            <h2>Know before you clone</h2>
+                            <div className="w-full">
+                                <h2 className="sr-only">Know before you clone</h2>
+                                <WarpText
+                                    text="Know before you clone"
+                                    color="#0f1626"
+                                    fontSize="clamp(28px, 3.6vw, 40px)"
+                                    fontWeight={800}
+                                    fontFamily="var(--font-heading)"
+                                    letterSpacing="-0.03em"
+                                    lineHeight={1.1}
+                                    warpStrength={0.06}
+                                    warpScale={1.6}
+                                    speed={0.45}
+                                    pointerInfluence={0.36}
+                                    pointerStrength={0.34}
+                                    refraction={0.015}
+                                    ripple={true}
+                                    align="left"
+                                    style={{ height: "clamp(48px, 5vw, 68px)", marginBottom: "8px" }}
+                                />
+                            </div>
                             <p>
                                 Every explanation covers the same ground: what the project is for,
                                 the shape of its architecture, and where to start reading — the

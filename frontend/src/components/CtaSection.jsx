@@ -1,5 +1,6 @@
 import { useState, useRef } from "react";
 import Button from "./ui/Button";
+import WarpText from "./WarpText";
 
 export default function CtaSection({ onAnalyze }) {
     const [url, setUrl] = useState("");
@@ -67,7 +68,27 @@ export default function CtaSection({ onAnalyze }) {
 
             <section className="cta-band">
                 <div style={{ maxWidth: "1440px", margin: "0 auto", padding: "0 48px" }}>
-                    <h2 className="reveal">Stop guessing what a repo does.</h2>
+                    <h2 className="sr-only">Stop guessing what a repo does.</h2>
+                    <div className="reveal w-full" style={{ maxWidth: "800px", margin: "0 auto 16px" }}>
+                        <WarpText
+                            text="Stop guessing what a repo does."
+                            color="#0f1626"
+                            fontSize="clamp(30px, 4.4vw, 50px)"
+                            fontWeight={800}
+                            fontFamily="var(--font-heading)"
+                            letterSpacing="-0.04em"
+                            lineHeight={1.08}
+                            warpStrength={0.06}
+                            warpScale={1.6}
+                            speed={0.45}
+                            pointerInfluence={0.38}
+                            pointerStrength={0.34}
+                            refraction={0.016}
+                            ripple={true}
+                            align="center"
+                            style={{ height: "clamp(50px, 7vw, 84px)" }}
+                        />
+                    </div>
                     <p className="reveal">Free for public repositories. No account needed to try it once.</p>
 
                     <div className="cta-analyze reveal">

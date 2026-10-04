@@ -2,6 +2,7 @@ import { useState, useRef, useEffect, useCallback } from "react";
 import Button from "./ui/Button";
 import Chip from "./ui/Chip";
 import Terminal from "./Terminal";
+import WarpText from "./WarpText";
 
 /* ── Mock data (mirrors the reference HTML exactly) ────────── */
 const MOCK = {
@@ -234,26 +235,28 @@ export default function Hero({ onAnalyze, loading: backendLoading, error: backen
                 }}
             >
                 <div style={{ position: "relative", zIndex: 1, maxWidth: "860px", margin: "0 auto", padding: "0 32px" }}>
-                    {/* Heading */}
-                    <h1
-                        className="hero-anim hero-anim-heading text-align-center w-auto"
-                        style={{
-                            fontFamily: "var(--font-heading)",
-                            fontSize: "clamp(37px, 7.2vw, 90px)",
-                            lineHeight: 1.08,
-                            letterSpacing: "-0.04em",
-                            fontWeight: 800,
-                            color: "var(--ink)",
-                            marginBottom: "28px",
-                            overflow: "visible",
-                            paddingBottom: "0.08em",
-                        }}
-                    >
-                        <span className="text-gradient leading-tight">Figure Out</span>
-                        <br />
-                        <span className="text-gradient">any</span>
-                        <span> repository.</span>
-                    </h1>
+                    {/* Heading with WarpText */}
+                    <div className="hero-anim hero-anim-heading w-full" style={{ marginBottom: "28px" }}>
+                        <h1 className="sr-only">Figure Out any repository.</h1>
+                        <WarpText
+                            text={"Figure Out\nany repository."}
+                            gradient={["#0f1626", "#2563eb", "#38bdf8"]}
+                            fontSize="clamp(37px, 7.2vw, 90px)"
+                            fontWeight={800}
+                            fontFamily="var(--font-heading)"
+                            letterSpacing="-0.04em"
+                            lineHeight={1.05}
+                            warpStrength={0.07}
+                            warpScale={1.6}
+                            speed={0.5}
+                            pointerInfluence={0.4}
+                            pointerStrength={0.36}
+                            refraction={0.016}
+                            ripple={true}
+                            align="center"
+                            style={{ height: "clamp(160px, 22vw, 240px)" }}
+                        />
+                    </div>
 
                     {/* Sub-heading */}
                     <p
