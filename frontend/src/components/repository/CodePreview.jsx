@@ -252,7 +252,7 @@ function CodePreview() {
                 {/* Right: Search, Copy & Extension */}
                 <div className="flex items-center gap-2.5 shrink-0">
                     {/* Minimal in-file Search Input */}
-                    <div className="flex items-center gap-1.5 bg-white/90 border border-[var(--line)] rounded-lg px-3 h-[34px] sm:h-[36px] text-xs focus-within:border-[var(--accent)] focus-within:ring-2 focus-within:ring-[var(--accent-soft)] transition-all shadow-2xs">
+                    <div className="flex items-center gap-1.5 bg-white/90 border border-[var(--line)] rounded-lg px-3 h-[34px] sm:h-[36px] text-xs transition-all shadow-2xs">
                         <Search size={13} className="text-[var(--muted)] shrink-0" />
                         <input
                             ref={searchInputRef}

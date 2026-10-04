@@ -33,7 +33,7 @@ function RepositoryInput({ onAnalyze, loading }) {
     return (
         <form onSubmit={handleSubmit} className="flex flex-col gap-3 w-full" noValidate>
             {/* Input Bar */}
-            <div className="relative flex items-center w-full p-1.5 rounded-2xl glass-panel border border-white/15 focus-within:border-emerald-400 focus-within:shadow-[0_0_30px_rgba(0,245,155,0.3)] transition-all duration-300">
+            <div className="relative flex items-center w-full p-1.5 rounded-2xl glass-panel border border-white/15 transition-all duration-300">
                 <div className="pl-3.5 pr-2 text-slate-400">
                     <Search size={18} className="text-emerald-400" />
                 </div>
@@ -50,7 +50,7 @@ function RepositoryInput({ onAnalyze, loading }) {
                     disabled={loading}
                     className="
                         flex-1 h-12 bg-transparent text-sm font-mono text-white placeholder:text-slate-500
-                        outline-none border-none px-2
+                        outline-none border-none px-2 caret-white
                     "
                     aria-describedby={error ? "repo-url-error" : undefined}
                 />

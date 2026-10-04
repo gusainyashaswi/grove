@@ -54,9 +54,6 @@ export default function CtaSection({ onAnalyze }) {
                     animation: ctaBarGlow 4.5s ease-in-out infinite;
                 }
                 .cta-analyze-bar.focused {
-                    border-color: rgba(255, 255, 255, 0.32), !important;
-                    box-shadow: 0 16px 40px rgba(255, 255, 255, 0.32), 0 0 0 3px rgba(255, 255, 255, 0.32);
-                    background: rgba(255, 255, 255, 0.45) !important;
                     animation: none;
                 }
                 @keyframes ctaBarGlow {
@@ -95,6 +92,7 @@ export default function CtaSection({ onAnalyze }) {
                                     fontSize: "14.5px",
                                     color: "var(--ink)",
                                     minWidth: 0,
+                                    caretColor: "var(--ink)",
                                 }}
                             />
                             <Button

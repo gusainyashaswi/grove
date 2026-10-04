@@ -37,7 +37,7 @@ export default function RepositoryInput({ onAnalyze, loading, error: externalErr
         <div className={`w-full flex flex-col gap-3 ${className}`}>
             <form
                 onSubmit={handleSubmit}
-                className="relative flex items-center bg-white border border-black/[0.08] hover:border-black/[0.15] focus-within:border-black/30 focus-within:ring-4 focus-within:ring-black/5 shadow-[0_4px_24px_rgba(0,0,0,0.03)] rounded-2xl p-2 sm:p-2.5 transition-all duration-300"
+                className="relative flex items-center bg-white border border-black/[0.08] hover:border-black/[0.15] shadow-[0_4px_24px_rgba(0,0,0,0.03)] rounded-2xl p-2 sm:p-2.5 transition-all duration-300"
             >
                 {/* Prefix Icon */}
                 <div className="pl-4 pr-3 text-black flex items-center pointer-events-none">

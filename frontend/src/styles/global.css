@@ -322,6 +322,13 @@ samp {
   outline-offset: 2px;
 }
 
+input:focus-visible,
+textarea:focus-visible,
+select:focus-visible {
+  outline: none !important;
+  box-shadow: none !important;
+}
+
 /* Custom Minimal Scrollbar */
 ::-webkit-scrollbar {
   width: 5px;
@@ -836,8 +843,7 @@ samp {
 }
 
 .chat-inputbar:focus-within {
-  border-color: var(--accent-line);
-  box-shadow: 0 0 0 4px var(--accent-soft);
+  /* No outer rectangular box on focus */
 }
 
 .chat-inputbar input {
@@ -1033,15 +1039,20 @@ samp {
    FINAL POLISH PASS STYLES
    ────────────────────────────────────────────────────────── */
 
-/* 1. Global Focus Rings for Inputs (Accent Blue) */
+/* 1. Clean Inputs: No rectangular activation boxes, rely on simple blinking cursor */
+input,
+textarea,
+select {
+  caret-color: var(--ink, #0f1626);
+}
+
 input:focus-visible,
 textarea:focus-visible,
 select:focus-visible,
 input:focus,
 textarea:focus {
   outline: none !important;
-  border-color: var(--accent-line) !important;
-  box-shadow: 0 0 0 4px var(--accent-soft) !important;
+  box-shadow: none !important;
 }
 
 /* 2. Interactive Hover States (Buttons, Chips, Tree Rows) */

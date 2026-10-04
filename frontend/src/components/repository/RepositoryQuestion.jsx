@@ -193,7 +193,7 @@ function RepositoryQuestion() {
                     className="
                         flex-1 h-12 px-4 rounded-2xl text-xs font-mono text-white placeholder:text-slate-500
                         bg-white/[0.04] border border-white/10
-                        outline-none focus:border-emerald-500/50 focus:bg-white/[0.08] focus:shadow-[0_0_15px_rgba(0,245,155,0.25)]
+                        outline-none caret-white
                         transition-all duration-200
                     "
                     placeholder="Ask any technical question about this codebase..."

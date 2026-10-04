@@ -212,9 +212,6 @@ export default function Hero({ onAnalyze, loading: backendLoading, error: backen
                     transition: border-color .2s ease, box-shadow .2s ease, background .2s ease;
                 }
                 .analyze-bar.focused {
-                    border-color: rgba(13, 27, 42, 0.5) !important;
-                    box-shadow: 0 16px 40px rgba(13, 27, 42, 0.12), 0 0 0 3px rgba(0, 245, 155, 0.35) !important;
-                    background: rgba(255, 255, 255, 0.45) !important;
                     animation: none;
                 }
                 @keyframes barGlow {
@@ -317,6 +314,7 @@ export default function Hero({ onAnalyze, loading: backendLoading, error: backen
                                     minWidth: 0,
                                     opacity: busy ? 0.5 : 1,
                                     transition: "opacity .2s ease",
+                                    caretColor: "var(--ink)",
                                 }}
                             />
                             <Button

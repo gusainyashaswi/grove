@@ -40,8 +40,8 @@ function Input({
                 transition-colors duration-[var(--duration-fast)]
                 disabled:pointer-events-none disabled:opacity-40
                 ${error
-                    ? "border-[var(--color-error)] focus:border-[var(--color-error)]"
-                    : "border-[var(--color-border)] focus:border-[var(--color-border-focus)]"
+                    ? "border-[var(--color-error)]"
+                    : "border-[var(--color-border)]"
                 }
                 ${className}
             `}

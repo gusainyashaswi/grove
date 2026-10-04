@@ -130,7 +130,7 @@ function FileExplorer() {
         <GlassCard className="!p-4 w-full">
             {/* Top Toolbar: Search Input + Collapse All Icon Button */}
             <div className="flex items-center gap-2 mb-3">
-                <div className="explorer-search flex-1 min-w-0 flex items-center gap-2 border border-[var(--line)] rounded-full px-3.5 py-2 bg-white/60 focus-within:bg-white focus-within:border-[var(--line-strong)] transition-all">
+                <div className="explorer-search flex-1 min-w-0 flex items-center gap-2 border border-[var(--line)] rounded-full px-3.5 py-2 bg-white/60 transition-all">
                     <Search size={14} className="text-[var(--muted)] shrink-0" aria-hidden="true" />
                     <input
                         type="text"

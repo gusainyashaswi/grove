@@ -28,7 +28,6 @@ function Input({
                 py-3
                 outline-none
                 transition
-                focus:border-[var(--primary)]
             "
 
         />

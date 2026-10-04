@@ -458,7 +458,7 @@ function DependencyGraphInner() {
                     </span>
                 </div>
 
-                <div className="bg-white/95 backdrop-blur-md shadow-sm border border-[var(--line)] rounded-full px-3 py-1.5 flex items-center gap-2 pointer-events-auto w-64 focus-within:ring-2 focus-within:ring-[var(--accent)]/30 focus-within:border-[var(--accent)] transition-all">
+                <div className="bg-white/95 backdrop-blur-md shadow-sm border border-[var(--line)] rounded-full px-3 py-1.5 flex items-center gap-2 pointer-events-auto w-64 transition-all">
                     <Search size={14} className="text-slate-400 shrink-0" />
                     <input 
                         type="text" 
