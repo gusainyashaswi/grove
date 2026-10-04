@@ -7,7 +7,16 @@ function buildRepositoryIndex(analyzedFiles, dependencyGraph, structure, health,
 
     for (const file of safeFiles) {
         if (file && file.path) {
-            fileMap[file.path] = file;
+            fileMap[file.path] = {
+                path: file.path,
+                name: file.name,
+                folder: file.folder,
+                extension: file.extension,
+                lineCount: file.lineCount,
+                type: file.type,
+                dependencies: file.dependencies,
+                dependents: file.dependents
+            };
         }
     }
 

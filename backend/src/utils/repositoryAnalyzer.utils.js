@@ -9,6 +9,7 @@ function analyzeRepository(repositoryFiles, repositoryPath) {
     }
 
     const analyzedFiles = [];
+    const knownFilesSet = new Set(repositoryFiles.map(f => f?.path).filter(Boolean));
 
     for (const file of repositoryFiles) {
         if (!file || !file.path) continue;
@@ -18,7 +19,7 @@ function analyzeRepository(repositoryFiles, repositoryPath) {
             const ast = parseJavaScript(file.content || "");
             imports = extractImports(ast);
         } catch (error) {
-            console.warn(`Failed to parse AST for file: ${file.path}`, error.message);
+            // Silently skip files that babel cannot parse
         }
 
         const dependencies = [];
@@ -28,7 +29,7 @@ function analyzeRepository(repositoryFiles, repositoryPath) {
                 continue;
             }
 
-            const resolvedPath = resolveImport(file.path, importsPath, repositoryPath);
+            const resolvedPath = resolveImport(file.path, importsPath, repositoryPath, knownFilesSet);
 
             if (!resolvedPath) {
                 continue;

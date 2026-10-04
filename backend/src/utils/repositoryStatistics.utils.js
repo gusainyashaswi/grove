@@ -1,7 +1,7 @@
-function analyzeRepositoryStatistics(analyzedFiles) {
+function analyzeRepositoryStatistics(analyzedFiles, totalSourceFiles = null) {
     if (!Array.isArray(analyzedFiles)) {
         return {
-            totalFiles: 0,
+            totalFiles: totalSourceFiles || 0,
             totalFolders: 0,
             totalLines: 0,
             averageLinesPerFile: 0,
@@ -11,7 +11,9 @@ function analyzeRepositoryStatistics(analyzedFiles) {
         };
     }
 
-    const totalFiles = analyzedFiles.length;
+    const totalFiles = typeof totalSourceFiles === "number" && totalSourceFiles > 0
+        ? totalSourceFiles
+        : analyzedFiles.length;
     const totalLines = analyzedFiles.reduce(
         (sum, file) => sum + (file.lineCount || 0),
         0

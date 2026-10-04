@@ -46,13 +46,31 @@ function FileExplorer() {
 
     const allFolderPaths = useMemo(() => getAllFolderPaths(fullTree), [fullTree]);
 
+    const initialExpandedPaths = useMemo(() => {
+        if (allFolderPaths.size <= 25) return allFolderPaths;
+        const topLevel = new Set();
+        const entryFolder = repository?.entryPoint?.path
+            ? repository.entryPoint.path.substring(0, repository.entryPoint.path.lastIndexOf("/"))
+            : "";
+
+        for (const p of allFolderPaths) {
+            if (!p.includes("/")) {
+                topLevel.add(p);
+            }
+            if (entryFolder && (p === entryFolder || entryFolder.startsWith(p + "/"))) {
+                topLevel.add(p);
+            }
+        }
+        return topLevel;
+    }, [allFolderPaths, repository?.entryPoint?.path]);
+
     // Track which folder paths are expanded
-    const [expandedPaths, setExpandedPaths] = useState(() => allFolderPaths);
+    const [expandedPaths, setExpandedPaths] = useState(() => initialExpandedPaths);
 
     // Reset expanded paths whenever the active repository changes
     useEffect(() => {
-        setExpandedPaths(allFolderPaths);
-    }, [allFolderPaths]);
+        setExpandedPaths(initialExpandedPaths);
+    }, [initialExpandedPaths]);
 
     // When searching, expand all matching folders so files are immediately visible
     const effectiveExpandedPaths = useMemo(() => {

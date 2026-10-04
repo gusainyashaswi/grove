@@ -26,11 +26,15 @@ ${JSON.stringify(knowledge?.folders || {}, null, 2)}
 Important Files:
 ${JSON.stringify(knowledge?.importantFiles || [], null, 2)}
 
-File Metadata (compact - no source code):
-${JSON.stringify(knowledge?.files || [], null, 2)}
+Key Files Sample:
+${JSON.stringify((knowledge?.files || []).slice(0, 60).map(f => ({ path: f.path, type: f.type, lineCount: f.lineCount })), null, 2)}
 
-Dependency Graph:
-${JSON.stringify(knowledge?.dependencyGraph || { nodes: [], edges: [] }, null, 2)}
+Dependency Graph Overview:
+${JSON.stringify({
+    nodesCount: knowledge?.dependencyGraph?.nodes?.length || 0,
+    edgesCount: knowledge?.dependencyGraph?.edges?.length || 0,
+    keyEdges: (knowledge?.dependencyGraph?.edges || []).slice(0, 40)
+}, null, 2)}
 
 Repository Statistics:
 ${JSON.stringify(knowledge?.statistics || {}, null, 2)}

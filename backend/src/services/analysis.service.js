@@ -39,7 +39,7 @@ async function analyzeRepositoryService(url) {
 
     const entryPoint = detectEntryPoint(analyzedFiles);
 
-    const statistics = analyzeRepositoryStatistics(analyzedFiles);
+    const statistics = analyzeRepositoryStatistics(analyzedFiles, files.totalDiscoveredCount);
 
     const repositoryIndex = buildRepositoryIndex(analyzedFiles, graph, structure, health, entryPoint, statistics);
 

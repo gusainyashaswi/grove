@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, useLocation } from "react-router-dom";
 import { useRepository } from "../context/RepositoryContext";
 import { analyzeRepository } from "../services/repository.service";
 import { useReveal } from "../hooks/useReveal";
@@ -16,8 +16,9 @@ import Footer         from "../components/Footer";
 export default function Home() {
     const { setRepository, clearRepository } = useRepository();
     const navigate           = useNavigate();
+    const location           = useLocation();
     const [loading, setLoading] = useState(false);
-    const [error,   setError  ] = useState("");
+    const [error,   setError  ] = useState(location.state?.error || "");
 
     /*
      * Fire the reveal scan once on mount.
@@ -47,7 +48,7 @@ export default function Home() {
 
         // ── Step 1: Clear stale data & transition to loading page immediately ────
         clearRepository();
-        const doNavToLoading = () => navigate("/loading");
+        const doNavToLoading = () => navigate("/loading", { state: { url } });
         if (document.startViewTransition) {
             document.startViewTransition(doNavToLoading);
         } else {
@@ -72,21 +73,20 @@ export default function Home() {
             setRepository({ ...repositoryData, url, owner: parsedOwner, name: parsedName });
         } catch (err) {
             console.error("Repository analysis error:", err);
-            // Navigate back home on error and show the message
-            navigate("/");
-            if (err.code === "ERR_NETWORK" || !err.response) {
+            let errorMessage = "Failed to analyze repository. Please check the URL and try again.";
+            if (err.code === "ECONNABORTED" || err.message?.includes("timeout")) {
+                errorMessage = "Analysis timed out. The repository may be too large or the network is slow. Please try again.";
+            } else if (err.code === "ERR_NETWORK" || !err.response) {
                 const apiUrl = import.meta.env.VITE_API_URL;
-                setError(
-                    apiUrl
-                        ? `Cannot reach the backend at ${apiUrl}. Please ensure the server is running.`
-                        : "Backend API URL is not configured. Set the VITE_API_URL environment variable and rebuild."
-                );
-            } else {
-                setError(
-                    err.response?.data?.message ||
-                    "Failed to analyze repository. Please check the URL and try again."
-                );
+                errorMessage = apiUrl
+                    ? `Cannot reach backend at ${apiUrl}. Please ensure the server is running.`
+                    : "Cannot reach the backend server. Please ensure it is running.";
+            } else if (err.response?.data?.message) {
+                errorMessage = err.response.data.message;
             }
+
+            setError(errorMessage);
+            navigate("/", { replace: true, state: { error: errorMessage } });
         } finally {
             setLoading(false);
         }

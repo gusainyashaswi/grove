@@ -1,4 +1,16 @@
 function buildRepositorySummaryPrompt(knowledge) {
+    const compactFiles = Array.isArray(knowledge?.files)
+        ? knowledge.files.slice(0, 60).map(f => ({ path: f.path, type: f.type, lineCount: f.lineCount }))
+        : [];
+
+    const compactGraph = {
+        nodesCount: knowledge?.dependencyGraph?.nodes?.length || 0,
+        edgesCount: knowledge?.dependencyGraph?.edges?.length || 0,
+        keyEdges: Array.isArray(knowledge?.dependencyGraph?.edges)
+            ? knowledge.dependencyGraph.edges.slice(0, 40)
+            : []
+    };
+
     return `
 You are a senior software engineer helping another developer understand an unfamiliar codebase.
 
@@ -16,11 +28,11 @@ ${JSON.stringify(knowledge?.folders || {}, null, 2)}
 Important Files:
 ${JSON.stringify(knowledge?.importantFiles || [], null, 2)}
 
-File Metadata (compact):
-${JSON.stringify(knowledge?.files || [], null, 2)}
+Key Files Sample:
+${JSON.stringify(compactFiles, null, 2)}
 
-Dependency Graph:
-${JSON.stringify(knowledge?.dependencyGraph || { nodes: [], edges: [] }, null, 2)}
+Dependency Graph Overview:
+${JSON.stringify(compactGraph, null, 2)}
 
 Repository Statistics:
 ${JSON.stringify(knowledge?.statistics || {}, null, 2)}

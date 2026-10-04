@@ -249,8 +249,35 @@ function DependencyGraphInner() {
             dependentsCount: dependentsCountMap.get(n.id) || 0
         }));
 
-        return { nodes: finalNodes, edges: validEdges };
-    }, [repository]);
+        let displayNodes = finalNodes;
+        let displayEdges = validEdges;
+        let isTrimmed = false;
+
+        const MAX_GRAPH_NODES = 120;
+        if (finalNodes.length > MAX_GRAPH_NODES) {
+            isTrimmed = true;
+            const entryPath = repository?.entryPoint?.path;
+            const sortedByConnections = [...finalNodes].sort((a, b) => {
+                const connA = (a.depsCount || 0) + (a.dependentsCount || 0);
+                const connB = (b.depsCount || 0) + (b.dependentsCount || 0);
+                return connB - connA;
+            });
+
+            const topNodeIds = new Set();
+            if (entryPath) topNodeIds.add(entryPath);
+            if (selectedFile?.path) topNodeIds.add(selectedFile.path);
+
+            for (const n of sortedByConnections) {
+                topNodeIds.add(n.id);
+                if (topNodeIds.size >= MAX_GRAPH_NODES) break;
+            }
+
+            displayNodes = finalNodes.filter(n => topNodeIds.has(n.id));
+            displayEdges = validEdges.filter(e => topNodeIds.has(e.source) && topNodeIds.has(e.target));
+        }
+
+        return { nodes: displayNodes, edges: displayEdges, totalNodes: finalNodes.length, isTrimmed };
+    }, [repository, selectedFile?.path]);
 
     // Search Logic
     const searchMatchNodeId = useMemo(() => {
@@ -427,7 +454,7 @@ function DependencyGraphInner() {
                     </span>
                     <span className="w-px h-3 bg-slate-200" />
                     <span className="text-[11px] font-medium text-slate-500">
-                        {rawData.nodes.length} files · {rawData.edges.length} dependencies · {totalComponents} components
+                        {rawData.isTrimmed ? `${rawData.nodes.length} files shown (of ${rawData.totalNodes})` : `${rawData.nodes.length} files`} · {rawData.edges.length} dependencies · {totalComponents} components
                     </span>
                 </div>
 

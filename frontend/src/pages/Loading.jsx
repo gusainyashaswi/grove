@@ -1,5 +1,5 @@
-import { useEffect, useRef } from "react";
-import { useNavigate } from "react-router-dom";
+import { useEffect, useRef, useState } from "react";
+import { useNavigate, useLocation } from "react-router-dom";
 import LiquidEther from "../components/LiquidEther";
 import GroveLeaf from "../components/GroveLeaf";
 import { useRepository } from "../context/RepositoryContext";
@@ -7,17 +7,29 @@ import { useRepository } from "../context/RepositoryContext";
 /**
  * Loading page — shown between the landing page and the repository stats page.
  *
- * It watches `RepositoryContext.repository` for changes.  When the analyzeRepository
+ * It watches `RepositoryContext.repository` for changes. When the analyzeRepository
  * promise resolves (set by Home.jsx via setRepository), we navigate to /repository
  * with a smooth View Transition.
  *
- * The page also receives `repoUrl` via location.state so it can display which repo
+ * The page also receives `url` via location.state so it can display which repo
  * is being analysed.
  */
 export default function Loading() {
     const { repository } = useRepository();
     const navigate        = useNavigate();
+    const location        = useLocation();
     const navigatedRef    = useRef(false);
+    const [isTakingLonger, setIsTakingLonger] = useState(false);
+
+    const repoUrl = location.state?.url || "";
+
+    // Show a reassuring message if analyzing a large repository
+    useEffect(() => {
+        const timer = setTimeout(() => {
+            setIsTakingLonger(true);
+        }, 8000);
+        return () => clearTimeout(timer);
+    }, []);
 
     /*
      * When the repository data lands in context, navigate to /repository.
@@ -168,6 +180,51 @@ export default function Loading() {
 
                 {/* Status steps */}
                 <StatusSteps />
+
+                {/* Helpful status for large repositories */}
+                {isTakingLonger && (
+                    <div
+                        style={{
+                            display: "flex",
+                            flexDirection: "column",
+                            alignItems: "center",
+                            gap: "8px",
+                            animation: "loadingFadeIn .4s ease-out both",
+                        }}
+                    >
+                        <p
+                            style={{
+                                fontFamily: "var(--font-mono, monospace)",
+                                fontSize: "12px",
+                                color: "var(--accent, #3b6fed)",
+                                background: "rgba(59,111,237,0.08)",
+                                border: "1px solid rgba(59,111,237,0.18)",
+                                padding: "6px 14px",
+                                borderRadius: "9999px",
+                            }}
+                        >
+                            Large repository detected — indexing architecture and dependency graph…
+                        </p>
+                        <button
+                            onClick={() => navigate("/")}
+                            style={{
+                                background: "transparent",
+                                border: "none",
+                                color: "var(--muted, #8a97ac)",
+                                fontSize: "12px",
+                                fontFamily: "var(--font-mono, monospace)",
+                                cursor: "pointer",
+                                textDecoration: "underline",
+                                padding: "4px 8px",
+                                transition: "color 0.15s ease",
+                            }}
+                            onMouseEnter={(e) => (e.currentTarget.style.color = "var(--ink, #0f1626)")}
+                            onMouseLeave={(e) => (e.currentTarget.style.color = "var(--muted, #8a97ac)")}
+                        >
+                            Cancel and return home
+                        </button>
+                    </div>
+                )}
             </div>
 
             <style>{`

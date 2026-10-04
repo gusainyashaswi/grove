@@ -6,6 +6,7 @@ const { buildExplainFilePrompt } = require("../prompts/explainFile.prompt");
 const { buildRepositoryQuestionPrompt } = require("../prompts/repositoryQuestion.prompt");
 const { buildRepositoryKnowledge } = require("../utils/repositoryKnowledge.utils");
 const { selectRelevantFiles } = require("../utils/relevantFileSelector.utils");
+const { getRepositoryPath } = require("../utils/git.utils");
 
 function getAIClient() {
     if (!process.env.GEMINI_API_KEY) {
@@ -50,7 +51,7 @@ async function answerRepositoryQuestion(repository, question) {
     const files = repository?.files || [];
 
     const repositoryPath = (repository?.owner && repository?.name)
-        ? path.resolve(process.cwd(), "temp", "repositories", `${repository.owner}-${repository.name}`)
+        ? getRepositoryPath(repository.owner, repository.name)
         : null;
 
     const selectedSourceFiles = selectRelevantFiles(knowledge, question, repositoryPath, files);

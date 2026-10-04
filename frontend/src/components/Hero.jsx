@@ -8,76 +8,76 @@ const MOCK = {
     "facebook/react": {
         title: "grove — facebook/react",
         lines: [
-            { type: "prompt",  command: "grove explain facebook/react" },
+            { type: "prompt", command: "grove explain facebook/react" },
             { type: "blank" },
             { type: "heading", text: "Summary" },
-            { type: "body",    text: "A library for building user interfaces out" },
-            { type: "body",    text: "of composable, reusable components." },
+            { type: "body", text: "A library for building user interfaces out" },
+            { type: "body", text: "of composable, reusable components." },
             { type: "blank" },
             { type: "heading", text: "Entry point" },
-            { type: "body",    text: "packages/react/src/React.js" },
+            { type: "body", text: "packages/react/src/React.js" },
             { type: "blank" },
             { type: "heading", text: "Read first" },
-            { type: "dim",     text: "1. packages/react-reconciler/src/" },
-            { type: "dim",     text: "2. packages/react-dom/src/client/" },
+            { type: "dim", text: "1. packages/react-reconciler/src/" },
+            { type: "dim", text: "2. packages/react-dom/src/client/" },
         ],
     },
     "vercel/next.js": {
         title: "grove — vercel/next.js",
         lines: [
-            { type: "prompt",  command: "grove explain vercel/next.js" },
+            { type: "prompt", command: "grove explain vercel/next.js" },
             { type: "blank" },
             { type: "heading", text: "Summary" },
-            { type: "body",    text: "A React framework with file-based routing," },
-            { type: "body",    text: "server rendering, and built-in bundling." },
+            { type: "body", text: "A React framework with file-based routing," },
+            { type: "body", text: "server rendering, and built-in bundling." },
             { type: "blank" },
             { type: "heading", text: "Entry point" },
-            { type: "body",    text: "packages/next/src/server/next.ts" },
+            { type: "body", text: "packages/next/src/server/next.ts" },
             { type: "blank" },
             { type: "heading", text: "Read first" },
-            { type: "dim",     text: "1. packages/next/src/build/index.ts" },
-            { type: "dim",     text: "2. packages/next/src/server/render.tsx" },
+            { type: "dim", text: "1. packages/next/src/build/index.ts" },
+            { type: "dim", text: "2. packages/next/src/server/render.tsx" },
         ],
     },
     "pandas-dev/pandas": {
         title: "grove — pandas-dev/pandas",
         lines: [
-            { type: "prompt",  command: "grove explain pandas-dev/pandas" },
+            { type: "prompt", command: "grove explain pandas-dev/pandas" },
             { type: "blank" },
             { type: "heading", text: "Summary" },
-            { type: "body",    text: "A data analysis library built around the" },
-            { type: "body",    text: "DataFrame — labeled, tabular data in Python." },
+            { type: "body", text: "A data analysis library built around the" },
+            { type: "body", text: "DataFrame — labeled, tabular data in Python." },
             { type: "blank" },
             { type: "heading", text: "Entry point" },
-            { type: "body",    text: "pandas/core/frame.py" },
+            { type: "body", text: "pandas/core/frame.py" },
             { type: "blank" },
             { type: "heading", text: "Read first" },
-            { type: "dim",     text: "1. pandas/core/generic.py" },
-            { type: "dim",     text: "2. pandas/core/indexing.py" },
+            { type: "dim", text: "1. pandas/core/generic.py" },
+            { type: "dim", text: "2. pandas/core/indexing.py" },
         ],
     },
     "redis/redis": {
         title: "grove — redis/redis",
         lines: [
-            { type: "prompt",  command: "grove explain redis/redis" },
+            { type: "prompt", command: "grove explain redis/redis" },
             { type: "blank" },
             { type: "heading", text: "Summary" },
-            { type: "body",    text: "An in-memory data store used as a" },
-            { type: "body",    text: "database, cache, and message broker." },
+            { type: "body", text: "An in-memory data store used as a" },
+            { type: "body", text: "database, cache, and message broker." },
             { type: "blank" },
             { type: "heading", text: "Entry point" },
-            { type: "body",    text: "src/server.c" },
+            { type: "body", text: "src/server.c" },
             { type: "blank" },
             { type: "heading", text: "Read first" },
-            { type: "dim",     text: "1. src/networking.c" },
-            { type: "dim",     text: "2. src/t_string.c" },
+            { type: "dim", text: "1. src/networking.c" },
+            { type: "dim", text: "2. src/t_string.c" },
         ],
     },
 };
 
 const QUICK_FILLS = [
-    { label: "facebook/react",    value: "https://github.com/facebook/react"    },
-    { label: "vercel/next.js",    value: "https://github.com/vercel/next.js"    },
+    { label: "facebook/react", value: "https://github.com/facebook/react" },
+    { label: "vercel/next.js", value: "https://github.com/vercel/next.js" },
     { label: "pandas-dev/pandas", value: "https://github.com/pandas-dev/pandas" },
 ];
 
@@ -96,33 +96,33 @@ function fallbackData(repo) {
     return {
         title: `grove — ${repo || "preview"}`,
         lines: [
-            { type: "prompt",  command: `grove explain ${repo || "repository"}` },
+            { type: "prompt", command: `grove explain ${repo || "repository"}` },
             { type: "blank" },
             { type: "heading", text: `Reading ${repo || "repository"} …` },
             { type: "blank" },
-            { type: "body",    text: "This preview covers sample repositories." },
-            { type: "body",    text: "On the full product, Grove maps" },
-            { type: "body",    text: "architecture, dependencies, entry points," },
-            { type: "body",    text: "and suggested reading orders in ~10s." },
+            { type: "body", text: "This preview covers sample repositories." },
+            { type: "body", text: "On the full product, Grove maps" },
+            { type: "body", text: "architecture, dependencies, entry points," },
+            { type: "body", text: "and suggested reading orders in ~10s." },
             { type: "blank" },
-            { type: "dim",     text: "Try one of the example repos below →" },
+            { type: "dim", text: "Try one of the example repos below →" },
         ],
     };
 }
 
 /* ── Hero ────────────────────────────────────────────────── */
 export default function Hero({ onAnalyze, loading: backendLoading, error: backendError }) {
-    const [url,       setUrl      ] = useState("");
-    const [focused,   setFocused  ] = useState(false);
+    const [url, setUrl] = useState("");
+    const [focused, setFocused] = useState(false);
 
     /* Terminal state */
-    const [termTitle,  setTermTitle ] = useState("grove — output");
-    const [termLines,  setTermLines ] = useState(() => MOCK["facebook/react"].lines);
-    const [isTyping,   setIsTyping  ] = useState(false);
+    const [termTitle, setTermTitle] = useState("grove — output");
+    const [termLines, setTermLines] = useState(() => MOCK["facebook/react"].lines);
+    const [isTyping, setIsTyping] = useState(false);
 
-    const inputRef   = useRef(null);
-    const timerRef   = useRef(null);
-    const abortRef   = useRef(false);
+    const inputRef = useRef(null);
+    const timerRef = useRef(null);
+    const abortRef = useRef(false);
 
     function cancelTyping() {
         abortRef.current = true;
@@ -152,9 +152,9 @@ export default function Hero({ onAnalyze, loading: backendLoading, error: backen
                 setTermLines((prev) => [...prev, lines[i]]);
             }
             i++;
-            const delay = lines[i - 1]?.type === "blank"    ? 40
-                        : lines[i - 1]?.type === "heading"  ? 120
-                        : 80;
+            const delay = lines[i - 1]?.type === "blank" ? 40
+                : lines[i - 1]?.type === "heading" ? 120
+                    : 80;
             timerRef.current = setTimeout(next, delay);
         }
 
@@ -165,7 +165,7 @@ export default function Hero({ onAnalyze, loading: backendLoading, error: backen
 
     function handleSubmit(rawUrl = url) {
         if (!rawUrl || backendLoading) return;
-        const key  = parseRepo(rawUrl);
+        const key = parseRepo(rawUrl);
         const data = MOCK[key] ?? fallbackData(key || rawUrl);
         runSequence(data);
         if (onAnalyze) {
@@ -199,7 +199,16 @@ export default function Hero({ onAnalyze, loading: backendLoading, error: backen
                 .hero-anim-term    { animation-delay: .58s; }
 
                 .analyze-bar {
-                    animation: barGlow 4.5s ease-in-out infinite;
+                    display: flex;
+                    align-items: center;
+                    gap: 6px;
+                    background: rgba(255, 255, 255, 0.32);
+                    backdrop-filter: blur(28px) saturate(220%);
+                    -webkit-backdrop-filter: blur(28px) saturate(220%);
+                    border: 1px solid rgba(255, 255, 255, 0.65);
+                    border-radius: 9999px;
+                    padding: 6px 6px 6px 22px;
+                    box-shadow: 0 10px 36px rgba(13, 27, 42, 0.06), inset 0 1px 1px rgba(255, 255, 255, 0.9);
                     transition: border-color .2s ease, box-shadow .2s ease, background .2s ease;
                 }
                 .analyze-bar.focused {
@@ -244,7 +253,7 @@ export default function Hero({ onAnalyze, loading: backendLoading, error: backen
                         }}
                     >
                         <span className="text-gradient leading-tight">Figure Out</span>
-                        <br/>
+                        <br />
                         <span className="text-gradient">any</span>
                         <span> repository.</span>
                     </h1>
