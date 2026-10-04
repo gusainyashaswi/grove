@@ -112,7 +112,7 @@ export default function WorkspacePreview() {
                         <span className="size-2.5 rounded-full bg-amber-500/60" />
                         <span className="size-2.5 rounded-full bg-emerald-500/60" />
                         <span className="ml-3 font-mono text-xs text-white/40">
-                            Grove / workspace — {current.name}
+                            Grove / workspace - {current.name}
                         </span>
                     </div>
 

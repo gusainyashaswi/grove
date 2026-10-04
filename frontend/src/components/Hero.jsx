@@ -7,7 +7,7 @@ import WarpText from "./WarpText";
 /* ── Mock data (mirrors the reference HTML exactly) ────────── */
 const MOCK = {
     "facebook/react": {
-        title: "grove — facebook/react",
+        title: "grove - facebook/react",
         lines: [
             { type: "prompt", command: "grove explain facebook/react" },
             { type: "blank" },
@@ -24,7 +24,7 @@ const MOCK = {
         ],
     },
     "vercel/next.js": {
-        title: "grove — vercel/next.js",
+        title: "grove - vercel/next.js",
         lines: [
             { type: "prompt", command: "grove explain vercel/next.js" },
             { type: "blank" },
@@ -41,13 +41,13 @@ const MOCK = {
         ],
     },
     "pandas-dev/pandas": {
-        title: "grove — pandas-dev/pandas",
+        title: "grove - pandas-dev/pandas",
         lines: [
             { type: "prompt", command: "grove explain pandas-dev/pandas" },
             { type: "blank" },
             { type: "heading", text: "Summary" },
             { type: "body", text: "A data analysis library built around the" },
-            { type: "body", text: "DataFrame — labeled, tabular data in Python." },
+            { type: "body", text: "DataFrame: labeled, tabular data in Python." },
             { type: "blank" },
             { type: "heading", text: "Entry point" },
             { type: "body", text: "pandas/core/frame.py" },
@@ -58,7 +58,7 @@ const MOCK = {
         ],
     },
     "redis/redis": {
-        title: "grove — redis/redis",
+        title: "grove - redis/redis",
         lines: [
             { type: "prompt", command: "grove explain redis/redis" },
             { type: "blank" },
@@ -95,7 +95,7 @@ function parseRepo(raw = "") {
 /* Generic fallback for unrecognised repos */
 function fallbackData(repo) {
     return {
-        title: `grove — ${repo || "preview"}`,
+        title: `grove - ${repo || "preview"}`,
         lines: [
             { type: "prompt", command: `grove explain ${repo || "repository"}` },
             { type: "blank" },
@@ -117,7 +117,7 @@ export default function Hero({ onAnalyze, loading: backendLoading, error: backen
     const [focused, setFocused] = useState(false);
 
     /* Terminal state */
-    const [termTitle, setTermTitle] = useState("grove — output");
+    const [termTitle, setTermTitle] = useState("grove - output");
     const [termLines, setTermLines] = useState(() => MOCK["facebook/react"].lines);
     const [isTyping, setIsTyping] = useState(false);
 
@@ -135,7 +135,7 @@ export default function Hero({ onAnalyze, loading: backendLoading, error: backen
         if (!data || !data.lines) return;
         abortRef.current = false;
 
-        setTermTitle("grove — output");
+        setTermTitle("grove - output");
         setTermLines([]);
         setIsTyping(true);
 
@@ -145,7 +145,7 @@ export default function Hero({ onAnalyze, loading: backendLoading, error: backen
         function next() {
             if (abortRef.current) return;
             if (i >= lines.length) {
-                setTermTitle(title || "grove — output");
+                setTermTitle(title || "grove - output");
                 setIsTyping(false);
                 return;
             }
@@ -239,7 +239,7 @@ export default function Hero({ onAnalyze, loading: backendLoading, error: backen
                     <div className="hero-anim hero-anim-heading w-full" style={{ marginBottom: "28px" }}>
                         <h1 className="sr-only">Figure Out any repository.</h1>
                         <WarpText
-                            text={"Figure Out\nany repository."}
+                            text={"Understand\nany\ncodebase."}
                             gradient={["#0f1626", "#2563eb", "#38bdf8"]}
                             fontSize="clamp(37px, 7.2vw, 90px)"
                             fontWeight={800}
@@ -271,8 +271,7 @@ export default function Hero({ onAnalyze, loading: backendLoading, error: backen
                             letterSpacing: "-0.01em",
                         }}
                     >
-                        Paste a link. Grove reads the code, the commits, and the docs —
-                        then tells you what it does, how it&apos;s built, and where to start.
+                        Drop in a GitHub link. Grove analyzes the architecture, dependencies, and commit history to give you the mental model of a senior engineer. No cloning required.
                     </p>
 
                     {/* ── Analyze bar ─────────────────────────────── */}

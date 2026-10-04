@@ -100,7 +100,7 @@ function TermLine({ line, isLast, isTyping }) {
 }
 
 /* ── Terminal component ──────────────────────────────────── */
-export default function Terminal({ title = "grove — output", lines = [], isTyping = false }) {
+export default function Terminal({ title = "grove - output", lines = [], isTyping = false }) {
     return (
         <div
             style={{

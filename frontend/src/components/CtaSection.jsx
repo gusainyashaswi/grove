@@ -68,10 +68,10 @@ export default function CtaSection({ onAnalyze }) {
 
             <section className="cta-band">
                 <div style={{ maxWidth: "1440px", margin: "0 auto", padding: "0 48px" }}>
-                    <h2 className="sr-only">Stop guessing what a repo does.</h2>
+                    <h2 className="sr-only">Stop guessing.\n Start understanding.</h2>
                     <div className="reveal w-full" style={{ maxWidth: "800px", margin: "0 auto 16px" }}>
                         <WarpText
-                            text="Stop guessing what a repo does."
+                            text={"Let's get it started."}
                             color="#0f1626"
                             fontSize="clamp(30px, 4.4vw, 50px)"
                             fontWeight={800}
@@ -89,7 +89,7 @@ export default function CtaSection({ onAnalyze }) {
                             style={{ height: "clamp(50px, 7vw, 84px)" }}
                         />
                     </div>
-                    <p className="reveal">Free for public repositories. No account needed to try it once.</p>
+                    <p className="reveal">Free for public repositories. Try it instantly without creating an account.</p>
 
                     <div className="cta-analyze reveal">
                         <div className={`cta-analyze-bar${focused ? " focused" : ""}`}>

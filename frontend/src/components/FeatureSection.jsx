@@ -2,18 +2,18 @@ import Terminal from "./Terminal";
 import WarpText from "./WarpText";
 
 const REDIS_LINES = [
-    { type: "prompt",  command: "grove explain redis/redis" },
-    { type: "blank"  },
+    { type: "prompt", command: "grove explain redis/redis" },
+    { type: "blank" },
     { type: "heading", text: "Summary" },
-    { type: "body",    text: "An in-memory data store used as a" },
-    { type: "body",    text: "database, cache, and message broker." },
-    { type: "blank"  },
+    { type: "body", text: "An in-memory data store used as a" },
+    { type: "body", text: "database, cache, and message broker." },
+    { type: "blank" },
     { type: "heading", text: "Entry point" },
-    { type: "body",    text: "src/server.c" },
-    { type: "blank"  },
+    { type: "body", text: "src/server.c" },
+    { type: "blank" },
     { type: "heading", text: "Read first" },
-    { type: "dim",     text: "1. src/networking.c" },
-    { type: "dim",     text: "2. src/t_string.c" },
+    { type: "dim", text: "1. src/networking.c" },
+    { type: "dim", text: "2. src/t_string.c" },
 ];
 
 export default function FeatureSection() {
@@ -87,15 +87,15 @@ export default function FeatureSection() {
                                     marginBottom: "14px",
                                 }}
                             >
-                                Example output
+                                Deep Dive
                             </div>
                             <div className="w-full">
-                                <h2 className="sr-only">Know before you clone</h2>
+                                <h2 className="sr-only">Mental models on demand</h2>
                                 <WarpText
-                                    text="Know before you clone"
+                                    text="Mental models on demand"
                                     color="#0f1626"
                                     fontSize="clamp(28px, 3.6vw, 40px)"
-                                    fontWeight={800}
+                                    fontWeight={700}
                                     fontFamily="var(--font-heading)"
                                     letterSpacing="-0.03em"
                                     lineHeight={1.1}
@@ -111,9 +111,7 @@ export default function FeatureSection() {
                                 />
                             </div>
                             <p>
-                                Every explanation covers the same ground: what the project is for,
-                                the shape of its architecture, and where to start reading — the
-                                orientation a senior teammate would give you.
+                                Every analysis provides the essential context you need: the core purpose of the project, its structural design, and exactly where to begin reading. It&apos;s the onboarding experience you&apos;ve always wanted.
                             </p>
                             <div className="check-list">
                                 <div className="check-item">
@@ -126,7 +124,7 @@ export default function FeatureSection() {
                                             strokeLinejoin="round"
                                         />
                                     </svg>
-                                    <span>Plain-English summary of what the repo does</span>
+                                    <span>Human-readable summaries of core functionality</span>
                                 </div>
                                 <div className="check-item">
                                     <svg width="16" height="16" viewBox="0 0 16 16" fill="none">
@@ -138,7 +136,7 @@ export default function FeatureSection() {
                                             strokeLinejoin="round"
                                         />
                                     </svg>
-                                    <span>Entry points and architecture, mapped automatically</span>
+                                    <span>High-level visualization of system architecture</span>
                                 </div>
                                 <div className="check-item">
                                     <svg width="16" height="16" viewBox="0 0 16 16" fill="none">
@@ -150,7 +148,7 @@ export default function FeatureSection() {
                                             strokeLinejoin="round"
                                         />
                                     </svg>
-                                    <span>A reading order, ranked by what matters first</span>
+                                    <span>Curated guide to critical entry points and files</span>
                                 </div>
                             </div>
                         </div>

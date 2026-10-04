@@ -103,53 +103,50 @@ export default function ProcessSection() {
                             Process
                         </div>
                         <div className="w-full">
-                            <h2 className="sr-only">Three steps, no setup</h2>
+                            <h2 className="sr-only">From URL to intuition</h2>
                             <WarpText
-                                text="Three steps, no setup"
+                                text="From URL to intuition"
                                 color="#0f1626"
                                 fontSize="clamp(30px, 4vw, 44px)"
-                                fontWeight={800}
-                            fontFamily="var(--font-heading)"
-                            letterSpacing="-0.03em"
-                            lineHeight={1.1}
-                            warpStrength={0.06}
-                            warpScale={1.6}
-                            speed={0.45}
-                            pointerInfluence={0.36}
-                            pointerStrength={0.34}
-                            refraction={0.015}
-                            ripple={true}
-                            align="center"
-                            style={{ height: "clamp(50px, 6vw, 76px)" }}
-                        />
+                                fontWeight={700}
+                                fontFamily="var(--font-heading)"
+                                letterSpacing="-0.03em"
+                                lineHeight={1.1}
+                                warpStrength={0.06}
+                                warpScale={1.6}
+                                speed={0.45}
+                                pointerInfluence={0.36}
+                                pointerStrength={0.34}
+                                refraction={0.015}
+                                ripple={true}
+                                align="center"
+                                style={{ height: "clamp(50px, 6vw, 76px)" }}
+                            />
                         </div>
-                        <p>Grove works on any public repository — no cloning, no install.</p>
+                        <p>Grove works on any public repository. No cloning, no local setup.</p>
                     </div>
 
                     {/* Steps Columns */}
                     <div className="steps">
                         <div className="step reveal">
                             <span className="step-num">01</span>
-                            <h3>Paste a link</h3>
+                            <h3>Drop a repository link</h3>
                             <p>
-                                Drop in any public GitHub URL — a library, a side project, a company&apos;s
-                                flagship repo.
+                                Input any public GitHub URL, whether it&apos;s a massive open-source framework or a lean side project.
                             </p>
                         </div>
                         <div className="step reveal">
                             <span className="step-num">02</span>
-                            <h3>Grove reads it</h3>
+                            <h3>AI processes the code</h3>
                             <p>
-                                It parses the file structure, dependency graph, commit history, and
-                                README.
+                                Grove traverses the file tree, maps out dependencies, and analyzes the entire commit history.
                             </p>
                         </div>
                         <div className="step reveal">
                             <span className="step-num">03</span>
-                            <h3>Get the plain version</h3>
+                            <h3>Explore the blueprint</h3>
                             <p>
-                                A clear summary of what it does, how it&apos;s organized, and what to
-                                open first.
+                                Navigate an interactive architecture map and get up to speed with a comprehensive, plain-English overview.
                             </p>
                         </div>
                     </div>

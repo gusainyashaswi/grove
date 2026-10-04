@@ -203,7 +203,7 @@ export default function Loading() {
                                 borderRadius: "9999px",
                             }}
                         >
-                            Large repository detected — indexing architecture and dependency graph…
+                            Large repository detected - indexing architecture and dependency graph…
                         </p>
                         <button
                             onClick={() => navigate("/")}

@@ -72,15 +72,15 @@ export default function FeaturesGrid() {
                                 marginBottom: "14px",
                             }}
                         >
-                            What you get
+                            Core Features
                         </div>
                         <div className="w-full">
-                            <h2 className="sr-only">Built for the moment before you commit to reading</h2>
+                            <h2 className="sr-only">Clarity before you even touch the code</h2>
                             <WarpText
-                                text={"Built for the moment before\nyou commit to reading"}
+                                text={"Clarity before you even touch the code"}
                                 color="#0f1626"
                                 fontSize="clamp(26px, 3.4vw, 40px)"
-                                fontWeight={800}
+                                fontWeight={700}
                                 fontFamily="var(--font-heading)"
                                 letterSpacing="-0.03em"
                                 lineHeight={1.12}
@@ -131,10 +131,9 @@ export default function FeaturesGrid() {
                                 />
                                 <path d="M17.5 10v4M14 17.5h-3.5" stroke="currentColor" strokeWidth="1.4" />
                             </svg>
-                            <h3>Architecture map</h3>
+                            <h3>Architecture Topology</h3>
                             <p>
-                                A visual and written breakdown of how the modules connect — so you
-                                know the shape of the thing before you&apos;re lost in it.
+                                A visual and conceptual breakdown of module relationships, giving you the system&apos;s shape before diving into the weeds.
                             </p>
                         </div>
 
@@ -149,10 +148,9 @@ export default function FeaturesGrid() {
                                     strokeLinecap="round"
                                 />
                             </svg>
-                            <h3>Dependency audit</h3>
+                            <h3>Dependency Intelligence</h3>
                             <p>
-                                Every package it actually relies on, what&apos;s unused, and what&apos;s
-                                quietly out of date — flagged before you inherit the problem.
+                                Discover the exact packages the project relies on, including stale or unused libraries, before you inherit technical debt.
                             </p>
                         </div>
 
@@ -172,10 +170,9 @@ export default function FeaturesGrid() {
                                     strokeLinecap="round"
                                 />
                             </svg>
-                            <h3>Plain-English README</h3>
+                            <h3>Developer-First Docs</h3>
                             <p>
-                                A rewritten version of the docs for humans, not search engines —
-                                what it does, why it exists, and how it&apos;s different.
+                                A synthesized version of the repository&apos;s documentation written for human comprehension, explaining what it does and why it exists.
                             </p>
                         </div>
                     </div>
